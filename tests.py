@@ -23,12 +23,45 @@ class NcaaTestCase(unittest.TestCase):
         self.assertEqual(len(result), 1)
         connect_mysql.close()
 
-    def test_03_cant_get_pool(self):
+    def test_04_cant_get_pool(self):
         """Can we find a non existent pool?"""
         connect_mysql = MysqlPython()         
         result = connect_mysql.query(proc='PoolInfo', params=['sarsdfasdf'])
         self.assertEqual(len(result), 0)
         connect_mysql.close()
+    
+    def test_05_is_pool_open(self):
+        """Is the pool open for submissions?"""
+        connect_mysql = MysqlPython()  
+        connect_mysql.update(proc='OpenPool')
+        result = connect_mysql.query(proc='PoolStatus')
+        print(result)
+        self.assertEqual(result[0]['poolOpen'], 1)
+        connect_mysql.close()     
         
+    def test_06_is_pool_closed(self):
+        """Have the games begun?"""
+        connect_mysql = MysqlPython()
+        connect_mysql.update(proc='ClosePool')
+        result = connect_mysql.query(proc='PoolStatus')
+        self.assertEqual(result[0]['poolOpen'], 0)
+        connect_mysql.close()
+   
+    def test_07_is_sweet16_pool_open(self):
+        """Is the Sweet pool open?"""
+        connect_mysql = MysqlPython()
+        connect_mysql.update(proc='OpenSweet16Pool')
+        result = connect_mysql.query(proc='PoolStatus')
+        self.assertEqual(result[0]['sweetSixteenPoolOpen'], 1)
+        connect_mysql.close()     
+        
+    def test_07_is_sweet16_pool_closed(self):
+        """Has the Sweet 16 started?"""
+        connect_mysql = MysqlPython()
+        connect_mysql.update(proc='CloseSweet16Pool')
+        result = connect_mysql.query(proc='PoolStatus')
+        self.assertEqual(result[0]['sweetSixteenPoolOpen'], 0)
+        connect_mysql.close()
+
 if __name__ == '__main__':
     unittest.main()

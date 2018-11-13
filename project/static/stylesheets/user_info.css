@@ -1,0 +1,126 @@
+#userBracketInfoForm {
+  width: 100%;
+}
+
+.bracket_details {
+  background-color: #FFFFFF;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+
+.ncaa-image {
+  padding: 5%;
+}
+
+hr.details {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+
+.pool_details, .bracket_details {
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pool_details input {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  outline: none;
+  box-sizing: border-box; 
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 100%;
+  background: #fff;
+  margin-bottom: 4%;
+  border: 1px solid #004E89;
+  padding: 6%;
+  color: #555;
+}
+
+.bracket_details input {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  outline: none;
+  box-sizing: border-box; 
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 65%;
+  background: #fff;
+  margin-bottom: 4%;
+  border: 1px solid #004E89;
+  padding: 3%;
+  color: #555;
+}
+
+.pool_details input[type="text"]:focus {
+  box-shadow: 0 0 5px #88909f;
+  padding: 6%;
+  border: 1px solid #000;
+}
+
+.bracket_details input:focus {
+  box-shadow: 0 0 5px #88909f;
+  border: 1px solid #000;
+}
+
+.pool_details input[type="submit"] {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 100%;
+  padding: 3%;
+  background: #004E89;
+  border-top-style: none;
+  border-bottom-style: none;  
+  border-right-style: none;
+  border-left-style: none;  
+  color: #fff;
+  text-transform: uppercase;
+  font-weight : bold;
+  font-size: 20px;
+}
+
+.bracket_details input[type="submit"] {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 65%;
+  padding: 3%;
+  background: #004E89;
+  border-top-style: none;
+  border-bottom-style: none;  
+  border-right-style: none;
+  border-left-style: none;  
+  color: #fff;
+  text-transform: uppercase;
+  font-weight : bold;
+  font-size: 20px;
+}
+
+#userPoolMessage {
+  color: red;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 600px) {
+  .bracket_info {
+    width: 100%;
+  }
+  .pool_details, .bracket_details input {
+    padding: 5%;
+  }
+  
+  .bracket_details input {
+    width: 100%;
+  }
+  
+  .bracket_details input[type="submit"] {
+    width: 100%;
+  }
+}

@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+
+{% block title %} - Welcome{% endblock %}
+
+{% block content %}
+<div class="pool_details">
+		<div id="userPoolMessage"></div>
+		<form class="form-container" id="poolNameForm">
+				<input name="userPoolName" id="userPoolName" placeholder="POOL NAME" type="text">
+				<input value="Submit" type="submit">
+		</form>
+</div>
+{% endblock %}

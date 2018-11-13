@@ -1,0 +1,82 @@
+*{margin:0;padding:0;text-decoration:none}
+
+body {
+  font-family: 'Istok Web', sans-serif;
+  background: url('/static/images/floor.jpg') no-repeat #000;
+  background-repeat: repeat;
+  min-height: 100%;
+  margin: 0;
+}
+
+.hero {
+  position:relative; 
+  text-align: center; 
+  overflow: hidden; 
+  color: #fcfcfc;
+}
+
+.hero h1 {
+  font-family: 'Holtwood One SC', serif;
+  font-weight: normal;
+  font-size: 5.4em;
+  margin:0 0 20px;
+  text-shadow:0 0 12px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing:-1px;
+}
+
+.hero p {
+  font-family: 'Abel', sans-serif;
+  text-transform: uppercase;
+  color: #004E89; 
+  letter-spacing: 6px;
+  font-size: 1.2em;
+}
+
+.hero-wrap {
+  padding: 3.5em 10px;
+}
+
+.hero p.intro {
+  font-family: 'Holtwood One SC', serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 3em;
+  margin-bottom:-40px;
+}
+
+.hero p.year {
+  color: #fff; 
+  letter-spacing: 20px; 
+  font-size: 34px; 
+  margin: -25px 0 25px;
+}
+
+.hero p.year i {
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+#bracket {
+  overflow:hidden;
+  background-color: #e1e1e1;
+  background-color:rgba(225,225,225,0.9);
+  padding-top: 20px;
+  font-size: 12px;
+  padding: 40px 0;
+}
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display:block;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction:row;
+  flex-direction: row;
+  flex-flow: wrap;
+}

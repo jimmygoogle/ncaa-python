@@ -1,0 +1,72 @@
+.standings {
+  overflow-x: auto;
+  width: 90%;
+  font-size: 1.2em;
+  margin: 0 auto;
+}
+
+.standings table {
+    margin: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 90%;
+    border: 1px solid #000;
+}
+
+.standings a { 
+  text-decoration:none; 
+  color: #000000;
+}
+
+.standings th {
+    border: none;
+    text-align: left;
+    padding: 10px;
+    text-align: center;
+}
+
+.standings td {
+    border: none;
+    text-align: left;
+    padding: 15px;
+}
+
+.standings .standings_score {
+  text-align: center;
+}
+
+.standings .standings_champ {
+  text-align: center;
+}
+
+.standings tr:nth-child(even){
+  background-color: #f2f2f2
+}
+
+.standings tr:hover {
+  background-color: #e5e5e5;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+	 .standings {
+	   width: 100%;
+	   font-size: 1em;
+	 }
+  .standings table {
+    border: 0px;
+    width: 100%;
+  }
+  .standings th {
+    font-size: 1.1em;
+  }
+  .standings td {
+    font-size: .9em;
+  }
+  .standings .standings_champ {
+    padding-left: 0px;
+  }
+  .resize_mobile {
+    display: none;
+  }
+}

@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+
+{% block title %} - Standings{% endblock %}
+
+{% block content %}
+
+{{data}}
+<section id="bracket">
+		<div class="container">
+				<div class="standings">
+						<table>
+						<tbody>
+						  <tr class="header">
+								  <th>Bracket <span class="resize_mobile">Name</span></th>
+								  <th>Champion</th>
+								  <th>Score</th>
+								  <th><span class="resize_mobile">Best </span>Possible <span class="resize_mobile">Score</span></th>
+						  </tr>
+								<tr>
+										<td class="standings_name"><a href="URL">NAME</a> <span class="resize_mobile">(REAL_NAME)</span></td>
+										<td class="standings_champ"> Winner <span class="resize_mobile">(TB_POINTS)</span></td>
+										<td class="standings_score">SCORE</td>
+										<td class="standings_score">POSSIBLE_SCORE</td>
+								</tr>
+						</tbody>
+						</table>
+				</div>
+		</div>
+</section>
+{% endblock %}

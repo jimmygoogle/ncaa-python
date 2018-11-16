@@ -4,7 +4,8 @@ import datetime
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
-Session(app)
+
+flask_session = Session()
 
 # set some global variables
 YEAR = datetime.datetime.now().year

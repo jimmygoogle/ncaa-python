@@ -1,0 +1,464 @@
+{% extends "index.html" %}
+
+{% block title %} - Standings{% endblock %}
+
+{% block content %}
+
+<section id='bracket'>
+  <div class='container'>
+
+    {% if showPaymentForm %}
+      <div class='paypal_container'></div>
+    {% endif %}
+
+    {% if userNameBracket %}
+      <div class='userNameDisplay'>#{userNameBracket} Bracket</div>
+    {% endif %}
+
+    <div class='split split-one top'>
+      <div class='round round-one current'>
+        <!-- LEFT TOP 16 START -->
+        <div class='round-details'>Round 1 
+          <br />
+          <span class='date'>March 15-16</span>
+        </div>
+        <ul class='matchup game1' data-games='65|97|113|121|125'>
+          <li class='team team-top' id='slot1' data-team-id='teamData[0].teamID'> #{teamData[0].seedID} #{teamData[0].teamName}</li>
+          <li class='team team-bottom' id='slot2' data-team-id='teamData[1].teamID'> #{teamData[1].seedID} #{teamData[1].teamName}</li>
+        </ul>
+        <ul class='matchup game2' data-games='66|97|113|121|125'>
+          <li class='team team-top' id='slot3' data-team-id='teamData[2].teamID'> #{teamData[2].seedID} #{teamData[2].teamName}</li>
+          <li class='team team-bottom' id='slot4' data-team-id='teamData[3].teamID'> #{teamData[3].seedID} #{teamData[3].teamName}</li>
+        </ul>
+        <ul class='matchup game3' data-games='67|98|113|121|125'>
+          <li class='team team-top' id='slot5' data-team-id='teamData[4].teamID'> #{teamData[4].seedID} #{teamData[4].teamName}</li>
+          <li class='team team-bottom' id='slot6' data-team-id='teamData[5].teamID'> #{teamData[5].seedID} #{teamData[5].teamName}</li>
+        </ul>
+        <ul class='matchup game4' data-games='68|98|113|121|125'>
+          <li class='team team-top' id='slot7' data-team-id='teamData[6].teamID'> #{teamData[6].seedID} #{teamData[6].teamName}</li>
+          <li class='team team-bottom' id='slot8' data-team-id='teamData[7].teamID'> #{teamData[7].seedID} #{teamData[7].teamName}</li>
+        </ul>
+        <ul class='matchup game5' data-games='69|99|114|121|125'>
+          <li class='team team-top' id='slot9' data-team-id='teamData[8].teamID'> #{teamData[8].seedID} #{teamData[8].teamName}</li>
+          <li class='team team-bottom' id='slot10' data-team-id='teamData[9].teamID'> #{teamData[9].seedID} #{teamData[9].teamName}</li>
+        </ul>
+        <ul class='matchup game6' data-games='70|99|114|121|125'>
+          <li class='team team-top' id='slot11' data-team-id='teamData[10].teamID'> #{teamData[10].seedID} #{teamData[10].teamName}</li>
+          <li class='team team-bottom' id='slot12' data-team-id='teamData[11].teamID'> #{teamData[11].seedID} #{teamData[11].teamName}</li>
+        </ul>
+        <ul class='matchup game7' data-games='71|100|114|121|125'>
+          <li class='team team-top' id='slot13' data-team-id='teamData[12].teamID'> #{teamData[12].seedID} #{teamData[12].teamName}</li>
+          <li class='team team-bottom' id='slot14' data-team-id='teamData[13].teamID'> #{teamData[13].seedID} #{teamData[13].teamName}</li>
+        </ul>
+        <ul class='matchup game8' data-games='72|100|114|121|125'>
+          <li class='team team-top' id='slot15' data-team-id='teamData[14].teamID'> #{teamData[14].seedID} #{teamData[14].teamName}</li>
+          <li class='team team-bottom' id='slot16' data-team-id='teamData[15].teamID'> #{teamData[15].seedID} #{teamData[15].teamName}</li>
+        </ul>
+      </div>
+      <!-- END ROUND ONE -->
+      <!-- LEFT TOP 16 END -->
+  
+      <div class='round round-two'>
+        <!-- LEFT TOP 8 START -->
+        <div class='round-details round2-header'>Round 2
+          <br />
+          <span class='date'>March 17-18</span>
+        </div>
+        <ul class='matchup game33' data-games='97|114|121|125'>
+          <li class='team team-top ' + userPickedTeamData[0].pickCSS id='slot65' data-team-id=userPickedTeamData[0].teamID'> #{userPickedTeamData[0].seedID} #{userPickedTeamData[0].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[1].pickCSS id='slot66' data-team-id=userPickedTeamData[1].teamID'> #{userPickedTeamData[1].seedID} #{userPickedTeamData[1].teamName}</li>
+        </ul>
+        <ul class='matchup game34' data-games='98|114|121|125'>
+          <li class='team team-top ' + userPickedTeamData[2].pickCSS id='slot67' data-team-id=userPickedTeamData[2].teamID'> #{userPickedTeamData[2].seedID} #{userPickedTeamData[2].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[3].pickCSS id='slot68' data-team-id=userPickedTeamData[3].teamID'> #{userPickedTeamData[3].seedID} #{userPickedTeamData[3].teamName}</li>
+        </ul>
+        <ul class='matchup game35' data-games='99|114|121|125'>
+          <li class='team team-top ' + userPickedTeamData[4].pickCSS id='slot69' data-team-id=userPickedTeamData[4].teamID'> #{userPickedTeamData[4].seedID} #{userPickedTeamData[4].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[5].pickCSS id='slot70' data-team-id=userPickedTeamData[5].teamID'> #{userPickedTeamData[5].seedID} #{userPickedTeamData[5].teamName}</li>
+        </ul>
+        <ul class='matchup game36' data-games='100|114|121|125'>
+          <li class='team team-top ' + userPickedTeamData[6].pickCSS id='slot71' data-team-id=userPickedTeamData[6].teamID'> #{userPickedTeamData[6].seedID} #{userPickedTeamData[6].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[7].pickCSS id='slot72' data-team-id=userPickedTeamData[7].teamID'> #{userPickedTeamData[7].seedID} #{userPickedTeamData[7].teamName}</li>
+        </ul>
+      </div>
+      <!-- END ROUND TWO -->
+      <!-- LEFT TOP 8 END -->
+    
+      <div class='round round-three'>
+        <!-- LEFT TOP 4 START -->
+        <div class='round-details sixteen-header'>
+          Sweet Sixteen
+          <br />
+          <span class='date'>March 22-23</span>
+        </div>
+        <ul class='matchup game49' data-games='113|121|125'>
+          <li class='team team-top ' + userPickedTeamData[32].pickCSS id='slot97' data-team-id=userPickedTeamData[32].teamID'> #{userPickedTeamData[32].seedID} #{userPickedTeamData[32].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[33].pickCSS id='slot98' data-team-id=userPickedTeamData[33].teamID'> #{userPickedTeamData[33].seedID} #{userPickedTeamData[33].teamName}</li>
+        </ul>
+        <ul class='matchup game50' data-games='114|121|125'>
+          <li class='team team-top ' + userPickedTeamData[34].pickCSS id='slot99' data-team-id=userPickedTeamData[34].teamID'> #{userPickedTeamData[34].seedID} #{userPickedTeamData[34].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[35].pickCSS id='slot100' data-team-id=userPickedTeamData[35].teamID'> #{userPickedTeamData[35].seedID} #{userPickedTeamData[35].teamName}</li>
+        </ul>
+      </div>
+      <!-- END ROUND THREE -->
+      <!-- LEFT TOP 4 END -->
+    </div>
+
+    <div class='champion top'>
+      <div class='semis-l'>
+        <div class='round-details eight-header'>
+          Elite Eight
+          <br />
+          <span class='date'>March 24-25</span>
+        </div>
+        <ul class='matchup game57 championship elite-eight-top' data-games='121|125'>
+          <li class='team team-top ' + userPickedTeamData[48].pickCSS id='slot113' data-team-id=userPickedTeamData[48].teamID'> #{userPickedTeamData[48].seedID} #{userPickedTeamData[48].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[49].pickCSS id='slot114' data-team-id=userPickedTeamData[49].teamID'> #{userPickedTeamData[49].seedID} #{userPickedTeamData[49].teamName}</li>
+        </ul>
+        <ul class='matchup game59 championship elite-eight-bottom' data-games='123|126'>
+          <li class='team team-top ' + userPickedTeamData[52].pickCSS id='slot117' data-team-id=userPickedTeamData[52].teamID'> #{userPickedTeamData[52].seedID} #{userPickedTeamData[52].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[53].pickCSS id='slot118' data-team-id=userPickedTeamData[53].teamID'> #{userPickedTeamData[53].seedID} #{userPickedTeamData[53].teamName}</li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class='split split-two top>
+      <!-- RIGHT TOP 4 END -->
+      <div class='round round-three'>
+        <div class='round-details sixteen-header'>
+          Sweet Sixteen
+          <br />
+          <span class='date'>March 22-23</span>
+        </div> 
+        <ul class='matchup game53' data-games='117|123|126'>
+          <li class='team team-top ' + userPickedTeamData[40].pickCSS id='slot105' data-team-id=userPickedTeamData[40].teamID'> #{userPickedTeamData[40].seedID} #{userPickedTeamData[40].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[41].pickCSS id='slot106' data-team-id=userPickedTeamData[41].teamID'> #{userPickedTeamData[41].seedID} #{userPickedTeamData[41].teamName}</li>
+        </ul>
+        <ul class='matchup game54' data-games='118|123|126'>
+          <li class='team team-top ' + userPickedTeamData[42].pickCSS id='slot107' data-team-id=userPickedTeamData[42].teamID'> #{userPickedTeamData[42].seedID} #{userPickedTeamData[42].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[43].pickCSS id='slot108' data-team-id=userPickedTeamData[43].teamID'> #{userPickedTeamData[43].seedID} #{userPickedTeamData[43].teamName}</li>
+        </ul>
+      </div>
+      <!-- END ROUND THREE -->
+      <!-- RIGHT TOP 4 END -->
+  
+      <div class='round round-two'>
+        <!-- RIGHT TOP 8 START -->
+        <div class='round-details round2-header'>
+          Round 2
+          <br />
+          <span class='date'>March 17-18</span>
+        </div>      
+        <ul class='matchup game41' data-games='105|117|123|126'>
+          <li class='team team-top ' + userPickedTeamData[16].pickCSS id='slot81' data-team-id=userPickedTeamData[16].teamID'> #{userPickedTeamData[16].seedID} #{userPickedTeamData[16].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[17].pickCSS id='slot82' data-team-id=userPickedTeamData[17].teamID'> #{userPickedTeamData[17].seedID} #{userPickedTeamData[17].teamName}</li>
+        </ul>
+        <ul class='matchup game42' data-games='106|117|123|126'>
+          <li class='team team-top ' + userPickedTeamData[18].pickCSS id='slot83' data-team-id=userPickedTeamData[18].teamID'> #{userPickedTeamData[18].seedID} #{userPickedTeamData[18].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[19].pickCSS id='slot84' data-team-id=userPickedTeamData[19].teamID'> #{userPickedTeamData[19].seedID} #{userPickedTeamData[19].teamName}</li>
+        </ul>
+        <ul class='matchup game43' data-games='107|117|123|126'>
+          <li class='team team-top ' + userPickedTeamData[20].pickCSS id='slot85' data-team-id=userPickedTeamData[20].teamID'> #{userPickedTeamData[20].seedID} #{userPickedTeamData[20].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[21].pickCSS id='slot86' data-team-id=userPickedTeamData[21].teamID'> #{userPickedTeamData[21].seedID} #{userPickedTeamData[21].teamName}</li>
+        </ul>
+        <ul class='matchup game44' data-games='108|117|123|126'>
+          <li class='team team-top ' + userPickedTeamData[22].pickCSS id='slot87' data-team-id=userPickedTeamData[22].teamID'> #{userPickedTeamData[22].seedID} #{userPickedTeamData[22].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[23].pickCSS id='slot88' data-team-id=userPickedTeamData[23].teamID'> #{userPickedTeamData[23].seedID} #{userPickedTeamData[23].teamName}</li>
+        </ul>
+      </div>
+      <!-- END ROUND TWO -->
+      <!-- RIGHT TOP 8 END -->
+
+      <div class='round round-one current'> 
+        <!-- RIGHT TOP 16 START -->
+        <div class='round-details'>
+          Round 1
+          <br />
+          <span class='date'>March 15-16</span>
+        </div>
+        <ul class='matchup game17' data-games='81|105|117|123|126'>
+          <li class='team team-top' id='slot33' data-team-id='teamData[32].teamID'> #{teamData[32].seedID} #{teamData[32].teamName}</li>
+          <li class='team team-bottom' id='slot34' data-team-id='teamData[33].teamID'> #{teamData[33].seedID} #{teamData[33].teamName}</li>
+        </ul>
+        <ul class='matchup game18' data-games='82|105|117|123|126'>
+          <li class='team team-top' id='slot35' data-team-id='teamData[34].teamID'> #{teamData[34].seedID} #{teamData[34].teamName}</li>
+          <li class='team team-bottom' id='slot36' data-team-id='teamData[35].teamID'> #{teamData[35].seedID} #{teamData[35].teamName}</li>
+        </ul>
+        <ul class='matchup game19' data-games='83|106|117|123|126'>
+          <li class='team team-top' id='slot37' data-team-id='teamData[36].teamID'> #{teamData[36].seedID} #{teamData[36].teamName}</li>
+          <li class='team team-bottom' id='slot38' data-team-id='teamData[37].teamID'> #{teamData[37].seedID} #{teamData[37].teamName}</li>
+        </ul>
+        <ul class='matchup game20' data-games='84|106|117|123|126'>
+          <li class='team team-top' id='slot39' data-team-id='teamData[38].teamID'> #{teamData[38].seedID} #{teamData[38].teamName}</li>
+          <li class='team team-bottom' id='slot40' data-team-id='teamData[39].teamID'> #{teamData[39].seedID} #{teamData[39].teamName}</li>
+        </ul>
+        <ul class='matchup game21' data-games='85|107|118|123|126'>
+          <li class='team team-top' id='slot41' data-team-id='teamData[40].teamID'> #{teamData[40].seedID} #{teamData[40].teamName}</li>
+          <li class='team team-bottom' id='slot42' data-team-id='teamData[41].teamID'> #{teamData[41].seedID} #{teamData[41].teamName}</li>
+        </ul>
+        <ul class='matchup game22' data-games='86|107|118|123|126'>
+          <li class='team team-top' id='slot43' data-team-id='teamData[42].teamID'> #{teamData[42].seedID} #{teamData[42].teamName}</li>
+          <li class='team team-bottom' id='slot44' data-team-id='teamData[43].teamID'> #{teamData[43].seedID} #{teamData[43].teamName}</li>
+        </ul>
+        <ul class='matchup game23' data-games='87|108|118|123|126'>
+          <li class='team team-top' id='slot45' data-team-id='teamData[44].teamID'> #{teamData[44].seedID} #{teamData[44].teamName}</li>
+          <li class='team team-bottom' id='slot46' data-team-id='teamData[45].teamID'> #{teamData[45].seedID} #{teamData[45].teamName}</li>
+        </ul>
+        <ul class='matchup game24' data-games='88|108|118|123|126'>
+          <li class='team team-top' id='slot47' data-team-id='teamData[46].teamID'> #{teamData[46].seedID} #{teamData[46].teamName}</li>
+          <li class='team team-bottom' id='slot48' data-team-id='teamData[47].teamID'> #{teamData[47].seedID} #{teamData[47].teamName}</li>
+        </ul>
+      </div>
+      <!-- END ROUND ONE -->
+      <!-- RIGHT TOP 16 END -->           
+    </div>
+
+    <div class='champion1 middle>
+      <div semis-l'>
+        <div class='round-details'>
+          Final Four
+          <br />
+          <span class='date'>March 31</span>
+        </div>
+        <ul class='matchup-less game61 championship final-four-left' data-games='125'>
+          <li class='team team-top ' + userPickedTeamData[56].pickCSS id='slot121' data-team-id=userPickedTeamData[56].teamID'> #{userPickedTeamData[56].seedID} #{userPickedTeamData[56].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[57].pickCSS id='slot122' data-team-id=userPickedTeamData[57].teamID'> #{userPickedTeamData[57].seedID} #{userPickedTeamData[57].teamName}</li>
+        </ul>
+      </div>
+
+      <div class='final'>
+        <div class='round-details'>
+          Championship
+          <br />
+          <span class='date'>April 2</span>
+        </div>
+        <ul class='matchup-less game63 championship' data-games='none'>
+          <li class='team team-top ' + userPickedTeamData[60].pickCSS id='slot125' data-team-id=userPickedTeamData[60].teamID'> #{userPickedTeamData[60].seedID} #{userPickedTeamData[60].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[61].pickCSS id='slot126' data-team-id=userPickedTeamData[61].teamID'> #{userPickedTeamData[61].seedID} #{userPickedTeamData[61].teamName}</li>
+        </ul>
+      </div>
+     
+      <div class='semis-l'>
+        <div class='round-details'>
+          Final Four
+          <br />
+          <span class='date'>March 31</span>
+        </div>
+        <ul class='matchup-less game62 championship final-four-right' data-games='126'>
+          <li class='team team-top ' + userPickedTeamData[58].pickCSS id='slot123' data-team-id=userPickedTeamData[58].teamID'> #{userPickedTeamData[58].seedID} #{userPickedTeamData[58].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[59].pickCSS id='slot124' data-team-id=userPickedTeamData[59].teamID'> #{userPickedTeamData[59].seedID} #{userPickedTeamData[59].teamName}</li>
+        </ul>
+      </div>
+      <span id='ncaaWinner' data-pick=userPickedTeamData[62].pickCSS ? userPickedTeamData[62].pickCSS : '' data-team=userPickedTeamData[62].seedID ? userPickedTeamData[62].seedID + ' ' + userPickedTeamData[62].teamName : '' data-team-id=userPickedTeamData[62].teamID'></span>
+    </div>
+    
+    <div class= 'split split-one.bottom'>
+      <div class='round round-one current'>
+        <!-- LEFT BOTTOM 16 START -->
+        <div class='round-details'>
+          Round 1
+          <br />
+          <span class='date'>March 15-16</span>
+        </div>
+        <ul class='matchup game9' data-games='73|101|115|122|125'>
+          <li class='team team-top' id='slot17' data-team-id='teamData[16].teamID'> #{teamData[16].seedID} #{teamData[16].teamName}</li>
+          <li class='team team-bottom' id='slot18' data-team-id='teamData[17].teamID'> #{teamData[17].seedID} #{teamData[17].teamName}</li>
+        </ul>
+        <ul class='matchup game10' data-games='74|101|115|122|125'>
+          <li class='team team-top' id='slot19' data-team-id='teamData[18].teamID'> #{teamData[18].seedID} #{teamData[18].teamName}</li>
+          <li class='team team-bottom' id='slot20' data-team-id='teamData[19].teamID'> #{teamData[19].seedID} #{teamData[19].teamName}</li>
+        </ul>
+        <ul class='matchup game11' data-games='75|102|115|122|125'>
+          <li class='team team-top' id='slot21' data-team-id='teamData[20].teamID'> #{teamData[20].seedID} #{teamData[20].teamName}</li>
+          <li class='team team-bottom' id='slot22' data-team-id='teamData[21].teamID'> #{teamData[21].seedID} #{teamData[21].teamName}</li>
+        </ul>
+        <ul class='matchup game12' data-games='76|102|115|122|125'>
+          <li class='team team-top' id='slot23' data-team-id='teamData[22].teamID'> #{teamData[22].seedID} #{teamData[22].teamName}</li>
+          <li class='team team-bottom' id='slot24' data-team-id='teamData[23].teamID'> #{teamData[23].seedID} #{teamData[23].teamName}</li>
+        </ul>
+        <ul class='matchup game13' data-games='77|103|116|122|125'>
+          <li class='team team-top' id='slot25' data-team-id='teamData[24].teamID'> #{teamData[24].seedID} #{teamData[24].teamName}</li>
+          <li class='team team-bottom' id='slot26' data-team-id='teamData[25].teamID'> #{teamData[25].seedID} #{teamData[25].teamName}</li>
+        </ul>
+        <ul class='matchup game14' data-games='78|103|116|122|125'>
+          <li class='team team-top' id='slot27' data-team-id='teamData[26].teamID'> #{teamData[26].seedID} #{teamData[26].teamName}</li>
+          <li class='team team-bottom' id='slot28' data-team-id='teamData[27].teamID'> #{teamData[27].seedID} #{teamData[27].teamName}</li>
+        </ul>
+        <ul class='matchup game15' data-games='79|104|116|122|125'>
+          <li class='team team-top' id='slot29' data-team-id='teamData[28].teamID'> #{teamData[28].seedID} #{teamData[28].teamName}</li>
+          <li class='team team-bottom' id='slot30' data-team-id='teamData[29].teamID'> #{teamData[29].seedID} #{teamData[29].teamName}</li>
+        </ul>
+        <ul class='matchup game16' data-games='80|104|116|122|125'>
+          <li class='team team-top' id='slot31' data-team-id='teamData[30].teamID'> #{teamData[30].seedID} #{teamData[30].teamName}</li>
+          <li class='team team-bottom' id='slot32' data-team-id='teamData[31].teamID'> #{teamData[31].seedID} #{teamData[31].teamName}</li>
+        </ul>
+      </div>
+      <!-- END ROUND ONE -->
+      <!-- LEFT BOTTOM 16 END -->
+
+      <div class='round round-two'> 
+        <!-- LEFT BOTTOM 8 END -->
+        <div class='round-details round2-header'>
+          Round 2
+          <br />
+          <span class='date'>March 17-18</span>
+        </div>
+        <ul class='matchup game37' data-games='101|115|122|125'>
+          <li class='team team-top ' + userPickedTeamData[8].pickCSS id='slot73' data-team-id=userPickedTeamData[8].teamID'> #{userPickedTeamData[8].seedID} #{userPickedTeamData[8].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[9].pickCSS id='slot74' data-team-id=userPickedTeamData[9].teamID'> #{userPickedTeamData[9].seedID} #{userPickedTeamData[9].teamName}</li>
+        </ul>
+        <ul class='matchup game38' data-games='102|116|122|125'>
+          <li class='team team-top ' + userPickedTeamData[10].pickCSS id='slot75' data-team-id=userPickedTeamData[10].teamID'> #{userPickedTeamData[10].seedID} #{userPickedTeamData[10].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[11].pickCSS id='slot76' data-team-id=userPickedTeamData[11].teamID'> #{userPickedTeamData[11].seedID} #{userPickedTeamData[11].teamName}</li>
+        </ul>
+        <ul class='matchup game39' data-games='103|116|122|125'>
+          <li class='team team-top ' + userPickedTeamData[12].pickCSS id='slot77' data-team-id=userPickedTeamData[12].teamID'> #{userPickedTeamData[12].seedID} #{userPickedTeamData[12].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[13].pickCSS id='slot78' data-team-id=userPickedTeamData[13].teamID'> #{userPickedTeamData[13].seedID} #{userPickedTeamData[13].teamName}</li>
+        </ul>
+        <ul class='matchup game40' data-games='104|116|122|125'>
+          <li class='team team-top ' + userPickedTeamData[14].pickCSS id='slot79' data-team-id=userPickedTeamData[14].teamID'> #{userPickedTeamData[14].seedID} #{userPickedTeamData[14].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[15].pickCSS id='slot80' data-team-id=userPickedTeamData[15].teamID'> #{userPickedTeamData[15].seedID} #{userPickedTeamData[15].teamName}</li>
+        </ul>
+      </div>
+      <!-- END ROUND TWO -->
+      <!-- LEFT BOTTOM 8 END -->
+
+      <div class='round round-three'> 
+        <!-- LEFT BOTTOM 4 START -->
+        <div class='round-details sixteen-header'>
+          Sweet Sixteen
+          <br />
+          <span class='date'>March 22-23</span>
+        </div>
+        <ul class='matchup game51' data-games='115|122|125'>
+          <li class='team team-top ' + userPickedTeamData[36].pickCSS id='slot101' data-team-id=userPickedTeamData[36].teamID'> #{userPickedTeamData[36].seedID} #{userPickedTeamData[36].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[37].pickCSS id='slot102' data-team-id=userPickedTeamData[37].teamID'> #{userPickedTeamData[37].seedID} #{userPickedTeamData[37].teamName}</li>
+        </ul>       
+        <ul class='matchup game52' data-games='116|122|125'>
+          <li class='team team-top ' + userPickedTeamData[38].pickCSS id='slot103' data-team-id=userPickedTeamData[38].teamID'> #{userPickedTeamData[38].seedID} #{userPickedTeamData[38].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[39].pickCSS id='slot104' data-team-id=userPickedTeamData[39].teamID'> #{userPickedTeamData[39].seedID} #{userPickedTeamData[39].teamName}</li>
+        </ul>
+      </div>
+      <!-- END ROUND THREE -->
+      <!-- LEFT BOTTOM 4 END -->
+    </div>
+
+    <div class='champion bottom'>
+      <div class='semis-r'>  
+        <div class='round-details eight-header'>
+          Elite Eight
+          <br />
+          <span class='date'>March 24-25</span>
+        </div>
+        <ul class='matchup game58 championship elite-eight-top' data-games='122|125'>
+          <li class='team team-top ' + userPickedTeamData[50].pickCSS id='slot115' data-team-id=userPickedTeamData[50].teamID'> #{userPickedTeamData[50].seedID} #{userPickedTeamData[50].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[51].pickCSS id='slot116' data-team-id=userPickedTeamData[51].teamID'> #{userPickedTeamData[51].seedID} #{userPickedTeamData[51].teamName}</li>
+        </ul> 
+        <ul class='matchup game60 championship elite-eight-bottom' data-games='124|126'>
+          <li class='team team-top ' + userPickedTeamData[54].pickCSS id='slot119' data-team-id=userPickedTeamData[54].teamID'> #{userPickedTeamData[54].seedID} #{userPickedTeamData[54].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[55].pickCSS id='slot120' data-team-id=userPickedTeamData[55].teamID'> #{userPickedTeamData[55].seedID} #{userPickedTeamData[55].teamName}</li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class='split split-two bottom'>
+      <div class='round round-three'>
+        <!-- RIGHT BOTTOM 4 START -->
+        <div class='round-details sixteen-header'>
+          Sweet Sixteen
+          <br />
+          <span class='date'>March 22-23</span>
+        </div>
+        <ul class='matchup game55' data-games='119|124|126'>
+          <li class='team team-top ' + userPickedTeamData[44].pickCSS id='slot109' data-team-id=userPickedTeamData[44].teamID'> #{userPickedTeamData[44].seedID} #{userPickedTeamData[44].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[45].pickCSS id='slot110' data-team-id=userPickedTeamData[45].teamID'> #{userPickedTeamData[45].seedID} #{userPickedTeamData[45].teamName}</li>
+        </ul>
+        <ul class='matchup game56' data-games='120|124|126'>
+          <li class='team team-top ' + userPickedTeamData[46].pickCSS id='slot111' data-team-id=userPickedTeamData[46].teamID'> #{userPickedTeamData[46].seedID} #{userPickedTeamData[46].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[47].pickCSS id='slot112' data-team-id=userPickedTeamData[47].teamID'> #{userPickedTeamData[47].seedID} #{userPickedTeamData[47].teamName}</li>
+        </ul>
+        <!-- END ROUND THREE -->
+        <!-- RIGHT BOTTOM 4 END -->
+      </div>
+
+      <div class='round round-two'>
+        <!-- RIGHT BOTTOM 8 END -->
+        <div class='round-details round2-header'>
+          Round 2
+          <br />
+          <span class='date'>March 17-18</span>
+        </div>
+        <ul class='matchup game45' data-games='109|119|124|126'>
+          <li class='team team-top ' + userPickedTeamData[24].pickCSS id='slot89' data-team-id=userPickedTeamData[24].teamID'> #{userPickedTeamData[24].seedID} #{userPickedTeamData[24].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[25].pickCSS id='slot90' data-team-id=userPickedTeamData[25].teamID'> #{userPickedTeamData[25].seedID} #{userPickedTeamData[25].teamName}</li>
+        </ul>
+        <ul class='matchup game46' data-games='110|119|124|126'>
+          <li class='team team-top ' + userPickedTeamData[26].pickCSS id='slot91' data-team-id=userPickedTeamData[26].teamID'> #{userPickedTeamData[26].seedID} #{userPickedTeamData[26].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[27].pickCSS id='slot92' data-team-id=userPickedTeamData[27].teamID'> #{userPickedTeamData[27].seedID} #{userPickedTeamData[27].teamName}</li>
+        </ul>
+        <ul class='matchup game47' data-games='111|119|124|126'>
+          <li class='team team-top ' + userPickedTeamData[28].pickCSS id='slot93' data-team-id=userPickedTeamData[28].teamID'> #{userPickedTeamData[28].seedID} #{userPickedTeamData[28].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[29].pickCSS id='slot94' data-team-id=userPickedTeamData[29].teamID'> #{userPickedTeamData[29].seedID} #{userPickedTeamData[29].teamName}</li>
+        </ul>
+        <ul class='matchup game48' data-games='112|119|124|126'>
+          <li class='team team-top ' + userPickedTeamData[30].pickCSS id='slot95' data-team-id=userPickedTeamData[30].teamID'> #{userPickedTeamData[30].seedID} #{userPickedTeamData[30].teamName}</li>
+          <li class='team team-bottom ' + userPickedTeamData[31].pickCSS id='slot96' data-team-id=userPickedTeamData[31].teamID'> #{userPickedTeamData[31].seedID} #{userPickedTeamData[31].teamName}</li>
+        </ul>
+        <!-- END ROUND TWO -->
+        <!-- RIGHT BOTTOM 8 END -->
+      </div>
+
+      <div class='round round-one current'>
+        <!-- RIGHT BOTTOM 16 START -->
+        <div class='round-details'> 
+          Round 1
+          <br />
+          <span class='date'>March 15-16</span>
+        </div>
+        <ul class='matchup game25' data-games='89|109|119|124|126'>
+          <li class='team team-top' id='slot49' data-team-id='teamData[48].teamID'> #{teamData[48].seedID} #{teamData[48].teamName}</li>
+          <li class='team team-bottom' id='slot50' data-team-id='teamData[49].teamID'> #{teamData[49].seedID} #{teamData[49].teamName}</li>
+        </ul>
+        <ul class='matchup game26' data-games='90|109|119|124|126'>
+          <li class='team team-top' id='slot51' data-team-id='teamData[50].teamID'> #{teamData[50].seedID} #{teamData[50].teamName}</li>
+          <li class='team team-bottom' id='slot52' data-team-id='teamData[51].teamID'> #{teamData[51].seedID} #{teamData[51].teamName}</li>
+        </ul>
+        <ul class='matchup game27' data-games='91|110|119|124|126'>
+          <li class='team team-top' id='slot53' data-team-id='teamData[52].teamID'> #{teamData[52].seedID} #{teamData[52].teamName}</li>
+          <li class='team team-bottom' id='slot54' data-team-id='teamData[53].teamID'> #{teamData[53].seedID} #{teamData[53].teamName}</li>
+        </ul>
+        <ul class='matchup game28' data-games='92|110|119|124|126'>
+          <li class='team team-top' id='slot55' data-team-id='teamData[54].teamID'> #{teamData[54].seedID} #{teamData[54].teamName}</li>
+          <li class='team team-bottom' id='slot56' data-team-id='teamData[55].teamID'> #{teamData[55].seedID} #{teamData[55].teamName}</li>
+        </ul>
+        <ul class='matchup game29' data-games='93|111|120|124|126'>
+          <li class='team team-top' id='slot57' data-team-id='teamData[56].teamID'> #{teamData[56].seedID} #{teamData[56].teamName}</li>
+          <li class='team team-bottom' id='slot58' data-team-id='teamData[57].teamID'> #{teamData[57].seedID} #{teamData[57].teamName}</li>
+        </ul>
+        <ul class='matchup game30' data-games='94|111|120|124|126'>
+          <li class='team team-top' id='slot59' data-team-id='teamData[58].teamID'> #{teamData[58].seedID} #{teamData[58].teamName}</li>
+          <li class='team team-bottom' id='slot60' data-team-id='teamData[59].teamID'> #{teamData[59].seedID} #{teamData[59].teamName}</li>
+        </ul>
+        <ul class='matchup game31' data-games='95|112|120|124|126'>
+          <li class='team team-top' id='slot61' data-team-id='teamData[60].teamID'> #{teamData[60].seedID} #{teamData[60].teamName}</li>
+          <li class='team team-bottom' id='slot62' data-team-id='teamData[61].teamID'> #{teamData[61].seedID} #{teamData[61].teamName}</li>
+        </ul>
+        <ul class='matchup game32' data-games='96|112|120|124|126'>
+          <li class='team team-top' id='slot63' data-team-id='teamData[62].teamID'> #{teamData[62].seedID} #{teamData[62].teamName}</li>
+          <li class='team team-bottom' id='slot64' data-team-id='teamData[63].teamID'> #{teamData[63].seedID} #{teamData[63].teamName}</li>
+        </ul>
+      </div>
+    </div>    
+    <!-- END ROUND ONE -->
+    <!-- RIGHT BOTTOM 16 END -->
+
+    <!-- show form to submit pool data -->
+    {% if userbracketInfoForm %}
+      <div id='userBracketInfoForm'>
+       {% include "additional_info.html" %}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

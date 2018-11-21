@@ -4,7 +4,6 @@
 
 {% block content %}
 
-{{data}}
 <section id="bracket">
 		<div class="container">
 				<div class="standings">
@@ -14,14 +13,21 @@
 								  <th>Bracket <span class="resize_mobile">Name</span></th>
 								  <th>Champion</th>
 								  <th>Score</th>
-								  <th><span class="resize_mobile">Best </span>Possible <span class="resize_mobile">Score</span></th>
+								  {% if games_left %}
+								    <th><span class="resize_mobile">Best </span>Possible <span class="resize_mobile">Score</span></th>
+								  {% endif %}
 						  </tr>
-								<tr>
-										<td class="standings_name"><a href="URL">NAME</a> <span class="resize_mobile">(REAL_NAME)</span></td>
-										<td class="standings_champ"> Winner <span class="resize_mobile">(TB_POINTS)</span></td>
-										<td class="standings_score">SCORE</td>
-										<td class="standings_score">POSSIBLE_SCORE</td>
-								</tr>
+						  {% for user in data %}
+								  <tr>
+										  <td class="standings_name"><a href="/bracket/{{user.userDisplayToken}}">{{ user.userName }}</a> <span class="resize_mobile">{{ user.realName }}</span></td>
+										  <td class="standings_champ"> {{ user.teamName }} <span class="resize_mobile">({{ user.userTieBreakerPoints }})</span></td>
+										  <td class="standings_score">{{ user.userScore }}</td>
+										  
+										  {% if games_left %}
+									  	  <td class="standings_score">{{ user.bestPossibleScore }}</td>
+									  	{% endif %}
+								  </tr>
+								{% endfor %}
 						</tbody>
 						</table>
 				</div>

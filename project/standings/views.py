@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect
-from ncaa import Ncaa
+from project.ncaa import Ncaa
 from project import YEAR
 
 ncaa = Ncaa()
@@ -19,5 +19,8 @@ def show_standings(sweet_sixteen=None):
         bracket_type = 'sweetSixteen'
     
     ## get standings data and calculate scores
-    data = ncaa.get_standings(bracket_type=bracket_type)
-    return render_template('standings.html', year=YEAR, data=data)
+    (data, has_games_left) = ncaa.get_standings(bracket_type=bracket_type)
+    
+    ncaa.debug(f"we have games left? {has_games_left}")
+    
+    return render_template('standings.html', year=YEAR, data=data, has_games_left=has_games_left)

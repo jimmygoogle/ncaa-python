@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect
-from ncaa import Ncaa
+from project.ncaa import Ncaa
 
 ncaa = Ncaa()
 bracket_blueprint = Blueprint('bracket', __name__, template_folder='templates')

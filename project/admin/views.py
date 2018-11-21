@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect
-from ncaa import Ncaa
+from project.ncaa import Ncaa
 
 ncaa = Ncaa()
 admin_blueprint = Blueprint('admin', __name__, template_folder='templates')

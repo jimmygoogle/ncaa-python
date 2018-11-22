@@ -2,6 +2,9 @@ from project.mysql_python import MysqlPython
 from flask import request
 from project import session, app
 import sys
+import hashlib
+import time
+import re
 from collections import defaultdict
 
 connect_mysql = MysqlPython()
@@ -9,7 +12,7 @@ connect_mysql = MysqlPython()
 class Ncaa(object):
     
     def __init__(self):
-        pass
+        self.pool_name = ''
     
     def set_pool_name(self, pool_name):
         '''Validate pool name and then set it for use in the application'''
@@ -37,18 +40,17 @@ class Ncaa(object):
         
         return pool_name
 
-    def check_pool_status(self, pool_type='normalBracket'):
+    def check_pool_status(self, bracket_type=None):
         '''Get current pool status'''
         
         result = connect_mysql.query(proc='PoolStatus')
+        status = {'normalBracket': result[0]['poolOpen'], 'sweet16Bracket': result[0]['sweetSixteenPoolOpen']}
         
-        if pool_type == 'normalBracket':
-            status = result[0]['poolOpen']
+        if bracket_type is None:
+            return status
         else:
-            status = result[0]['sweetSixteenPoolOpen']
-        
-        return status
-    
+            return status[bracket_type]
+
     def get_standings(self, **kwargs):
         '''Get standings data for the pool'''
 
@@ -112,7 +114,6 @@ class Ncaa(object):
         self.debug(standings_data[0])
         self.debug(remaining_teams_data[0])
         
-        
         # figure out the best possible score remaining for each user
         for data in remaining_teams_data:
             token = data['userDisplayToken']
@@ -129,6 +130,98 @@ class Ncaa(object):
                 standings_data[index]['bestPossibleScore'] -= data['gameRoundScore']
 
         return standings_data
+
+    def get_user_bracket_for_display(self, **kwargs):
+        '''Get standings data for the pool'''
+
+        user_token = kwargs['user_token']
+        pool_name = self.get_pool_name()
+        pool_status = self.check_pool_status()
+        
+        self.debug(f'Getting data for {user_token}')
+
+        # calculate best possible score for each user
+        user_data = []
+        
+        # if 
+        if 1 == 1:
+            user_picks = connect_mysql.query(proc='UserDisplayBracket', params=[user_token])
+
+            # set syling for incorrect picks
+            incorrect_picks = {}
+            for pick in user_picks:
+                team_id = pick['teamID']
+
+                if pick['pickCSS'] == 'incorrectPick':
+                    incorrect_picks[team_id] = 1;
+
+                if not pick['pickCSS'] and incorrect_picks[team_id]:
+                    pick['pickCSS'] = 'incorrectPick'
+
+        #MasterBracket
+        
+        #userPickedTeamData = rows[0];
+        
+        team_data = connect_mysql.query(proc='GetBaseTeams', params=[])
+        #GetBaseTeams
+        
+        #GetUserByDisplayToken
+        user_info = connect_mysql.query(proc='GetUserByDisplayToken', params=[user_token])
+        
+        #
+        bracket_display_name = self.set_user_bracket_name(user_info[0]['userName'])
+        self.debug(bracket_display_name)
+ 
+        return {
+            'team_data': team_data, 
+            'user_picks': user_picks, 
+            'user_info': user_info, 
+            'bracket_display_name': bracket_display_name
+        }
+
+    def set_user_edit_token(self, **kwargs):
+        '''
+        Creates a token string to be encoded from the time, pool name, user email, username, bracket type and display type.
+        This combo ensures a unique token for every user
+        '''
+        
+        token = [time.time(), session['pool_name'], kwargs[email_address], kwargs['username'], kwargs['bracket_type'], 'edit'];
+        return set_token(token.join('.'))
+    
+    def set_user_display_token(self, **kwargs):
+        '''
+        Creates a token string to be encoded from the time, pool name, user email, username, bracket type and display type.
+        This combo ensures a unique token for every user
+        '''
+        
+        token = [time.time(), session['pool_name'], kwargs[email_address], kwargs['username'], kwargs['bracket_type'], 'display'];
+        return set_token(token.join('.'))
+    
+    def set_token(self, string):
+        '''Creates an md5 hash from string parameter'''
+        
+        h = hashlib.new('ripemd160')
+        h.update(string)
+        return h.hexdigest()
+    
+    def set_user_bracket_name(self, username):
+        '''
+        Fixes the usernmame for display.
+        
+        If the username doesnt end in an 's' append one for the bracket name
+        ex: Jim -> Jim's
+        ex: Balls stays Balls'
+        '''
+        
+        # get rid of spaces at the end of the user name and append '
+        username = re.sub(r'\s+$', '', username)
+        username += "'"
+
+        # append 's' at the end of the string if the string doesnt already end with "'s"
+        if not re.search(r"s'$", username):
+            username += 's'
+
+        return username
     
     def debug(self, *args, **kwargs):
         '''Helper method to print to console'''

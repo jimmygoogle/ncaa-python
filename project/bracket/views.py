@@ -23,26 +23,24 @@ def user_bracket(user_token):
         return "update user bracket %s %d times" % (user_token, 3) 
         #return "update user bracket %s" % user_token 
     else:
-        
         data = ncaa.get_user_bracket_for_display(user_token=user_token)
+        
+        # add logic for setting display of user's winning pick
+        data_team = ''
+        data_pick = ''
 
+        if 'pickCSS' in data['user_picks'][62]:
+            data_pick = data['user_picks'][62]['pickCSS']
+            data_team = str(data['user_picks'][62]['seedID']) + ' ' + data['user_picks'][62]['teamName']
+
+        # render the bracket
         return render_template('bracket.html',
             pool_name = pool_name,
             year = YEAR,
+            data_pick = data_pick,
+            data_team = data_team,
             user_picks = data['user_picks'],
             team_data = data['team_data'],
             bracket_display_name = data['bracket_display_name']
         )
-        
-           # response = make_response(redirect(url_for('index')))
-           # response.set_cookie('MarchMadnessPoolName', 'xxx', expires=(30 * 24 * 60 * 60 * 1000))
-           # return response
-           
-           #if 'MarchMadnessPoolName' in session
-           #session['MarchMadnessPoolName']
-            
-           # pool_name = request.cookies.get('MarchMadnessPoolName')
-           # if pool_name:
-    
-    # session['MarchMadnessPoolName'] = 'xxxx'
     

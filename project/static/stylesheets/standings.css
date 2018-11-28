@@ -1,6 +1,6 @@
 .standings {
   overflow-x: auto;
-  width: 90%;
+  width: 50%;
   font-size: 1.2em;
   margin: 0 auto;
 }
@@ -9,7 +9,7 @@
     margin: auto;
     border-collapse: collapse;
     border-spacing: 0;
-    width: 90%;
+    width: 100%;
     border: 1px solid #000;
 }
 
@@ -29,6 +29,10 @@
     border: none;
     text-align: left;
     padding: 15px;
+}
+
+.standings .standings_name {
+  padding-left: 35px;
 }
 
 .standings .standings_score {

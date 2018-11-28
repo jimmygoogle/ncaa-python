@@ -23,4 +23,8 @@ def show_standings(sweet_sixteen=None):
     
     ncaa.debug(f"we have games left? {has_games_left}")
     
-    return render_template('standings.html', year=YEAR, data=data, has_games_left=has_games_left)
+    return render_template('standings.html',
+        year = YEAR,
+        data = data, 
+        has_games_left = has_games_left
+    )

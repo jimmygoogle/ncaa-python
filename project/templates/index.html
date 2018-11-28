@@ -26,15 +26,14 @@
   <body>
     <header>
       <nav id='cssmenu'>
-        <div id='head-mobile'>
+        <div id='head-mobile'></div>
         <div class='button'></div>
         <ul>
           <li><a href="/">HOME</a></li>
           <li><a href="/standings">STANDINGS</a></li>
-          <li><a href="/standings/sweet16">SWEET 16 STANDINGS</a></li>
+          <li><a href="/standings/sweet_sixteen">SWEET 16 STANDINGS</a></li>
           <!-- <li><a href="/standings/archives">STANDINGS archives</a></li> -->
         </ul>
-        </div>
       </nav>
     </header>
     <header class="hero">
@@ -44,7 +43,7 @@
         <p class="year"><i class="fa fa-star"></i>{{ year }}<i class="fa fa-star"></i></p>
       </div>
     </header>
-    
+
     <div>
       {% block content %}{% endblock %}
     </div>

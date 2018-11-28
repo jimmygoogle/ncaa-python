@@ -44,7 +44,10 @@ class Ncaa(object):
         '''Get current pool status'''
         
         result = connect_mysql.query(proc='PoolStatus')
-        status = {'normalBracket': result[0]['poolOpen'], 'sweet16Bracket': result[0]['sweetSixteenPoolOpen']}
+        status = {
+            'normalBracket': result[0]['poolOpen'],
+            'sweetSixteenBracket': result[0]['sweetSixteenPoolOpen']
+        }
         
         if bracket_type is None:
             return status
@@ -57,7 +60,7 @@ class Ncaa(object):
         bracket_type = kwargs['bracket_type'] + 'Bracket'        
         pool_name = self.get_pool_name()
         pool_status = self.check_pool_status(bracket_type)
-        
+
         # set the round id to calculate the best possible score from
         round_id = 3
         if kwargs['bracket_type'] == 'normal':

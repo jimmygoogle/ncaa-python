@@ -25,7 +25,14 @@ def user_bracket(user_token):
     else:
         
         data = ncaa.get_user_bracket_for_display(user_token=user_token)
-        return render_template('bracket.html', year=YEAR, user_picks=data['user_picks'], team_data=data['team_data'], bracket_display_name=data['bracket_display_name'])
+
+        return render_template('bracket.html',
+            pool_name = pool_name,
+            year = YEAR,
+            user_picks = data['user_picks'],
+            team_data = data['team_data'],
+            bracket_display_name = data['bracket_display_name']
+        )
         
            # response = make_response(redirect(url_for('index')))
            # response.set_cookie('MarchMadnessPoolName', 'xxx', expires=(30 * 24 * 60 * 60 * 1000))

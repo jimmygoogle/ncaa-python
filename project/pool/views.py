@@ -7,12 +7,33 @@ pool_blueprint = Blueprint('pool', __name__, template_folder='templates')
 
 @pool_blueprint.route('/')
 def index():
-    '''Show index page'''
-    if 1 == 2:
-        return 'should redirect' 
-        ##url_for('show_pool_form')
+    '''Show master bracket (if pool is closed) or show a bracket for user submission (if pool is open)'''
+    
+    pool_name = ncaa.get_pool_name()
+
+    if pool_name is None:
+        return redirect(url_for('pool.show_pool_form'))
     else:
-        return 'show something'
+        # get bracket page
+        pool_status = ncaa.check_pool_status()
+        
+        # bracket is open for submissions
+        if pool_status['normalBracket'] or pool_status['sweetSixteenBracket']:
+            pass
+        
+        # show the master bracket
+        else:
+            data = ncaa.get_master_bracket_data()
+
+            # render the bracket
+            return render_template('bracket.html',
+                pool_name = pool_name,
+                year = YEAR,
+                data_team = '',
+                data_pick = '',
+                user_picks = data['user_picks'],
+                team_data = data['team_data']
+            )
 
 ## routes for pool setup/switching
 @pool_blueprint.route('/pool', methods=['GET', 'POST'])

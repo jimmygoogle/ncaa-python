@@ -15,15 +15,15 @@ def user_bracket(user_token):
     if pool_name is None:
         return redirect(url_for('pool.show_pool_form'))
 
-    ncaa.debug(request.method)
-    #str(user_token)
+    # user is submitting bracket data
     if request.method == 'POST':
         #request.values['xxx']
         #request.form['xxx']
         return "update user bracket %s %d times" % (user_token, 3) 
-        #return "update user bracket %s" % user_token 
+
+    # show bracket to user
     else:
-        data = ncaa.get_user_bracket_for_display(user_token=user_token)
+        data = ncaa.get_user_bracket_for_display(user_token = user_token, is_master = None)
         
         # add logic for setting display of user's winning pick
         data_team = ''

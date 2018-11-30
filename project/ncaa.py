@@ -137,6 +137,7 @@ class Ncaa(object):
     def get_user_bracket_for_display(self, **kwargs):
         '''Get standings data for the pool'''
 
+        is_master = kwargs['is_master']
         user_token = kwargs['user_token']
         pool_name = self.get_pool_name()
         pool_status = self.check_pool_status()
@@ -147,7 +148,7 @@ class Ncaa(object):
         user_data = []
         
         # if 
-        if 1 == 1:
+        if user_token is not None:
             user_picks = connect_mysql.query(proc='UserDisplayBracket', params=[user_token])
 
             # set syling for incorrect picks
@@ -161,19 +162,23 @@ class Ncaa(object):
                 if not pick['pickCSS'] and incorrect_picks[team_id]:
                     pick['pickCSS'] = 'incorrectPick'
 
-        #MasterBracket
-        
-        #userPickedTeamData = rows[0];
-        
+        else:
+            user_picks = connect_mysql.query(proc='MasterBracket', params=[])
+
+            # remove formatting
+            for pick in user_picks:
+                pick['pickCSS'] = ''
+
+        # get the base teams (top 64)
         team_data = connect_mysql.query(proc='GetBaseTeams', params=[])
-        #GetBaseTeams
-        
-        #GetUserByDisplayToken
-        user_info = connect_mysql.query(proc='GetUserByDisplayToken', params=[user_token])
-        
-        #
-        bracket_display_name = self.set_user_bracket_name(user_info[0]['userName'])
-        self.debug(bracket_display_name)
+
+        # if we have a real user then get some additional info
+        if user_token:
+            user_info = connect_mysql.query(proc='GetUserByDisplayToken', params=[user_token])
+            bracket_display_name = self.set_user_bracket_name(user_info[0]['userName'])
+        else:
+            user_info = {}
+            bracket_display_name = ''
  
         return {
             'team_data': team_data, 
@@ -182,6 +187,12 @@ class Ncaa(object):
             'bracket_display_name': bracket_display_name
         }
 
+    def get_master_bracket_data(self):
+        '''Get master bracket data for display'''
+        
+        data = self.get_user_bracket_for_display(is_master = 1, user_token = None)
+        return data
+        
     def set_user_edit_token(self, **kwargs):
         '''
         Creates a token string to be encoded from the time, pool name, user email, username, bracket type and display type.

@@ -20,7 +20,6 @@
 
 .standings th {
     border: none;
-    text-align: left;
     padding: 10px;
     text-align: center;
 }
@@ -32,7 +31,7 @@
 }
 
 .standings .standings_name {
-  padding-left: 35px;
+  padding-left: 25px;
 }
 
 .standings .standings_score {
@@ -40,7 +39,7 @@
 }
 
 .standings .standings_champ {
-  text-align: center;
+  padding-left: 80px;
 }
 
 .standings tr:nth-child(even){
@@ -63,6 +62,7 @@
   }
   .standings th {
     font-size: 1.1em;
+    text-align: left;
   }
   .standings td {
     font-size: .9em;

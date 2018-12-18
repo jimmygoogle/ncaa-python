@@ -1,16 +1,16 @@
 <div class='bracket_details'>
   <div>
-    <img src='/images/ncaa.jpg' alt='March Madness' class='ncaa-image'/> />
+    <img src='{{url_for('static', filename='images/ncaa.jpg')}}' alt='March Madness' class='ncaa-image'/>
     <br/>
     <hr class='details' />
   </div>
   <div id=message></div>
   <div id='error' class='error'></div>
   
-  <input type='email' name='email' id='email' placeholder='Email address' value=userData.emailAddress/>
-  <input type='text' name='username' id='username' placeholder='Bracket Name' value=userData.userName/>
-  <input type='text' name='firstname' id='firstname' placeholder='First name (optional/>' value=userData.realName/>
-  <input type='tel' name='tieBreaker' id='tieBreaker' placeholder='Total pts of final game' value=userData.tieBreakerPoints/>
+  <input type='email' name='email' id='email' placeholder='Email address' value="{{user_data['emailAddress']}}"/>
+  <input type='text' name='username' id='username' placeholder='Bracket Name' value="{{user_data['userName']}}"/>
+  <input type='text' name='firstname' id='firstname' placeholder='First name (optional)' value="{{user_data['realName']}}"/>
+  <input type='tel' name='tieBreaker' id='tieBreaker' placeholder='Total pts of final game' value="{{user_data['tieBreakerPoints']}}"/>
   <input type='hidden' name='bracketType' id='bracketType' value=bracketType/>
   <input type='hidden' name='editType' id='editType' value=editType/>
   <input type='submit' value='Submit' id='submit' onclick='javascript:validateUser<input />'/>

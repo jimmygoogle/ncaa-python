@@ -1,16 +1,20 @@
 import mysql.connector, sys
-
+from mysql.connector import Error
+from mysql.connector.connection import MySQLConnection
+from mysql.connector import pooling
 from collections import OrderedDict
 
 class MysqlPython(object):
 
-    def __init__(self, host='localhost', user='root', password='', database='MarchMadness'):
+    def __init__(self, host='localhost', user='root', password='', database='MarchMadness', pool_name='ncaa_pool', pool_size=32):
         self.__host = host
         self.__user = user
         self.__password = password
         self.__database = database
+        self.__database_pool_name = pool_name
+        self.__pool_size = pool_size
         self.errors = []
-        
+
         dbconfig = {
           'host': self.__host,
           'database': self.__database,
@@ -19,10 +23,15 @@ class MysqlPython(object):
         }
         
         try:
-            self.__connection = mysql.connector.connect(pool_name = 'ncaa_pool', pool_size = 32, **dbconfig)
+            self.__connection_pool = mysql.connector.pooling.MySQLConnectionPool(
+                pool_name = self.__database_pool_name,
+                pool_size = self.__pool_size, 
+                pool_reset_session = True, 
+                **dbconfig
+            )
 
-        except mysql.connector.Error as error:
-            print(f"Could not connect {error}")
+        except Error as error:
+            print(f"Could not connect ... {error}")
             self.errors.append(error)
 
     def _execute_procedure(self, **kwargs):
@@ -42,7 +51,9 @@ class MysqlPython(object):
             if 'params' not in kwargs:
                 kwargs['params'] = []
 
-            cursor = self.__connection.cursor(dictionary=True)
+            connection = self.__connection_pool.get_connection()
+            cursor = connection.cursor(dictionary=True)
+
             cursor.callproc(kwargs['proc'], kwargs['params'])
 
             # return result set as an array of dictionaries
@@ -53,7 +64,11 @@ class MysqlPython(object):
         except mysql.connector.Error as error:
             print(f"Failed to execute stored procedure: {error}")
             self.errors.append(error)
-        
+
+        finally:
+            cursor.close()
+            connection.close()
+
         return results
 
     def _execute_write_procedure(self, **kwargs):
@@ -70,18 +85,25 @@ class MysqlPython(object):
 
         last_insert_id = 0
         try:
-            cursor = self.__connection.cursor(dictionary=True)
-
             if 'params' not in kwargs:
                 kwargs['params'] = []
 
-            # execute write and return last insert id
-            cursor.callproc(kwargs['proc'], kwargs['params'])
-            last_insert_id = cursor.lastrowid
+            connection = self.__connection_pool.get_connection()
+            cursor = connection.cursor(dictionary=True)
 
-        except mysql.connector.Error as error:
+            # execute write, commit and return last insert id
+            cursor.callproc(kwargs['proc'], kwargs['params'])
+            connection.commit()
+
+            last_insert_id = cursor.lastrowid
+        
+        except Error as error:
             print(f"Failed to execute stored procedure: {error}")
             self.errors.append(error)
+
+        finally:
+            cursor.close()
+            connection.close()
 
         return last_insert_id
         
@@ -92,8 +114,7 @@ class MysqlPython(object):
 
     def update(self, **kwargs):
         '''Wrapper for _execute_write_procedure used for updating data'''
-
-        return self._execute_procedure(**kwargs)
+        return self._execute_write_procedure(**kwargs)
 
     def insert(self, **kwargs):
         '''Wrapper for _execute_write_procedure used for inserting data'''
@@ -102,5 +123,5 @@ class MysqlPython(object):
 
     def close(self):
         '''Close DB connection'''
-
-        self.__connection.close()
+        pass
+        #self.__connection.close()

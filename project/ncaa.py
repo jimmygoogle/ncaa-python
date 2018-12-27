@@ -7,18 +7,20 @@ import time
 import re
 from collections import defaultdict
 
-connect_mysql = MysqlPython()
+
 
 class Ncaa(object):
     
     def __init__(self):
         self.pool_name = ''
+        
+        self.db = MysqlPython()
     
     def set_pool_name(self, pool_name):
         '''Validate pool name and then set it for use in the application'''
 
         self.debug(f"inside set_pool_name with {pool_name}")
-        result = connect_mysql.query(proc='PoolInfo', params=[pool_name])
+        result = self.db.query(proc='PoolInfo', params=[pool_name])
         self.debug(result)
         status = 0;
         # we found our pool so set a cookie
@@ -43,7 +45,8 @@ class Ncaa(object):
     def check_pool_status(self, bracket_type=None):
         '''Get current pool status'''
         
-        result = connect_mysql.query(proc='PoolStatus')
+        result = self.db.query(proc='PoolStatus')
+        self.debug(result)
         status = {
             'normalBracket': result[0]['poolOpen'],
             'sweetSixteenBracket': result[0]['sweetSixteenPoolOpen']
@@ -67,16 +70,16 @@ class Ncaa(object):
             round_id = 1
         
         # calculate best possible score for each user 
-        best_possible_data = connect_mysql.query(proc='BestPossibleScore', params=[round_id])
+        best_possible_data = self.db.query(proc='BestPossibleScore', params=[round_id])
         
         # get the remaining games
-        remaining_teams_data = connect_mysql.query(proc='RemainingTeams', params=[pool_name, bracket_type])   
+        remaining_teams_data = self.db.query(proc='RemainingTeams', params=[pool_name, bracket_type])   
         
         # fetch the user standings
-        standings_data = connect_mysql.query(proc='Standings', params=[pool_status, pool_name, bracket_type])
+        standings_data = self.db.query(proc='Standings', params=[pool_status, pool_name, bracket_type])
         
         # get number of games played
-        games_left = connect_mysql.query(proc='AreThereGamesLeft', params=[])
+        games_left = self.db.query(proc='AreThereGamesLeft', params=[])
 
         data = self.calculate_best_possible_scores(standings_data=standings_data, best_possible_data=best_possible_data, remaining_teams_data=remaining_teams_data)
         
@@ -149,7 +152,7 @@ class Ncaa(object):
         
         # if 
         if user_token is not None:
-            user_picks = connect_mysql.query(proc='UserDisplayBracket', params=[user_token])
+            user_picks = self.db.query(proc='UserDisplayBracket', params=[user_token])
 
             # set syling for incorrect picks
             incorrect_picks = {}
@@ -163,18 +166,18 @@ class Ncaa(object):
                     pick['pickCSS'] = 'incorrectPick'
 
         else:
-            user_picks = connect_mysql.query(proc='MasterBracket', params=[])
+            user_picks = self.db.query(proc='MasterBracket', params=[])
 
             # remove formatting
             for pick in user_picks:
                 pick['pickCSS'] = ''
 
         # get the base teams (top 64)
-        team_data = connect_mysql.query(proc='GetBaseTeams', params=[])
+        team_data = self.get_base_teams()
 
         # if we have a real user then get some additional info
         if user_token:
-            user_info = connect_mysql.query(proc='GetUserByDisplayToken', params=[user_token])
+            user_info = self.db.query(proc='GetUserByDisplayToken', params=[user_token])
             bracket_display_name = self.set_user_bracket_name(user_info[0]['userName'])
         else:
             user_info = {}
@@ -186,7 +189,31 @@ class Ncaa(object):
             'user_info': user_info, 
             'bracket_display_name': bracket_display_name
         }
+       
+    def get_base_teams(self):
+        '''Get base teams data for display'''
+        
+        return self.db.query(proc='GetBaseTeams', params=[])
 
+    def get_empty_picks(self):
+        '''
+        Set empty user picks data for an empty bracket
+        TODO: Fix this as it is really hacky
+        '''
+        
+        empty_data = []
+        for index in range(63):
+            data = {
+                'teamID': '',
+                'seedID': '',
+                'teamName': '',
+                'pickCSS': '',
+            }
+
+            empty_data.append(data)
+        
+        return empty_data
+    
     def get_master_bracket_data(self):
         '''Get master bracket data for display'''
         

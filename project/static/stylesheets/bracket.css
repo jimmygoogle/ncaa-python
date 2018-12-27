@@ -298,6 +298,10 @@ li {
   width: 100%;
 }
 
+.hidden {
+  display: none;
+}
+
 @media screen and (min-width: 640px) {
   .champion1 {
     margin: 0;

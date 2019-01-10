@@ -1,4 +1,4 @@
-<!doctype html>
+<html>
   <head>
     <title>{{ year }} March Madness {% block title %}{% endblock %}</title>
     <meta charset="utf-8">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/bracket.css')}}">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     
-    {% if gui_js_only %}
+    {% if is_open %}
     <script src="{{url_for('static', filename='javascripts/ncaa.js')}}"> type="text/javascript"></script>
     {% endif %}
     <script src="{{url_for('static', filename='javascripts/gui.js')}}"> type="text/javascript"></script>
@@ -49,3 +49,4 @@
     </div>
 
   </body>
+</html>

@@ -2,6 +2,13 @@
 
 {% block content %}
 <section id='bracket'>
+  <!-- show buttons to allow users to autofill their bracket -->
+  {% if show_user_bracket_form %}
+    <div id='auto_picks' class='auto-picks'>
+      {% include "auto_picks.html" %}
+    </div>
+  {% endif %}
+
   <div class='container'>
 
     {% if show_payment_form %}
@@ -11,7 +18,7 @@
     {% if bracket_display_name %}
       <div class='userNameDisplay'>{{bracket_display_name}} Bracket</div>
     {% endif %}
-
+    
     <div class='split split-one top'>
       <div class='round round-one current'>
         <!-- LEFT TOP 16 START -->
@@ -251,7 +258,7 @@
     </div>
     
     <!-- show form to submit pool data -->
-    {% if show_user_bracket_form1 %}
+    {% if show_user_bracket_form %}
       <div id='userBracketInfoForm'>
         {% include "additional_info.html" %}
       </div>

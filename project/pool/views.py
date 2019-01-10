@@ -14,12 +14,34 @@ def index():
     if pool_name is None:
         return redirect(url_for('pool.show_pool_form'))
     else:
-        # get bracket page
         pool_status = ncaa.check_pool_status()
         
-        # bracket is open for submissions
+        # bracket is open for submissions so get bracket page
         if pool_status['normalBracket'] or pool_status['sweetSixteenBracket']:
-            pass
+            
+            # set the bracket type
+            bracket_type = 'normalBracket'
+            
+            if pool_status['sweetSixteenBracket'] == 1:
+                bracket_type = 'sweetSixteenBracket'
+                
+            # set the bracket edit type
+            edit_type = 'add'
+
+            # render the bracket
+            return render_template('bracket.html',
+                pool_name = pool_name,
+                year = YEAR,
+                data_team = '',
+                data_pick = '',
+                user_data = {},
+                user_picks = ncaa.get_empty_picks(),
+                team_data = ncaa.get_base_teams(),
+                show_user_bracket_form = 1,
+                is_open = 1,
+                edit_type = edit_type,
+                bracket_type = bracket_type
+            )
         
         # show the master bracket
         else:
@@ -53,7 +75,10 @@ def show_pool_form(pool_name=None):
         ncaa.set_pool_name(pool_name)
         return redirect(url_for('pool.index'))
     else:
-        return render_template('pool.html', year=YEAR, gui_js_only=1)
+        return render_template('pool.html', 
+            year = YEAR,
+            is_open = 0
+        )
 
 ## set demo mode (portfolio)
 @pool_blueprint.route('/demo')

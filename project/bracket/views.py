@@ -9,6 +9,8 @@ bracket_blueprint = Blueprint('bracket', __name__, template_folder='templates')
 @bracket_blueprint.route('/bracket/<string:user_token>/')
 #@bracket_blueprint.route('/bracket/<string:user_token>/e', methods=['GET', 'POST'])
 def user_bracket(user_token):
+ 
+    ''' Show the user bracket form ''' 
 
     pool_name = ncaa.get_pool_name()
 
@@ -43,4 +45,6 @@ def user_bracket(user_token):
             team_data = data['team_data'],
             bracket_display_name = data['bracket_display_name']
         )
-    
+
+def show_open_bracket():
+    ''' WIP ''' 

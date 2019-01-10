@@ -26,5 +26,6 @@ def show_standings(sweet_sixteen=None):
     return render_template('standings.html',
         year = YEAR,
         data = data, 
-        has_games_left = has_games_left
+        has_games_left = has_games_left,
+        pool_name = pool_name,
     )

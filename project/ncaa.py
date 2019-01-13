@@ -1,13 +1,17 @@
 from project.mysql_python import MysqlPython
-from flask import request
-from project import session, app
+from flask import request, render_template
+from project import session, app, YEAR
+from collections import defaultdict
+import asyncio
 import sys
 import hashlib
 import time
 import re
-from collections import defaultdict
-
-
+import ast
+import smtplib
+import ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 class Ncaa(object):
     
@@ -48,8 +52,8 @@ class Ncaa(object):
         result = self.db.query(proc='PoolStatus')
         self.debug(result)
         status = {
-            'normalBracket': result[0]['poolOpen'],
-            'sweetSixteenBracket': result[0]['sweetSixteenPoolOpen']
+            'normalBracket': {'is_open': result[0]['poolOpen'], 'closing_date_time': result[0]['poolCloseDateTime']},
+            'sweetSixteenBracket': {'is_open': result[0]['sweetSixteenPoolOpen'], 'closing_date_time': result[0]['sweetSixteenCloseDateTime'] }
         }
         
         if bracket_type is None:
@@ -76,7 +80,7 @@ class Ncaa(object):
         remaining_teams_data = self.db.query(proc='RemainingTeams', params=[pool_name, bracket_type])   
         
         # fetch the user standings
-        standings_data = self.db.query(proc='Standings', params=[pool_status, pool_name, bracket_type])
+        standings_data = self.db.query(proc='Standings', params=[pool_status['is_open'], pool_name, bracket_type])
         
         # get number of games played
         games_left = self.db.query(proc='AreThereGamesLeft', params=[])
@@ -226,8 +230,8 @@ class Ncaa(object):
         This combo ensures a unique token for every user
         '''
         
-        token = [time.time(), session['pool_name'], kwargs[email_address], kwargs['username'], kwargs['bracket_type'], 'edit'];
-        return set_token(token.join('.'))
+        token = [str(time.time()), session['pool_name'], kwargs['email_address'], kwargs['username'], kwargs['bracket_type_name'], 'edit'];
+        return self.set_token('.'.join(token))
     
     def set_user_display_token(self, **kwargs):
         '''
@@ -235,14 +239,14 @@ class Ncaa(object):
         This combo ensures a unique token for every user
         '''
         
-        token = [time.time(), session['pool_name'], kwargs[email_address], kwargs['username'], kwargs['bracket_type'], 'display'];
-        return set_token(token.join('.'))
+        token = [str(time.time()), session['pool_name'], kwargs['email_address'], kwargs['username'], kwargs['bracket_type_name'], 'display'];
+        return self.set_token('.'.join(token))
     
     def set_token(self, string):
         '''Creates an md5 hash from string parameter'''
-        
+
         h = hashlib.new('ripemd160')
-        h.update(string)
+        h.update(string.encode('utf-8'))
         return h.hexdigest()
     
     def set_user_bracket_name(self, username):
@@ -263,7 +267,151 @@ class Ncaa(object):
             username += 's'
 
         return username
+
+    async def process_user_bracket(self, **kwargs):
+        '''Process the data the user submitted and add it to the DB'''
+        
+        # the speed was same as when it was synchronously so i decided to try something different
+        tasks = [self.x(), self.send_confirmation_email()]
+        await asyncio.gather(*tasks)
+
+        # send confirmation email
+        #self.send_confirmation_email()    
+        pass
+
+    async def x(self):
+        '''xxx'''
+
+        bracket_type_name = request.values['bracket_type_name']
+        email_address = request.values['username']
+        username = request.values['bracket_type_name']
+        first_name = request.values['first_name']
+        tie_breaker_points = request.values['tie_breaker_points']
+        user_picks = request.values['user_picks']
+        edit_type = request.values['edit_type']
+
+        # add/edit user data
+        if edit_type == 'add':
+            user_id = self.insert_new_user()
+        else:
+           self.update_user() 
+
+        # convert the picks string to a dictionary
+        user_picks_dict = ast.literal_eval(user_picks)
+        self.debug(user_picks_dict)
     
+        # loop through the game data and insert it
+        for game_id in user_picks_dict:
+            team_id = user_picks_dict[game_id]
+
+            # insert user's game' picks
+            self.db.insert(proc='InsertBracketData', params=[
+                user_id,
+                team_id,
+                game_id
+            ])
+    
+    def insert_new_user(self, **kwargs):
+        '''Insert new user to DB'''
+        
+        bracket_type_name = request.values['bracket_type_name']
+        email_address = request.values['email_address']
+        username = request.values['username']
+        first_name = request.values['first_name']
+        tie_breaker_points = request.values['tie_breaker_points']
+
+        # setup user tokens
+        display_token = self.set_user_display_token(
+            email_address = email_address,
+            username = username,
+            bracket_type_name = bracket_type_name
+        )
+
+        edit_token = self.set_user_edit_token(
+            email_address = email_address,
+            username = username,
+            bracket_type_name = bracket_type_name
+        )
+
+        pool_name = self.get_pool_name()
+
+        user_id = self.db.insert(proc='InsertUser', params=[
+            pool_name,
+            username,
+            email_address,
+            tie_breaker_points,
+            first_name,
+            edit_token, 
+            display_token,
+            bracket_type_name
+        ])
+        
+        return user_id
+        
+    def update_user(self, **kwargs):
+        '''Update the user information based on their edit token value'''
+      
+        edit_token = request.values['edit_token']
+        bracket_type_name = request.values['bracket_type_name']
+        email_address = request.values['email_address']
+        username = request.values['username']
+        first_name = request.values['first_name']
+        tie_breaker_points = request.values['tie_breaker_points']
+        
+        user_id = self.db.update(proc='UpdateUser', params=[
+            edit_token,
+            username,
+            email_address,
+            tie_breaker_points,
+            first_name
+          ])
+
+        # clear out the user's picks
+        self.db.insert(proc='ResetBracket', params=[user_id])
+        
+    async def send_confirmation_email(self, **kwargs):
+        '''Send the user a confirmation email with a link to edit their picks'''
+
+        sender_email = app.config['MAIL_USER']
+        receiver_email = "jim@jimandmeg.com"
+        #request.values['email_address']
+        password = app.config['MAIL_PASS']
+        
+        message = MIMEMultipart("alternative")
+
+        message["Subject"] = '\U0001F3C0' + f" Welcome to the {str(YEAR)} {self.get_pool_name().upper()} March Madness Pool"
+        message["From"] = app.config['MAIL_FROM']
+        message["To"] = receiver_email
+
+        content = MIMEText(self.get_email_template(), 'html')
+        message.attach(content)
+        
+        # create gmail connection and send
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context = context) as server:
+            server.login(sender_email, password)
+            server.sendmail(
+                sender_email, receiver_email, message.as_string()
+            )
+
+        return 1
+    
+    def get_email_template(self):
+        '''Build email template'''
+
+        pool_status = self.check_pool_status()
+        bracket_type_name = request.values['bracket_type_name']
+        self.debug('closing_date_time is ' + pool_status[bracket_type_name]['closing_date_time'])
+
+        return render_template('email.html',
+            pool_name = self.get_pool_name().upper(),
+            year = YEAR,
+            username = request.values['username'],
+            email = app.config['ERROR_EMAIL'],
+            closing_date_time = pool_status[bracket_type_name]['closing_date_time'],
+            edit_url = request.url_root
+        )
+
     def debug(self, *args, **kwargs):
         '''Helper method to print to console'''
 

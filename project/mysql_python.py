@@ -31,7 +31,7 @@ class MysqlPython(object):
             )
 
         except Error as error:
-            print(f"Could not connect ... {error}")
+            self.debug(f"Could not connect ... {error}")
             self.errors.append(error)
 
     def _execute_procedure(self, **kwargs):
@@ -62,7 +62,7 @@ class MysqlPython(object):
                     results.append(dict(zip(result.column_names,row)))
 
         except mysql.connector.Error as error:
-            print(f"Failed to execute stored procedure: {error}")
+            self.debug(f"Failed to execute stored procedure: {error}")
             self.errors.append(error)
 
         finally:
@@ -93,12 +93,16 @@ class MysqlPython(object):
 
             # execute write, commit and return last insert id
             cursor.callproc(kwargs['proc'], kwargs['params'])
+
+            for result in cursor.stored_results():
+                data = result.fetchall()
+                last_insert_id = data[0][0]
+                self.debug(f"last insert id is {last_insert_id}")
+
             connection.commit()
 
-            last_insert_id = cursor.lastrowid
-        
         except Error as error:
-            print(f"Failed to execute stored procedure: {error}")
+            self.debug(f"Failed to execute stored procedure: {error}")
             self.errors.append(error)
 
         finally:
@@ -125,3 +129,8 @@ class MysqlPython(object):
         '''Close DB connection'''
         pass
         #self.__connection.close()
+
+    def debug(self, *args, **kwargs):
+        '''Helper method to print to console'''
+
+        print(*args, file=sys.stderr, **kwargs)

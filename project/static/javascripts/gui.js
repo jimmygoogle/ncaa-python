@@ -14,6 +14,9 @@ function setFinalGame() {
   if(!winner) {
     return false;
   }
+  
+  // show hidden bracket details form
+  $('.bracket_details').removeClass('hidden');
 
   $('.game63').find('li').each(function(){
     const teamID = $(this).attr('data-team-id');

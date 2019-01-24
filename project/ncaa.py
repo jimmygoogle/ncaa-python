@@ -2,7 +2,6 @@ from project.mysql_python import MysqlPython
 from flask import request, render_template
 from project import session, app, YEAR
 from collections import defaultdict
-import asyncio
 import sys
 import hashlib
 import time
@@ -17,13 +16,13 @@ class Ncaa(object):
     
     def __init__(self):
         self.pool_name = ''
+        self.user_edit_token = ''
         
         self.db = MysqlPython()
     
     def set_pool_name(self, pool_name):
         '''Validate pool name and then set it for use in the application'''
 
-        self.debug(f"inside set_pool_name with {pool_name}")
         result = self.db.query(proc='PoolInfo', params=[pool_name])
         self.debug(result)
         status = 0;
@@ -113,6 +112,7 @@ class Ncaa(object):
         self.debug(f"adjusted score is {adjusted_score}")
         self.debug(f"best possible score is {best_possible_score}")
 
+        self.debug(standings_data[0])
         for data in standings_data:
             token = data['userDisplayToken']
             standings_lookup[token] = array_index
@@ -120,16 +120,13 @@ class Ncaa(object):
             data['bestPossibleScore'] = adjusted_score
 
             array_index += 1
-        
-        self.debug(standings_data[0])
-        self.debug(remaining_teams_data[0])
-        
+
         # figure out the best possible score remaining for each user
         for data in remaining_teams_data:
             token = data['userDisplayToken']
             team_name = data['teamName']
             index = standings_lookup[token]
-    
+
             # user pick is wrong so set the wrong team so we can follow it to the final four
             if data['userPick'] == 'incorrectPick':
                 incorrect_picks[token][team_name] = 1;     
@@ -142,8 +139,9 @@ class Ncaa(object):
         return standings_data
 
     def get_user_bracket_for_display(self, **kwargs):
-        '''Get standings data for the pool'''
+        '''Get user picks and information so we can display their bracket'''
 
+        action = kwargs['action']
         is_master = kwargs['is_master']
         user_token = kwargs['user_token']
         pool_name = self.get_pool_name()
@@ -181,7 +179,14 @@ class Ncaa(object):
 
         # if we have a real user then get some additional info
         if user_token:
-            user_info = self.db.query(proc='GetUserByDisplayToken', params=[user_token])
+            proc = 'GetUserByDisplayToken'
+            
+            if action == 'edit':
+                proc = 'GetUserByEditToken'
+                
+            self.debug(f"user proc is {proc}")
+
+            user_info = self.db.query(proc=proc, params=[user_token])
             bracket_display_name = self.set_user_bracket_name(user_info[0]['userName'])
         else:
             user_info = {}
@@ -268,19 +273,33 @@ class Ncaa(object):
 
         return username
 
-    async def process_user_bracket(self, **kwargs):
+    def process_user_bracket(self, **kwargs):
         '''Process the data the user submitted and add it to the DB'''
-        
-        # the speed was same as when it was synchronously so i decided to try something different
-        tasks = [self.x(), self.send_confirmation_email()]
-        await asyncio.gather(*tasks)
+
+        #
+        self.process_pick_data(), 
 
         # send confirmation email
-        #self.send_confirmation_email()    
+        if kwargs['action'] == 'add':
+            self.send_confirmation_email()    
+
         pass
 
-    async def x(self):
-        '''xxx'''
+    def update_user_data(self):
+        '''fdd'''
+
+        edit_type = request.values['edit_type']
+
+        # add/edit user data
+        if edit_type == 'add':
+            user_id = self.insert_new_user()
+        else:
+           user_id = self.update_user()
+           
+        return user_id
+
+    def process_pick_data(self):
+        '''Process the user picks and add them to the DV'''
 
         bracket_type_name = request.values['bracket_type_name']
         email_address = request.values['username']
@@ -290,16 +309,14 @@ class Ncaa(object):
         user_picks = request.values['user_picks']
         edit_type = request.values['edit_type']
 
-        # add/edit user data
-        if edit_type == 'add':
-            user_id = self.insert_new_user()
-        else:
-           self.update_user() 
+        # add/edit user data:
+        user_id = self.update_user_data()
+        
+        self.debug(f"Working with user {user_id}")
 
         # convert the picks string to a dictionary
         user_picks_dict = ast.literal_eval(user_picks)
-        self.debug(user_picks_dict)
-    
+
         # loop through the game data and insert it
         for game_id in user_picks_dict:
             team_id = user_picks_dict[game_id]
@@ -332,6 +349,8 @@ class Ncaa(object):
             username = username,
             bracket_type_name = bracket_type_name
         )
+        
+        self.user_edit_token = edit_token
 
         pool_name = self.get_pool_name()
 
@@ -351,7 +370,7 @@ class Ncaa(object):
     def update_user(self, **kwargs):
         '''Update the user information based on their edit token value'''
       
-        edit_token = request.values['edit_token']
+        edit_token = self.user_edit_token
         bracket_type_name = request.values['bracket_type_name']
         email_address = request.values['email_address']
         username = request.values['username']
@@ -368,8 +387,10 @@ class Ncaa(object):
 
         # clear out the user's picks
         self.db.insert(proc='ResetBracket', params=[user_id])
+
+        return user_id
         
-    async def send_confirmation_email(self, **kwargs):
+    def send_confirmation_email(self, **kwargs):
         '''Send the user a confirmation email with a link to edit their picks'''
 
         sender_email = app.config['MAIL_USER']
@@ -401,7 +422,6 @@ class Ncaa(object):
 
         pool_status = self.check_pool_status()
         bracket_type_name = request.values['bracket_type_name']
-        self.debug('closing_date_time is ' + pool_status[bracket_type_name]['closing_date_time'])
 
         return render_template('email.html',
             pool_name = self.get_pool_name().upper(),
@@ -409,7 +429,7 @@ class Ncaa(object):
             username = request.values['username'],
             email = app.config['ERROR_EMAIL'],
             closing_date_time = pool_status[bracket_type_name]['closing_date_time'],
-            edit_url = request.url_root
+            edit_url = request.url_root + 'bracket/' + self.user_edit_token + '?action=e'
         )
 
     def debug(self, *args, **kwargs):

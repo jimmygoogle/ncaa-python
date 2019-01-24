@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 class MysqlPython(object):
 
-    def __init__(self, host='localhost', user='root', password='', database='MarchMadness', pool_name='ncaa_pool', pool_size=32):
+    def __init__(self, host='localhost', user='root', password='', database='MarchMadness', pool_name='ncaa_pool', pool_size=10):
         self.__host = host
         self.__user = user
         self.__password = password

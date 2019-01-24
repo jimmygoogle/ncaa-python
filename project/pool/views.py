@@ -17,7 +17,7 @@ def index():
         pool_status = ncaa.check_pool_status()
         
         # bracket is open for submissions so get bracket page
-        if pool_status['normalBracket'] or pool_status['sweetSixteenBracket']:
+        if pool_status['normalBracket']['is_open'] or pool_status['sweetSixteenBracket']['is_open']:
             
             # set the bracket type
             bracket_type = 'normalBracket'
@@ -34,7 +34,7 @@ def index():
                 year = YEAR,
                 data_team = '',
                 data_pick = '',
-                user_data = {},
+                user_data = [{}],
                 user_picks = ncaa.get_empty_picks(),
                 team_data = ncaa.get_base_teams(),
                 show_user_bracket_form = 1,
@@ -53,8 +53,11 @@ def index():
                 year = YEAR,
                 data_team = '',
                 data_pick = '',
+                user_data = [],
                 user_picks = data['user_picks'],
-                team_data = data['team_data']
+                team_data = data['team_data'],
+                show_user_bracket_form = 1,
+                is_open = 1,
             )
 
 ## routes for pool setup/switching

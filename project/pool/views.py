@@ -1,23 +1,26 @@
-from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect
-from project.ncaa import Ncaa
+from flask import Blueprint, request, render_template, url_for, redirect, jsonify
+from project.ncaa_class import Ncaa
+from project.pool_class import Pool
+from project.bracket_class import Bracket
 from project import YEAR
 
-ncaa = Ncaa()
+pool = Pool()
+bracket = Bracket()
 pool_blueprint = Blueprint('pool', __name__, template_folder='templates')
 
 @pool_blueprint.route('/')
 def index():
     '''Show master bracket (if pool is closed) or show a bracket for user submission (if pool is open)'''
     
-    pool_name = ncaa.get_pool_name()
+    pool_name = pool.get_pool_name()
 
     if pool_name is None:
         return redirect(url_for('pool.show_pool_form'))
     else:
-        pool_status = ncaa.check_pool_status()
+        pool_status = pool.check_pool_status()
         
         # bracket is open for submissions so get bracket page
-        if pool_status['normalBracket']['is_open'] or pool_status['sweetSixteenBracket']['is_open']:
+        if pool_status['any']['is_open']:
             
             # set the bracket type
             bracket_type = 'normalBracket'
@@ -35,8 +38,8 @@ def index():
                 data_team = '',
                 data_pick = '',
                 user_data = [{}],
-                user_picks = ncaa.get_empty_picks(),
-                team_data = ncaa.get_base_teams(),
+                user_picks = bracket.get_empty_picks(),
+                team_data = bracket.get_base_teams(),
                 show_user_bracket_form = 1,
                 is_open = 1,
                 edit_type = edit_type,
@@ -45,7 +48,7 @@ def index():
         
         # show the master bracket
         else:
-            data = ncaa.get_master_bracket_data()
+            data = bracket.get_master_bracket_data()
 
             # render the bracket
             return render_template('bracket.html',
@@ -69,19 +72,20 @@ def show_pool_form(pool_name=None):
     # user posted a pool name to check or switch to
     if request.method == 'POST':
        pool_name = request.form['poolName']
+       result = pool.validate_pool_name(pool_name)
+       
+       return jsonify(result)
 
-    ncaa.debug(f"pool name in show_pool_form is {pool_name}")
-
-    if pool_name is not None and pool_name != '':
-        ncaa.debug(f"yo {pool_name}")
-        ## set session and redirect to main page
-        ncaa.set_pool_name(pool_name)
-        return redirect(url_for('pool.index'))
     else:
-        return render_template('pool.html', 
-            year = YEAR,
-            is_open = 0
-        )
+        if pool_name is not None and pool_name != '':
+            ## set session and redirect to main page
+            pool.set_pool_name(pool_name)
+            return redirect(url_for('pool.index'))
+        else:
+            return render_template('pool.html', 
+                year = YEAR,
+                is_open = 1
+            )
 
 ## set demo mode (portfolio)
 @pool_blueprint.route('/demo')

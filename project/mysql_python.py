@@ -20,6 +20,8 @@ class MysqlPython(object):
           'database': self.__database,
           'user': self.__user,
           'password': self.__password,
+          'charset': 'utf8mb4',
+          'autocommit': True
         }
         
         try:
@@ -97,9 +99,7 @@ class MysqlPython(object):
             for result in cursor.stored_results():
                 data = result.fetchall()
                 last_insert_id = data[0][0]
-                self.debug(f"last insert id is {last_insert_id}")
-
-            connection.commit()
+                #self.debug(f"last insert id is {last_insert_id}")
 
         except Error as error:
             self.debug(f"Failed to execute stored procedure: {error}")

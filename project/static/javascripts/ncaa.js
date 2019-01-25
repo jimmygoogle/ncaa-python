@@ -315,8 +315,16 @@ function validateUserInput() {
   const firstName = $userBracketInfoForm.find('#firstname').val();
   const tieBreakerPoints = $userBracketInfoForm.find('#tieBreaker').val();
 
+  let formAction = 'POST';
+  
+  // this is kind a hack for the bracket route
+  const rand_string = Math.random().toString(36).substring(7);
+  let url = window.location.href + 'bracket/' + rand_string;
+
   if( (editTypeValue == 'admin') || (editTypeValue == 'edit')) {
     multipleEdits = true;
+    formAction = 'PUT';
+    url = window.location.href;
   }
 
   let error_message;
@@ -379,36 +387,38 @@ function validateUserInput() {
   if(status) {
     // set base data
     const data = {
-      emailAddress: emailAddress,
+      email_address: emailAddress,
       username: username,
-      firstName: firstName,
-      tieBreakerPoints: tieBreakerPoints,
-      bracketTypeName: bracketTypeName,
-      userPicks: JSON.stringify(userPicks)
+      first_name: firstName,
+      tie_breaker_points: tieBreakerPoints,
+      bracket_type_name: bracketTypeName,
+      user_picks: JSON.stringify(userPicks),
+      edit_type: editTypeValue
     };
 
+    // hide the submit button
+    $("#submit_user_bracket").hide();
+
     $.ajax({
-      type: 'POST',
-      url: window.location.pathname,
+      type: formAction,
+      url: url,
       data: data,
-      success: function (result) {
-        //disable submit button so the users do not flood the system
-        $("#submit").hide();
-
-        // fade slowly when you are not allowing the user to edit multiple times
-        const fadeInterval = multipleEdits ? 2000 : 4000;
-        const msg = multipleEdits ? 'Your bracket has been updated.' : 'Your bracket has been submitted. <br/> Good luck!';
-
+      success: function(result) {
+        // show message
         $("#message")
         .empty()
         .show()
-        .append(msg)
-        .fadeOut(fadeInterval, function(){
-          // allow multiple edits
-          if( multipleEdits ) {
-            $("#submit").show();
-          }
-        });
+        .append(result['message']);
+        
+        // show error
+        $("#error")
+        .empty()
+        .show()
+        .append(result['error']);
+        
+        if( multipleEdits && result['error'] === '') {
+          $("#submit_user_bracket").show();
+        }
       }
     });
 
@@ -420,6 +430,7 @@ function validateUserInput() {
 function setUserPick(obj) {
   // set team user picked ex: 5 Utah
   const userPickedTeam = obj.text();
+  console.log('setUserPick');
 
   // get game number and all possible game slots that the user pick could play in
   // ex: class = "matchup game1 65|97|113|121|125" (we need the 2nd and 3rd element)

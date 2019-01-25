@@ -1,5 +1,5 @@
 from project.mysql_python import MysqlPython
-from flask import request, render_template
+from flask import request, render_template, jsonify
 from project import session, app, YEAR
 from collections import defaultdict
 import sys
@@ -45,14 +45,27 @@ class Ncaa(object):
         
         return pool_name
 
+    def are_pools_open(self):
+        '''Check if either pool is open'''
+
+        status = self.check_pool_status('any')
+        return status['is_open']
+
     def check_pool_status(self, bracket_type=None):
-        '''Get current pool status'''
+        '''Get current status of all pools'''
         
         result = self.db.query(proc='PoolStatus')
         self.debug(result)
+
+        # figure out if either pool is open for easier checks        
+        one_pool_is_open = 0
+        if result[0]['poolOpen'] or result[0]['sweetSixteenPoolOpen'] :
+            one_pool_is_open = 1
+
         status = {
             'normalBracket': {'is_open': result[0]['poolOpen'], 'closing_date_time': result[0]['poolCloseDateTime']},
-            'sweetSixteenBracket': {'is_open': result[0]['sweetSixteenPoolOpen'], 'closing_date_time': result[0]['sweetSixteenCloseDateTime'] }
+            'sweetSixteenBracket': {'is_open': result[0]['sweetSixteenPoolOpen'], 'closing_date_time': result[0]['sweetSixteenCloseDateTime'] },
+            'any': {'is_open': one_pool_is_open }
         }
         
         if bracket_type is None:
@@ -183,9 +196,7 @@ class Ncaa(object):
             
             if action == 'edit':
                 proc = 'GetUserByEditToken'
-                
-            self.debug(f"user proc is {proc}")
-
+ 
             user_info = self.db.query(proc=proc, params=[user_token])
             bracket_display_name = self.set_user_bracket_name(user_info[0]['userName'])
         else:
@@ -275,18 +286,36 @@ class Ncaa(object):
 
     def process_user_bracket(self, **kwargs):
         '''Process the data the user submitted and add it to the DB'''
+    
+        if not self.are_pools_open():
+            error = 'The pool is no longer open.'
+            message = ''
 
-        #
-        self.process_pick_data(), 
+        else:
+            # process all of the user's picks and put them into the DB
+            self.process_pick_data()
+            
+            # TODO handle errors from processing
+            error = ''
 
-        # send confirmation email
-        if kwargs['action'] == 'add':
-            self.send_confirmation_email()    
+            # send confirmation email if this is a new bracket
+            if kwargs['action'] == 'add':
+                self.send_confirmation_email()
+                message = 'Your bracket has been submitted. <br/> Good luck!'
+            # set updated message
+            else:
+                message = 'Your bracket has been updated.'
 
-        pass
+        return jsonify({
+            'message' : message,
+            'error': error
+        })
 
     def update_user_data(self):
-        '''fdd'''
+        '''
+            Add/update the user information
+            Ex: email, username, etc
+        '''
 
         edit_type = request.values['edit_type']
 
@@ -376,7 +405,7 @@ class Ncaa(object):
         username = request.values['username']
         first_name = request.values['first_name']
         tie_breaker_points = request.values['tie_breaker_points']
-        
+
         user_id = self.db.update(proc='UpdateUser', params=[
             edit_token,
             username,

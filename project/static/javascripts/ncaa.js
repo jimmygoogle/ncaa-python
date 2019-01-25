@@ -293,8 +293,8 @@ function checkUserPool() {
   },
   success: function(result) {
     //pool finder failed
-    if(result.status == 0) {
-      $("#userPoolMessage").empty().show().append('*Please check your pool name.');
+    if(result == 0) {
+      $("#userPoolMessage").empty().show().addClass('user_pool_message_background').append('*Please check your pool name.');
     }
     //we found a pool name
     else {

@@ -106,6 +106,12 @@ hr.details {
 #userPoolMessage {
   color: red;
   font-weight: bold;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.user_pool_message_background {
+  background-color: #ffe6e6;
 }
 
 @media screen and (max-width: 600px) {

@@ -9,3 +9,4 @@ __pycache__
 venv
 instance/
 models
+site.cfg

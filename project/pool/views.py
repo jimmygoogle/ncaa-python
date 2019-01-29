@@ -1,8 +1,8 @@
-from flask import Blueprint, request, render_template, url_for, redirect, jsonify
+from flask import Blueprint, request, render_template, url_for, redirect, jsonify, g
 from project.ncaa_class import Ncaa
 from project.pool_class import Pool
 from project.bracket_class import Bracket
-from project import YEAR
+import datetime
 
 pool = Pool()
 bracket = Bracket()
@@ -17,6 +17,7 @@ def index():
     if pool_name is None:
         return redirect(url_for('pool.show_pool_form'))
     else:
+        year = datetime.datetime.now().year
         pool_status = pool.check_pool_status()
         
         # bracket is open for submissions so get bracket page
@@ -34,7 +35,7 @@ def index():
             # render the bracket
             return render_template('bracket.html',
                 pool_name = pool_name,
-                year = YEAR,
+                year = year,
                 data_team = '',
                 data_pick = '',
                 user_data = [{}],
@@ -53,14 +54,14 @@ def index():
             # render the bracket
             return render_template('bracket.html',
                 pool_name = pool_name,
-                year = YEAR,
+                year = year,
                 data_team = '',
                 data_pick = '',
                 user_data = [],
                 user_picks = data['user_picks'],
                 team_data = data['team_data'],
-                show_user_bracket_form = 1,
-                is_open = 1,
+                show_user_bracket_form = 0,
+                is_open = 0,
             )
 
 ## routes for pool setup/switching
@@ -83,7 +84,7 @@ def show_pool_form(pool_name=None):
             return redirect(url_for('pool.index'))
         else:
             return render_template('pool.html', 
-                year = YEAR,
+                year = year,
                 is_open = 1
             )
 

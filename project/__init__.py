@@ -6,18 +6,18 @@ def create_app(test_config=None):
     app.config.from_pyfile('config.py')
     
     from project.mysql_python import MysqlPython
-    import datetime
+    
     with app.app_context():
+    
+        #set up DB connection
         db = MysqlPython()
         db.get_db()
-        
-        # set some global variables
-        g.year = datetime.datetime.now().year
 
-    from flask_session import Session
-    flask_session = Session()
-    app.config['SESSION_TYPE'] = 'filesystem'
-    flask_session.init_app(app)
+        # setup session
+        from flask_session import Session
+        flask_session = Session()
+        app.config['SESSION_TYPE'] = 'filesystem'
+        flask_session.init_app(app)
     
     if __name__ == '__main__':
         app.debug = True

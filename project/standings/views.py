@@ -1,8 +1,8 @@
-from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect
+from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect, g
 #from project.ncaa_class import Ncaa
 from project.standings_class import Standings
 from project.pool_class import Pool
-from project import YEAR
+import datetime
 
 pool = Pool()
 standings = Standings()
@@ -25,7 +25,7 @@ def show_standings(sweet_sixteen=None):
     (data, has_games_left) = standings.get_standings(bracket_type=bracket_type)
 
     return render_template('standings.html',
-        year = YEAR,
+        year = datetime.datetime.now().year,
         data = data, 
         has_games_left = has_games_left,
         pool_name = pool_name,

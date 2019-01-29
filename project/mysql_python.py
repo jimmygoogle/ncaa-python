@@ -1,40 +1,59 @@
+from flask import current_app, g
+from flask.cli import with_appcontext
+#import click#
 import mysql.connector, sys
 from mysql.connector import Error
 from mysql.connector.connection import MySQLConnection
-from mysql.connector import pooling
+#from mysql.connector import pooling
 from collections import OrderedDict
+import configparser
+
 
 class MysqlPython(object):
 
-    def __init__(self, host='localhost', user='root', password='', database='MarchMadness', pool_name='ncaa_pool', pool_size=10):
-        self.__host = host
-        self.__user = user
-        self.__password = password
-        self.__database = database
-        self.__database_pool_name = pool_name
-        self.__pool_size = pool_size
+    def __init__(self, **kwargs):
+        config = configparser.ConfigParser()
+        config.read("site.cfg")
+
+        self.__host = config.get('MYSQL', 'MYSQL_HOST')
+        self.__user = config.get('MYSQL', 'MYSQL_USER')
+        self.__password = config.get('MYSQL', 'MYSQL_PASSWORD')
+        self.__database = config.get('MYSQL', 'MYSQL_DATABASE')
+        self.__pool_size = int(config.get('MYSQL', 'MYSQL_POOL_SIZE'))
+        self.__database_pool_name = config.get('MYSQL', 'MYSQL_POOL_NAME')
+            
+        self.__connection = None
+
         self.errors = []
 
-        dbconfig = {
-          'host': self.__host,
-          'database': self.__database,
-          'user': self.__user,
-          'password': self.__password,
-          'charset': 'utf8mb4',
-          'autocommit': True
-        }
-        
-        try:
-            self.__connection_pool = mysql.connector.pooling.MySQLConnectionPool(
-                pool_name = self.__database_pool_name,
-                pool_size = self.__pool_size, 
-                pool_reset_session = True, 
-                **dbconfig
-            )
+    def init_app(app):
+        app.teardown_appcontext(close_db)
 
-        except Error as error:
-            self.debug(f"Could not connect ... {error}")
-            self.errors.append(error)
+    def get_db(self):
+        if 'db' not in g:
+            try:
+                dbconfig = {
+                    'host': self.__host,
+                    'database': self.__database,
+                    'user': self.__user,
+                    'password': self.__password,
+                    'charset': 'utf8mb4',
+                    'autocommit': True
+                }
+
+                g.db = mysql.connector.connect(**dbconfig)
+
+            except Error as error:
+                self.debug(f"Could not connect ... {error}")
+                self.errors.append(error)
+                
+        return g.db
+
+    def close_db(e=None):
+        db = g.pop('db', None)
+
+        if db is not None:
+            db.close()
 
     def _execute_procedure(self, **kwargs):
         '''Execute a select statement in a procedure and returns the results
@@ -53,7 +72,8 @@ class MysqlPython(object):
             if 'params' not in kwargs:
                 kwargs['params'] = []
 
-            connection = self.__connection_pool.get_connection()
+            connection = self.get_db()
+            #self.debug(f"execute connection id is {connection.connection_id}")
             cursor = connection.cursor(dictionary=True)
 
             cursor.callproc(kwargs['proc'], kwargs['params'])
@@ -69,7 +89,6 @@ class MysqlPython(object):
 
         finally:
             cursor.close()
-            connection.close()
 
         return results
 
@@ -90,7 +109,8 @@ class MysqlPython(object):
             if 'params' not in kwargs:
                 kwargs['params'] = []
 
-            connection = self.__connection_pool.get_connection()
+            connection = self.get_db()
+            #self.debug(f"write connection id is {connection.connection_id}")
             cursor = connection.cursor(dictionary=True)
 
             # execute write, commit and return last insert id
@@ -107,7 +127,6 @@ class MysqlPython(object):
 
         finally:
             cursor.close()
-            connection.close()
 
         return last_insert_id
         

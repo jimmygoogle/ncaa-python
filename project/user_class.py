@@ -1,24 +1,39 @@
+from flask import request, jsonify
+from project.ncaa_class import Ncaa
 from project.pool_class import Pool
-from project import session, app, YEAR
+from project.mysql_python import MysqlPython
+from project import session
 import re
+import hashlib
+import time
 
-class User(Pool):
+class User(Ncaa):
     '''User class to get/set information for a user that is tied to their pool. A user (email) can exist in multiple pools'''
 
     def __init__(self):
-        super().__init__()
-        self.user_edit_token = ''
+        self.__db = MysqlPython()
+        self.__pool = Pool()
+        
+        # set user specific attributes
+        self.__user_edit_token = ''
+        self.__username = ''
+        self.__first_name = ''
+        self.__email_address = ''
 
-    def set_user_edit_token(self, **kwargs):
+    def setup_user_edit_token(self, **kwargs):
         '''
         Creates a token string to be encoded from the time, pool name, user email, username, bracket type and display type.
         This combo ensures a unique token for every user
         '''
         
         token = [str(time.time()), session['pool_name'], kwargs['email_address'], kwargs['username'], kwargs['bracket_type_name'], 'edit'];
-        return self.set_token('.'.join(token))
+        
+        edit_token = self.set_token('.'.join(token))
+        self.set_edit_token(edit_token)
+
+        return edit_token
     
-    def set_user_display_token(self, **kwargs):
+    def setup_user_display_token(self, **kwargs):
         '''
         Creates a token string to be encoded from the time, pool name, user email, username, bracket type and display type.
         This combo ensures a unique token for every user
@@ -34,7 +49,22 @@ class User(Pool):
         h.update(string.encode('utf-8'))
         return h.hexdigest()
     
-    def set_user_bracket_name(self, username):
+    def set_username(self, username):
+        '''Method to set username'''
+        
+        self.__username = username
+
+    def get_edit_token(self):
+        '''Method to get user edit token'''
+        
+        return self.__user_edit_token
+
+    def set_edit_token(self, token):
+        '''Method to set user edit token'''
+        
+        self.__user_edit_token = token
+
+    def set_user_bracket_name(self):
         '''
         Fixes the usernmame for display.
         
@@ -44,7 +74,7 @@ class User(Pool):
         '''
         
         # get rid of spaces at the end of the user name and append '
-        username = re.sub(r'\s+$', '', username)
+        username = re.sub(r'\s+$', '', self.__username)
         username += "'"
 
         # append 's' at the end of the string if the string doesnt already end with "'s"
@@ -79,24 +109,20 @@ class User(Pool):
         tie_breaker_points = request.values['tie_breaker_points']
 
         # setup user tokens
-        display_token = self.set_user_display_token(
+        display_token = self.setup_user_display_token(
             email_address = email_address,
             username = username,
             bracket_type_name = bracket_type_name
         )
 
-        edit_token = self.set_user_edit_token(
+        edit_token = self.setup_user_edit_token(
             email_address = email_address,
             username = username,
             bracket_type_name = bracket_type_name
         )
-        
-        self.user_edit_token = edit_token
 
-        pool_name = self.get_pool_name()
-
-        user_id = self.db.insert(proc='InsertUser', params=[
-            pool_name,
+        user_id = self.__db.insert(proc='InsertUser', params=[
+            self.__pool.get_pool_name(),
             username,
             email_address,
             tie_breaker_points,
@@ -111,14 +137,18 @@ class User(Pool):
     def update_user(self, **kwargs):
         '''Update the user information based on their edit token value'''
       
-        edit_token = self.user_edit_token
+        edit_token = self.get_edit_token()
         bracket_type_name = request.values['bracket_type_name']
         email_address = request.values['email_address']
         username = request.values['username']
         first_name = request.values['first_name']
         tie_breaker_points = request.values['tie_breaker_points']
+        
+        self.debug(f"updating first_name {first_name}")
+        self.debug(f"updating username {username}")
+        self.debug(f"edit_token is {edit_token}")
 
-        user_id = self.db.update(proc='UpdateUser', params=[
+        user_id = self.__db.update(proc='UpdateUser', params=[
             edit_token,
             username,
             email_address,
@@ -127,6 +157,6 @@ class User(Pool):
           ])
 
         # clear out the user's picks
-        self.db.insert(proc='ResetBracket', params=[user_id])
+        self.__db.insert(proc='ResetBracket', params=[user_id])
 
         return user_id

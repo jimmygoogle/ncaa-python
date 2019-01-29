@@ -1,17 +1,23 @@
+from flask import app, request, jsonify, g
 from project.ncaa_class import Ncaa
-from project import session, app, YEAR
+from project.mysql_python import MysqlPython
+from project import session
+import ast
+import traceback
 
 class Pool(Ncaa):
     '''Pool class to get/set the user pool. The pool name defines where the user their bracket data will live'''
 
     def __init__(self):
-        super().__init__()
+        self.__db = MysqlPython()
+
+        # set pool specific attributes
         self.pool_name = ''
 
     def set_pool_name(self, pool_name):
         '''Validate pool name and then set it for use in the application'''
 
-        result = self.db.query(proc='PoolInfo', params=[pool_name])
+        result = self.__db.query(proc='PoolInfo', params=[pool_name])
         self.debug(result)
         status = 0;
         # we found our pool so set a cookie
@@ -36,7 +42,7 @@ class Pool(Ncaa):
     def validate_pool_name(self, pool_name):
         '''Check the pool name passed in the request against the defined pools in the DB'''
         
-        result = self.db.query(proc='PoolInfo', params=[pool_name])
+        result = self.__db.query(proc='PoolInfo', params=[pool_name])
         
         status = 0
         if len(result) > 0:
@@ -54,7 +60,7 @@ class Pool(Ncaa):
     def check_pool_status(self, bracket_type=None):
         '''Get current status of all pools'''
         
-        result = self.db.query(proc='PoolStatus')
+        result = self.__db.query(proc='PoolStatus')
         self.debug(result)
 
         # figure out if either pool is open for easier checks        

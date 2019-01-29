@@ -1,19 +1,24 @@
+from flask import request, jsonify
+from project.ncaa_class import Ncaa
 from project.bracket_class import Bracket
-from project import session, app, YEAR
+from project.pool_class import Pool
+from project.mysql_python import MysqlPython
+from project import session
 from collections import defaultdict
 
 class Standings(Bracket):
     '''Standings class that will pull and show standings for the brackets in a defined pool'''
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        self.__db = MysqlPython()
+        self.__pool = Pool()
 
     def get_standings(self, **kwargs):
         '''Get standings data for the pool'''
 
         bracket_type = kwargs['bracket_type'] + 'Bracket'        
-        pool_name = self.get_pool_name()
-        pool_status = self.check_pool_status(bracket_type)
+        pool_name = self.__pool.get_pool_name()
+        pool_status = self.__pool.check_pool_status(bracket_type)
 
         # set the round id to calculate the best possible score from
         round_id = 3
@@ -21,18 +26,18 @@ class Standings(Bracket):
             round_id = 1
         
         # calculate best possible score for each user 
-        best_possible_data = self.db.query(proc='BestPossibleScore', params=[round_id])
+        best_possible_data = self.__db.query(proc='BestPossibleScore', params=[round_id])
         
         # get the remaining games
-        remaining_teams_data = self.db.query(proc='RemainingTeams', params=[pool_name, bracket_type])   
+        remaining_teams_data = self.__db.query(proc='RemainingTeams', params=[pool_name, bracket_type])   
         
         # fetch the user standings
-        standings_data = self.db.query(proc='Standings', params=[pool_status['is_open'], pool_name, bracket_type])
+        standings_data = self.__db.query(proc='Standings', params=[pool_status['is_open'], pool_name, bracket_type])
         
         # get number of games played
-        games_left = self.db.query(proc='AreThereGamesLeft', params=[])
+        games_left = self.__db.query(proc='AreThereGamesLeft', params=[])
 
-        data = self.calculate_best_possible_scores(standings_data=standings_data, best_possible_data=best_possible_data, remaining_teams_data=remaining_teams_data)
+        data = self.calculate_best_possible_scores(standings_data = standings_data, best_possible_data = best_possible_data, remaining_teams_data = remaining_teams_data)
         
         return (data, 1)
 

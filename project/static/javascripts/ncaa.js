@@ -396,8 +396,9 @@ function validateUserInput() {
       edit_type: editTypeValue
     };
 
-    // hide the submit button
+    // hide the submit button and auto picks
     $("#submit_user_bracket").hide();
+    $("#auto_picks").hide();
 
     $.ajax({
       type: formAction,
@@ -418,6 +419,7 @@ function validateUserInput() {
         
         if( multipleEdits && result['error'] === '') {
           $("#submit_user_bracket").show();
+          $("#auto_picks").show();
         }
       }
     });

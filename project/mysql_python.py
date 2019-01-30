@@ -1,13 +1,10 @@
 from flask import current_app, g
 from flask.cli import with_appcontext
-#import click#
 import mysql.connector, sys
 from mysql.connector import Error
 from mysql.connector.connection import MySQLConnection
-#from mysql.connector import pooling
 from collections import OrderedDict
 import configparser
-
 
 class MysqlPython(object):
 
@@ -137,6 +134,7 @@ class MysqlPython(object):
 
     def update(self, **kwargs):
         '''Wrapper for _execute_write_procedure used for updating data'''
+
         return self._execute_write_procedure(**kwargs)
 
     def insert(self, **kwargs):

@@ -15,7 +15,16 @@ def user_bracket(user_token):
     pool = Pool()
     user = User()
     bracket = Bracket()
+    
+    # check to see if we are the admin/master bracket
+    admin_user_token = user.get_admin_edit_token()
+    is_admin = 0
+    
+    # if the user token equals the admin token
+    if admin_user_token == user_token:
+        is_admin = 1
 
+    # check pool status
     pool_name = pool.get_pool_name()
     pool_status = pool.check_pool_status()
 
@@ -27,11 +36,11 @@ def user_bracket(user_token):
 
     # user is submitting bracket data so process it and add/update it in the DB
     if request.method == 'POST':
-        return bracket.process_user_bracket(action = 'add')
+        return bracket.process_user_bracket(action = 'add', is_admin = None)
 
     # update the user bracket
     elif request.method == 'PUT':
-        return bracket.process_user_bracket(action = 'update', edit_user_token = user_token)
+        return bracket.process_user_bracket(action = 'update', edit_user_token = user_token, is_admin = is_admin)
 
     # show bracket to user
     else:
@@ -42,12 +51,18 @@ def user_bracket(user_token):
         bracket_type = ''
         pool_is_open = 1
 
+        # set bracket type based on open pool
         if pool_status['normalBracket']['is_open']:
             bracket_type = 'normalBracket'
         elif pool_status['sweetSixteenBracket']['is_open']:
             bracket_type = 'sweetSixteenBracket'
         else:
             pool_is_open = 0
+
+        # the pools are always open for the admin user
+        # i chose to do this here rather than make the if/elif/else more confusing
+        if is_admin:
+            pool_is_open = 1
 
         # we are trying to show a bracket for editing
         if 'action' in request.values and request.values['action'] == 'e':
@@ -61,7 +76,7 @@ def user_bracket(user_token):
             show_user_bracket_form = 1   
         
         # get user data (bracket and info) for display purposes
-        data = bracket.get_user_bracket_for_display(action = action, user_token = user_token, is_master = None)
+        data = bracket.get_user_bracket_for_display(action = action, user_token = user_token, is_admin = is_admin)
         
         # add logic for setting display of user's winning pick
         data_team = ''

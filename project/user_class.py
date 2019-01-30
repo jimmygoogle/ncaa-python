@@ -6,6 +6,7 @@ from project import session
 import re
 import hashlib
 import time
+import configparser
 
 class User(Ncaa):
     '''User class to get/set information for a user that is tied to their pool. A user (email) can exist in multiple pools'''
@@ -19,6 +20,16 @@ class User(Ncaa):
         self.__username = ''
         self.__first_name = ''
         self.__email_address = ''
+        
+        # get admin edit token
+        config = configparser.ConfigParser()
+        config.read("site.cfg")
+        self.__admin_edit_token = config.get('DEFAULT', 'ADMIN_EDIT_TOKEN')
+
+    def get_admin_edit_token(self):
+        '''Return the edit token for the admin user'''
+        
+        return self.__admin_edit_token
 
     def setup_user_edit_token(self, **kwargs):
         '''
@@ -97,6 +108,8 @@ class User(Ncaa):
         else:
            user_id = self.update_user()
            
+        self.debug(f"Working with user {user_id}")
+           
         return user_id
    
     def insert_new_user(self, **kwargs):
@@ -121,7 +134,7 @@ class User(Ncaa):
             bracket_type_name = bracket_type_name
         )
 
-        user_id = self.__db.insert(proc='InsertUser', params=[
+        user_id = self.__db.insert(proc = 'InsertUser', params = [
             self.__pool.get_pool_name(),
             username,
             email_address,
@@ -148,15 +161,12 @@ class User(Ncaa):
         self.debug(f"updating username {username}")
         self.debug(f"edit_token is {edit_token}")
 
-        user_id = self.__db.update(proc='UpdateUser', params=[
+        user_id = self.__db.update(proc = 'UpdateUser', params = [
             edit_token,
             username,
             email_address,
             tie_breaker_points,
             first_name
           ])
-
-        # clear out the user's picks
-        self.__db.insert(proc='ResetBracket', params=[user_id])
 
         return user_id

@@ -17,7 +17,7 @@ class Pool(Ncaa):
     def set_pool_name(self, pool_name):
         '''Validate pool name and then set it for use in the application'''
 
-        result = self.__db.query(proc='PoolInfo', params=[pool_name])
+        result = self.__db.query(proc = 'PoolInfo', params = [pool_name])
         self.debug(result)
         status = 0;
         # we found our pool so set a cookie
@@ -26,7 +26,8 @@ class Pool(Ncaa):
             
             # set pool name in the session
             session['pool_name'] = pool_name
-            self.debug(f"pool name is set in the session as {session['pool_name']}")
+            session['pool_id'] = result[0]['poolID']
+            self.debug(f"pool name is set in the session as {session['pool_name']} with pool id {session['pool_id']}")
 
         return status
     
@@ -42,14 +43,14 @@ class Pool(Ncaa):
     def validate_pool_name(self, pool_name):
         '''Check the pool name passed in the request against the defined pools in the DB'''
         
-        result = self.__db.query(proc='PoolInfo', params=[pool_name])
+        result = self.__db.query(proc = 'PoolInfo', params = [pool_name])
         
         status = 0
         if len(result) > 0:
             status = 1
+            self.set_pool_name(pool_name)
         
-        return status
-        
+        return status     
     
     def are_pools_open(self):
         '''Check if either pool is open'''
@@ -60,7 +61,7 @@ class Pool(Ncaa):
     def check_pool_status(self, bracket_type=None):
         '''Get current status of all pools'''
         
-        result = self.__db.query(proc='PoolStatus')
+        result = self.__db.query(proc = 'PoolStatus')
         self.debug(result)
 
         # figure out if either pool is open for easier checks        

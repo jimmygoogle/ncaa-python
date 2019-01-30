@@ -26,16 +26,16 @@ class Standings(Bracket):
             round_id = 1
         
         # calculate best possible score for each user 
-        best_possible_data = self.__db.query(proc='BestPossibleScore', params=[round_id])
+        best_possible_data = self.__db.query(proc = 'BestPossibleScore', params = [round_id])
         
         # get the remaining games
-        remaining_teams_data = self.__db.query(proc='RemainingTeams', params=[pool_name, bracket_type])   
+        remaining_teams_data = self.__db.query(proc = 'RemainingTeams', params = [pool_name, bracket_type])   
         
         # fetch the user standings
-        standings_data = self.__db.query(proc='Standings', params=[pool_status['is_open'], pool_name, bracket_type])
+        standings_data = self.__db.query(proc = 'Standings', params = [pool_status['is_open'], pool_name, bracket_type])
         
         # get number of games played
-        games_left = self.__db.query(proc='AreThereGamesLeft', params=[])
+        games_left = self.__db.query(proc = 'AreThereGamesLeft', params = [])
 
         data = self.calculate_best_possible_scores(standings_data = standings_data, best_possible_data = best_possible_data, remaining_teams_data = remaining_teams_data)
         
@@ -61,11 +61,7 @@ class Standings(Bracket):
         array_index = 0;
         standings_lookup = defaultdict(dict)
         incorrect_picks = defaultdict(dict)
-        
-        self.debug(f"adjusted score is {adjusted_score}")
-        self.debug(f"best possible score is {best_possible_score}")
 
-        self.debug(standings_data[0])
         for data in standings_data:
             token = data['userDisplayToken']
             standings_lookup[token] = array_index

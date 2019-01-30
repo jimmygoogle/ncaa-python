@@ -19,7 +19,7 @@ class Bracket(Ncaa):
     def get_base_teams(self):
         '''Get base teams data for display'''
         
-        return self.__db.query(proc='GetBaseTeams', params=[])
+        return self.__db.query(proc = 'GetBaseTeams', params = [])
 
     def get_empty_picks(self):
         '''
@@ -43,13 +43,13 @@ class Bracket(Ncaa):
     def get_master_bracket_data(self):
         '''Get master bracket data for display'''
 
-        return self.get_user_bracket_for_display(is_master = 1, user_token = None, action = 'view')
+        return self.get_user_bracket_for_display(is_admin = 1, user_token = None, action = 'view')
 
     def get_user_bracket_for_display(self, **kwargs):
         '''Get user picks and information so we can display their bracket'''
 
         action = kwargs['action']
-        is_master = kwargs['is_master']
+        is_admin = kwargs['is_admin']
         user_token = kwargs['user_token']
         pool_name = self.__pool.get_pool_name()
         pool_status = self.__pool.check_pool_status()
@@ -60,9 +60,18 @@ class Bracket(Ncaa):
         # there is a user token so pull the user's data
         if user_token is not None:
             self.debug(f'Getting data for {user_token}')
-            user_picks = self.__db.query(proc='UserDisplayBracket', params=[user_token])
+            
+            # figure out which procedure to call to get the picks
+            proc = 'UserDisplayBracket'
+            params = [user_token]
 
-            # set syling for incorrect picks
+            if is_admin:
+                proc = 'MasterBracket'
+                params = []
+
+            user_picks = self.__db.query(proc = proc, params = params)
+
+            # set styling for incorrect picks
             incorrect_picks = {}
             for pick in user_picks:
                 team_id = pick['teamID']
@@ -75,7 +84,7 @@ class Bracket(Ncaa):
 
         # get master bracket
         else:
-            user_picks = self.__db.query(proc='MasterBracket', params=[])
+            user_picks = self.__db.query(proc = 'MasterBracket', params = [])
 
             # remove formatting
             for pick in user_picks:
@@ -91,7 +100,7 @@ class Bracket(Ncaa):
             if action == 'edit':
                 proc = 'GetUserByEditToken'
  
-            user_info = self.__db.query(proc=proc, params=[user_token])
+            user_info = self.__db.query(proc = proc, params = [user_token, pool_name])
             self.__user.set_username(user_info[0]['userName'])
             
             # set bracket display name
@@ -110,7 +119,7 @@ class Bracket(Ncaa):
     def process_user_bracket(self, **kwargs):
         '''Process the data the user submitted and add it to the DB'''
     
-        if not self.__pool.are_pools_open():
+        if not kwargs['is_admin'] and not self.__pool.are_pools_open():
             error = 'The pool is no longer open.'
             message = ''
 
@@ -125,9 +134,14 @@ class Bracket(Ncaa):
             if kwargs['action'] == 'add':
                 self.__email.send_confirmation_email(token = self.__user.get_edit_token())
                 message = 'Your bracket has been submitted. <br/> Good luck!'
+            
             # set updated message
             else:
                 message = 'Your bracket has been updated.'
+                
+                # score all brackets if we have just updated the admin bracket
+                if kwargs['is_admin']:
+                    self.score_all_brackets()
 
         return jsonify({
             'message' : message,
@@ -145,6 +159,14 @@ class Bracket(Ncaa):
         user_picks = request.values['user_picks']
         edit_type = request.values['edit_type']
         
+        self.__user.debug(kwargs)
+        
+        # figure out if we are editing the master bracket since we call different procedures
+        is_admin = 0
+        if 'is_admin' in kwargs and kwargs['is_admin'] is not None or 0:
+            is_admin = 1
+        
+        self.__user.debug(f"is admin {is_admin}")
         # we have an edit token set it so the user can be updated
         if 'edit_user_token' in kwargs:
             self.__user.set_edit_token(kwargs['edit_user_token'])
@@ -152,7 +174,19 @@ class Bracket(Ncaa):
         # add/edit user data:
         user_id = self.__user.update_user_data()
         
-        self.debug(f"Working with user {user_id}")
+        # clear out the user's picks and set insert procedure
+        clear_proc = 'ResetBracket'
+        insert_proc = 'InsertBracketData'
+        params = [user_id]
+
+        # clear out master picks
+        if is_admin == 1:
+            clear_proc = 'ResetMasterBracket'
+            insert_proc = 'InsertMasterBracketData'
+            params = []
+
+        # clear data
+        self.__db.insert(proc = clear_proc, params = params)
 
         # convert the picks string to a dictionary
         user_picks_dict = ast.literal_eval(user_picks)
@@ -162,8 +196,14 @@ class Bracket(Ncaa):
             team_id = user_picks_dict[game_id]
 
             # insert user's game' picks
-            self.__db.insert(proc='InsertBracketData', params=[
+            self.__db.insert(proc = insert_proc, params = [
                 user_id,
                 team_id,
                 game_id
             ])
+
+    def score_all_brackets(self):
+        '''Score all user brackets. This is called after each admin bracket update'''
+        self.debug('score_all_brackets')
+        self.__db.update(proc = 'ScoreAllBrackets', params = [])
+        

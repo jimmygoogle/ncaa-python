@@ -47,7 +47,7 @@ def index():
                 bracket_type = bracket_type
             )
         
-        # show the master bracket
+        # the pool is closed so show the master bracket
         else:
             data = bracket.get_master_bracket_data()
 
@@ -79,12 +79,12 @@ def show_pool_form(pool_name=None):
 
     else:
         if pool_name is not None and pool_name != '':
-            ## set session and redirect to main page
-            pool.set_pool_name(pool_name)
+            ## validate, set session and redirect to main page
+            result = pool.validate_pool_name(pool_name)
             return redirect(url_for('pool.index'))
         else:
             return render_template('pool.html', 
-                year = year,
+                year = datetime.datetime.now().year,
                 is_open = 1
             )
 

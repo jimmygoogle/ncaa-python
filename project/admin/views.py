@@ -1,16 +1,33 @@
-from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect
+from flask import Blueprint, request, render_template, redirect
 from project.ncaa_class import Ncaa
+from project.admin_class import Admin
+from project.bracket_class import Bracket
 
-#ncaa = Ncaa()
+admin = Admin()
 admin_blueprint = Blueprint('admin', __name__, template_folder='templates')
 
-@admin_blueprint.route('/admin')
-def admin():
-    if 1 == 1:
-        
-        #req.params.userToken = process.env.ADMIN_TOKEN;
-        return 'show admin page' 
-        ##url_for('show_pool_form')
-    else:
-        return 'show something'
+@admin_blueprint.route('/admin/new', methods=['GET', 'POST'])
+def intialize_bracket():
     
+    '''Show/update 64 teams for bracket'''
+    
+    # update team / game data
+    if request.method == 'POST':
+        admin = Admin()
+        return admin.initialize_new_bracket()
+
+    # show the game/team form
+    else:
+        return render_template('blank_bracket.html')
+
+
+@admin_blueprint.route('/admin/master')
+def edit_admin_bracket():
+    
+    '''Show/update master bracket'''
+    
+    admin = Admin()
+    token = admin.get_edit_token()
+
+    url = request.url_root + f"bracket/{token}?action=e"  
+    return redirect(url)

@@ -83,6 +83,7 @@ def user_bracket(user_token):
         data_pick = ''
 
         # add the winning pick
+        # we need to account for the master bracket here as well as it wont have a winning pick until the tournament is over
         if 'pickCSS' in data['user_picks'][62]:
             data_pick = data['user_picks'][62]['pickCSS']
             data_team = str(data['user_picks'][62]['seedID']) + ' ' + data['user_picks'][62]['teamName']

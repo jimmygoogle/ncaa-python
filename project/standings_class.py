@@ -34,12 +34,14 @@ class Standings(Bracket):
         # fetch the user standings
         standings_data = self.__db.query(proc = 'Standings', params = [pool_status['is_open'], pool_name, bracket_type])
         
-        # get number of games played
-        games_left = self.__db.query(proc = 'AreThereGamesLeft', params = [])
+        # get number of games played to see if there are games left
+        # this will help determine if we show the best possible score column in the standings
+        result = self.__db.query(proc = 'AreThereGamesLeft', params = [])
+        games_left = result[0]['status']
 
         data = self.calculate_best_possible_scores(standings_data = standings_data, best_possible_data = best_possible_data, remaining_teams_data = remaining_teams_data)
         
-        return (data, 1)
+        return (data, games_left)
 
     def calculate_best_possible_scores(self, **kwargs):
         '''
@@ -82,7 +84,7 @@ class Standings(Bracket):
                 standings_data[index]['bestPossibleScore'] -= data['gameRoundScore']
     
             # this is an incorrect final four pick so decrement the total of correct teams left
-            if data['userPick'] == '' and token in incorrect_picks and incorrect_picks[token][team_name]:
+            if data['userPick'] == '' and token in incorrect_picks and team_name in incorrect_picks[token]:
                 standings_data[index]['bestPossibleScore'] -= data['gameRoundScore']
 
         return standings_data

@@ -45,50 +45,81 @@ class Bracket(Ncaa):
 
         return self.get_user_bracket_for_display(is_admin = 1, user_token = None, action = 'view')
 
+    def get_user_picks(self, **kwargs):
+        '''Get the picks for the user (token)'''
+        
+        user_token = kwargs['user_token']
+        is_admin = kwargs['is_admin']
+
+        # figure out which procedure to call to get the picks
+        proc = 'UserDisplayBracket'
+        params = [user_token]
+
+        if is_admin:
+            proc = 'MasterBracket'
+            params = []
+            
+            admin_picks = []
+
+            # handle missing picks from the the master bracket
+            for index in range (64):
+                admin_picks.append({
+                    'pickCSS': '', 
+                    'seedID': '',
+                    'teamName': '',
+                    'teamID' : 0, 
+                    'gameID': 0
+                })
+
+        # get the picks from the DB
+        user_picks = self.__db.query(proc = proc, params = params)
+        
+        # handle missing picks from the the master bracket by using the empty bracket and filling in the missing picks
+        if is_admin:
+            for pick in user_picks:
+                # get the index of the pick
+                index = user_picks.index(pick)
+                self.debug(f"pick is {pick}")
+                admin_picks[index] = {
+                    'gameID': pick['gameID'],
+                    'teamID': pick['teamID'],
+                    'seedID': pick['seedID'],
+                    'teamName': pick['teamName'],
+                    'pickCSS': '',
+                }
+
+            user_picks = admin_picks 
+
+        return user_picks   
+    
     def get_user_bracket_for_display(self, **kwargs):
         '''Get user picks and information so we can display their bracket'''
 
         action = kwargs['action']
         is_admin = kwargs['is_admin']
         user_token = kwargs['user_token']
+
         pool_name = self.__pool.get_pool_name()
         pool_status = self.__pool.check_pool_status()
 
         # calculate best possible score for each user
         user_data = []
         
-        # there is a user token so pull the user's data
-        if user_token is not None:
-            self.debug(f'Getting data for {user_token}')
-            
-            # figure out which procedure to call to get the picks
-            proc = 'UserDisplayBracket'
-            params = [user_token]
+        self.debug(f'Getting data for {user_token} or maybe admin {is_admin}')
 
-            if is_admin:
-                proc = 'MasterBracket'
-                params = []
+        # get the user picks
+        user_picks = self.get_user_picks(is_admin = is_admin, user_token = user_token)
 
-            user_picks = self.__db.query(proc = proc, params = params)
+        # set styling for incorrect picks
+        incorrect_picks = {}
+        for pick in user_picks:
+            team_id = pick['teamID']
 
-            # set styling for incorrect picks
-            incorrect_picks = {}
-            for pick in user_picks:
-                team_id = pick['teamID']
+            if pick['pickCSS'] == 'incorrectPick':
+                incorrect_picks[team_id] = 1;
 
-                if pick['pickCSS'] == 'incorrectPick':
-                    incorrect_picks[team_id] = 1;
-
-                if not pick['pickCSS'] and incorrect_picks[team_id]:
-                    pick['pickCSS'] = 'incorrectPick'
-
-        # get master bracket
-        else:
-            user_picks = self.__db.query(proc = 'MasterBracket', params = [])
-
-            # remove formatting
-            for pick in user_picks:
-                pick['pickCSS'] = ''
+            if pick['pickCSS'] == '' and team_id in incorrect_picks:
+                pick['pickCSS'] = 'incorrectPick'
 
         # get the base teams (top 64)
         team_data = self.get_base_teams()
@@ -163,7 +194,7 @@ class Bracket(Ncaa):
         
         # figure out if we are editing the master bracket since we call different procedures
         is_admin = 0
-        if 'is_admin' in kwargs and kwargs['is_admin'] is not None or 0:
+        if 'is_admin' in kwargs and kwargs['is_admin'] is not None and kwargs['is_admin'] != 0 :
             is_admin = 1
         
         self.__user.debug(f"is admin {is_admin}")

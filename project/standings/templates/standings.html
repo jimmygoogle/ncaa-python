@@ -13,7 +13,7 @@
       <th>Bracket <span class="resize_mobile">Name</span></th>
       <th>Champion</th>
       <th>Score</th>
-      {% if games_left %}
+      {% if has_games_left %}
         <th>Possible</th>
       {% endif %}
     </tr>
@@ -23,7 +23,7 @@
         <td class="standings_champ"> {{ user.teamName }} <span class="resize_mobile">({{ user.userTieBreakerPoints }})</span></td>
         <td class="standings_score">{{ user.userScore }}</td>
           
-        {% if games_left %}
+        {% if has_games_left %}
           <td class="standings_score">{{ user.bestPossibleScore }}</td>
         {% endif %}
         </tr>

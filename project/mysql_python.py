@@ -8,25 +8,38 @@ import configparser
 
 class MysqlPython(object):
 
-    def __init__(self, **kwargs):
-        config = configparser.ConfigParser()
-        config.read("site.cfg")
+    def __init__(self, **kwargs):        
+        # get connection from args
+        if 'connection' in kwargs:
+            self.__host = kwargs['hostname']
+            self.__user = kwargs['user']
+            self.__password = kwargs['password']
+            self.__database = kwargs['database']
+            self.__charset = kwargs['charset']
+            self.__auto_commit = kwargs['auto_commit']
 
-        self.__host = config.get('MYSQL', 'MYSQL_HOST')
-        self.__user = config.get('MYSQL', 'MYSQL_USER')
-        self.__password = config.get('MYSQL', 'MYSQL_PASSWORD')
-        self.__database = config.get('MYSQL', 'MYSQL_DATABASE')
-        self.__pool_size = int(config.get('MYSQL', 'MYSQL_POOL_SIZE'))
-        self.__database_pool_name = config.get('MYSQL', 'MYSQL_POOL_NAME')
+        # get connection from site.cfg
+        else:
+            config = configparser.ConfigParser()
+            config.read("site.cfg")
+
+            self.__host = config.get('MYSQL', 'MYSQL_HOST')
+            self.__user = config.get('MYSQL', 'MYSQL_USER')
+            self.__password = config.get('MYSQL', 'MYSQL_PASSWORD')
+            self.__database = config.get('MYSQL', 'MYSQL_DATABASE')
+            self.__charset = config.get('MYSQL', 'CHARSET')
+            self.__auto_commit = config.get('MYSQL', 'AUTO_COMMIT')
             
         self.__connection = None
 
         self.errors = []
 
     def init_app(app):
-        app.teardown_appcontext(close_db)
+        app.teardown_appcontext(self.close_db)
 
     def get_db(self):
+        '''Make a connection to the DB that will live for the duration of the request'''
+
         if 'db' not in g:
             try:
                 dbconfig = {
@@ -34,19 +47,19 @@ class MysqlPython(object):
                     'database': self.__database,
                     'user': self.__user,
                     'password': self.__password,
-                    'charset': 'utf8mb4',
-                    'autocommit': True
+                    'charset': self.__charset,
+                    'autocommit': self.__auto_commit
                 }
-
                 g.db = mysql.connector.connect(**dbconfig)
-
+ 
             except Error as error:
                 self.debug(f"Could not connect ... {error}")
                 self.errors.append(error)
-                
-        return g.db
+                g.db = None
 
-    def close_db(e=None):
+        return g.db
+    
+    def close_db(self, e=None):
         db = g.pop('db', None)
 
         if db is not None:
@@ -70,8 +83,9 @@ class MysqlPython(object):
                 kwargs['params'] = []
 
             connection = self.get_db()
-            #self.debug(f"execute connection id is {connection.connection_id}")
+            self.debug(f"execute connection id is {connection.connection_id}")
             cursor = connection.cursor(dictionary=True)
+            self.debug(cursor)
 
             cursor.callproc(kwargs['proc'], kwargs['params'])
 

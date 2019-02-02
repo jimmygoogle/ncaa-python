@@ -1,30 +1,29 @@
 from flask import Flask, request, session, g
 
-def create_app(test_config=None):
+def create_app(is_testing=None):
     
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_pyfile('config.py')
-    
+
     from project.mysql_python import MysqlPython
     
     with app.app_context():
     
-        #set up DB connection
-        db = MysqlPython()
-        db.get_db()
+        if is_testing is None:
+            #set up DB connection
+            db = MysqlPython()
+            db.get_db()
 
-        # setup session
-        from flask_session import Session
-        flask_session = Session()
-        app.config['SESSION_TYPE'] = 'filesystem'
-        flask_session.init_app(app)
+            # setup session
+            from flask_session import Session
+            flask_session = Session()
+            app.config['SESSION_TYPE'] = 'filesystem'
+            flask_session.init_app(app)
     
     if __name__ == '__main__':
         app.debug = True
         app.run(host='0.0.0.0')
-    
 
-    
+    # import
     from project.pool.views import pool_blueprint
     from project.standings.views import standings_blueprint
     from project.bracket.views import bracket_blueprint

@@ -83,9 +83,8 @@ class MysqlPython(object):
                 kwargs['params'] = []
 
             connection = self.get_db()
-            self.debug(f"execute connection id is {connection.connection_id}")
+            #self.debug(f"execute connection id is {connection.connection_id}")
             cursor = connection.cursor(dictionary=True)
-            self.debug(cursor)
 
             cursor.callproc(kwargs['proc'], kwargs['params'])
 

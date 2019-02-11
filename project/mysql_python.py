@@ -1,6 +1,7 @@
 from flask import current_app, g
 from flask.cli import with_appcontext
-import mysql.connector, sys
+import sys
+import mysql.connector
 from mysql.connector import Error
 from mysql.connector.connection import MySQLConnection
 from collections import OrderedDict

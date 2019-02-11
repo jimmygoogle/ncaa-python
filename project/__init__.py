@@ -27,12 +27,14 @@ def create_app(is_testing=None):
     from project.pool.views import pool_blueprint
     from project.standings.views import standings_blueprint
     from project.bracket.views import bracket_blueprint
+    from project.polls.views import polls_blueprint
     from project.admin.views import admin_blueprint
     
     # register the blueprints
     app.register_blueprint(pool_blueprint)
     app.register_blueprint(standings_blueprint)
     app.register_blueprint(bracket_blueprint)
+    app.register_blueprint(polls_blueprint)
     app.register_blueprint(admin_blueprint)
 
     return app

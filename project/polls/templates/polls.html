@@ -1,0 +1,63 @@
+{% extends "index.html" %}
+
+{% block title %} - Top 25 Polls{% endblock %}
+
+{% block content %}
+
+<section id="bracket">
+  <div class="container">
+    <div class="polls">
+        <table border="1">
+          <tr>
+	          <td>
+	            AP Poll
+							      <table>
+							        <tr class="header">
+							          <th>Rank</th>
+							          <th>School</th>
+							          <th>Record</th>
+							          <th>Points</th>
+							          <th>Previous</th>
+							        </tr>
+							        {% for data in ap_rankings %}
+							          <tr>
+							            <td>{{ data.rankings.rank }}</td>
+							            <td>{{ data.rankings.market }} ({{data.rankings.fp_votes}})</td>  
+							            <td>{{ data.rankings.wins }}-{{ data.rankings.losses }}</td>
+							            <td>{{ data.rankings.points }}</td>
+							            <td>{{ data.rankings.prev_rank }}</td>
+							          </tr>
+							        {% endfor %}
+							      </table>
+							      Others receiving votes: 
+	          </td>
+	          <td>
+             USA Today Poll
+             <table>
+               <tr class="header">
+                 <th>Rank</th>
+                 <th>School</th>
+                 <th>Record</th>
+                 <th>Points</th>
+                 <th>Previous</th>
+               </tr>
+               {% for data in usa_rankings %}
+                 <tr>
+                   <td>{{ data.rankings.rank }}</td>
+                   <td>{{ data.rankings.market }} ({{data.rankings.fp_votes}})</td>  
+                   <td>{{ data.rankings.wins }}-{{ data.rankings.losses }}</td>
+                   <td>{{ data.rankings.points }}</td>
+                   <td>{{ data.rankings.prev_rank }}</td>
+                 </tr>
+               {% endfor %}
+             </table>
+             Others receiving votes: 
+	          </td>
+          </tr>
+        </table>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+

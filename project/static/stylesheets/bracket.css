@@ -167,7 +167,6 @@ li {
 
 .champion1 li, .champion li, .round li {
   background: rgb(255, 255, 255);
-  background: rgba(255, 255, 255, 0.45);
 }
 
 .current li {opacity: 1;}
@@ -245,7 +244,7 @@ li {
 	font-size: 10px; 
  letter-spacing: 2px;
  font-family: 'Istok Web', sans-serif;
- color:#3F915F;
+ color:orange;
 }
 
 .userNameDisplay {

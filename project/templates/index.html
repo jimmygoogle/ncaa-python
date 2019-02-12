@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/navigation.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/user_info.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/standings.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/polls.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/bracket.css')}}">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     
@@ -32,15 +33,15 @@
           <li><a href="/">HOME</a></li>
           <li><a href="/standings">STANDINGS</a></li>
           <li><a href="/standings/sweet_sixteen">SWEET 16 STANDINGS</a></li>
+          <li><a href="/polls">TOP 25 POLLS</a></li>
           <!-- <li><a href="/standings/archives">STANDINGS archives</a></li> -->
         </ul>
       </nav>
     </header>
     <header class="hero">
       <div class="hero-wrap">
-        <p class="intro" id="intro">{{ pool_name }} March Madness</p>
+        <p class="intro" id="intro">{{ year }} {{ pool_name }} March Madness</p>
         <h1 id="headline">Tournament</h1>
-        <p class="year"><i class="fa fa-star"></i>{{ year }}<i class="fa fa-star"></i></p>
       </div>
     </header>
 

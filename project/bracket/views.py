@@ -9,7 +9,6 @@ bracket_blueprint = Blueprint('bracket', __name__, template_folder='templates')
 ## show brackets for display or editing
 @bracket_blueprint.route('/bracket/<user_token>', methods=['GET', 'POST', 'PUT'])
 def user_bracket(user_token):
- 
     ''' Show the user bracket form '''
 
     pool = Pool()

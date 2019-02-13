@@ -5,6 +5,7 @@ def create_app(is_testing=None):
     app = Flask(__name__, instance_relative_config=True)
 
     from project.mysql_python import MysqlPython
+    from project.mongo import Mongo
     
     with app.app_context():
     
@@ -12,6 +13,10 @@ def create_app(is_testing=None):
             #set up DB connection
             db = MysqlPython()
             db.get_db()
+            
+            #set up mongo connection
+            mongo = Mongo()
+            mongo.get_db()
 
             # setup session
             from flask_session import Session

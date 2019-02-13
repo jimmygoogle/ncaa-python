@@ -11,7 +11,7 @@ It's awesome baby! A March Madness bracket written in Python and MySQL. It was p
 TODO
 
 ## Demo
-You can see a demo [here](http://ncaa.jimandmeg.com/demo)
+You can see a demo [here](http://www.itsawesomebaby.com//demo)
 
 ## License
 

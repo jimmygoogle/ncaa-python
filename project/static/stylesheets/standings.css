@@ -1,53 +1,36 @@
 .standings {
   overflow-x: auto;
   width: 50%;
-  font-size: 1.2em;
-  margin: 0 auto;
 }
 
 .standings table {
-    margin: auto;
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
-    border: 1px solid #000;
+  margin: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+
 }
 
 .standings a { 
   text-decoration:none; 
-  color: #000000;
+  color: #e2e2e2;
 }
 
-.standings th {
-    border: none;
-    padding: 10px;
-    text-align: center;
+.header th {
+  border: none;
+  padding: 15px 0px 15px 10px;
+  text-align: left;
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
 }
 
 .standings td {
-    border: none;
-    text-align: left;
-    padding: 15px;
-}
-
-.standings .standings_name {
-  padding-left: 25px;
-}
-
-.standings .standings_score {
-  text-align: center;
-}
-
-.standings .standings_champ {
-  padding-left: 80px;
-}
-
-.standings tr:nth-child(even){
-  background-color: #f2f2f2
+  text-align: left;
+  padding: 15px 0px 15px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, .35);
+  color: #e2e2e2;
 }
 
 .standings tr:hover {
-  background-color: #e5e5e5;
   cursor: pointer;
 }
 

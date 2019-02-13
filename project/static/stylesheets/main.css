@@ -8,58 +8,45 @@ body {
   margin: 0;
 }
 
-.hero {
+.tournament-title {
   position:relative; 
-  text-align: center; 
   overflow: hidden; 
-  color: #fcfcfc;
+  color: white;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: block;
 }
 
-.hero h1 {
-  font-family: 'Holtwood One SC', serif;
-  font-weight: normal;
-  font-size: 5.4em;
-  margin:0 0 20px;
-  text-shadow:0 0 12px rgba(0, 0, 0, 0.5);
+.tournament-title .tournament {
+  font-family: 'Roboto', sans-serif; 
+  font-weight: bold;
+  font-size: 103px;
+  letter-spacing: 0px;
+  margin: 0 0 20px 0;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
   text-transform: uppercase;
-  letter-spacing:-1px;
+  margin-top: -10px;
 }
 
-.hero p {
-  font-family: 'Abel', sans-serif;
+.tournament-title-wrap {
+  padding: 60px 0px;
+}
+
+.tournament-title .intro {
+  font-family: 'Roboto', sans-serif; 
   text-transform: uppercase;
-  color: #004E89; 
-  letter-spacing: 6px;
-  font-size: 1.2em;
+  font-size: 48px;
+  color: gray; 
 }
 
-.hero-wrap {
-  padding: 3.5em 10px;
-}
-
-.hero p.intro {
-  font-family: 'Holtwood One SC', serif;
+.march-madness-header {
+  font-family: 'Roboto', sans-serif; 
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 3em;
-  margin-bottom:-40px;
-}
-
-.hero p.year {
-  color: #fff; 
-  letter-spacing: 20px; 
-  font-size: 34px; 
-  margin: -25px 0 25px;
-}
-
-.hero p.year i {
-  font-size: 18px;
-  vertical-align: middle;
+  color: orange; 
 }
 
 #bracket {
   overflow:hidden;
-
   padding-top: 20px;
   font-size: 12px;
   padding: 40px 0;

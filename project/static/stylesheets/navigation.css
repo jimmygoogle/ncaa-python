@@ -45,8 +45,8 @@ nav{width:100%;}
 #cssmenu ul ul li:hover > a,#cssmenu ul ul li.active > a{color:#fff}
 #cssmenu ul ul,#cssmenu ul ul ul{position:relative;left:0;width:100%;margin:0;text-align:left}
 #cssmenu > ul > li.has-sub > a:after,#cssmenu > ul > li.has-sub > a:before,#cssmenu ul ul > li.has-sub > a:after,#cssmenu ul ul > li.has-sub > a:before{display:none}
-#cssmenu #head-mobile{display:block;padding:23px;color:#004E89;font-size:12px;font-weight:700}
-.button{width:55px;height:46px;position:absolute;right:0;top:0;cursor:pointer;z-index: 12399994;}
+#cssmenu #head-mobile{display:block;padding:15px 0 20px 50px;color:#004E89;font-size:18px;font-weight:700;text-transform: uppercase;}
+.button{width:55px;height:46px;position:absolute;left:0;top:0;cursor:pointer;z-index: 12399994;}
 .button:after{position:absolute;top:22px;right:20px;display:block;height:4px;width:20px;border-top:2px solid #004E89;border-bottom:2px solid #004E89;content:''}
 .button:before{-webkit-transition:all .3s ease;-ms-transition:all .3s ease;transition:all .3s ease;position:absolute;top:16px;right:20px;display:block;height:2px;width:20px;background:#004E89;content:''}
 .button.menu-opened:after{-webkit-transition:all .3s ease;-ms-transition:all .3s ease;transition:all .3s ease;top:23px;border:0;height:2px;width:19px;background:#fff;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg)}

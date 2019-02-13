@@ -250,9 +250,6 @@ function weightedRandom(data) {
     if (rand >= sum) return index;
   }
 }
-
-//https://api.sportradar.us/ncaamb-t3/polls/US/2018/rankings.json?api_key=ub4xqkccmjr8gkmjmvchhtwr
-//https://api.sportradar.us/ncaamb-t3/polls/AP/2018/rankings.json?api_key=ub4xqkccmjr8gkmjmvchhtwr
     
 function loadUserPicks() {
   const $userBracketInfoForm = $('#userBracketInfoForm');

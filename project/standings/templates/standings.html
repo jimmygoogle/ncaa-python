@@ -9,25 +9,25 @@
     <div class="standings">
       <table>
       <tbody>
-    <tr class="header">
-      <th>Bracket <span class="resize_mobile">Name</span></th>
-      <th>Champion</th>
-      <th>Score</th>
-      {% if has_games_left %}
-        <th>Possible</th>
-      {% endif %}
-    </tr>
-    {% for user in data %}
-      <tr>
-        <td class="standings_name"><a href="/bracket/{{user.userDisplayToken}}">{{ user.userName }}</a> {% if user.realName %}<span class="resize_mobile">({{ user.realName }})</span>{% endif %}</td>
-        <td class="standings_champ"> {{ user.teamName }} <span class="resize_mobile">({{ user.userTieBreakerPoints }})</span></td>
-        <td class="standings_score">{{ user.userScore }}</td>
-          
-        {% if has_games_left %}
-          <td class="standings_score">{{ user.bestPossibleScore }}</td>
-        {% endif %}
-        </tr>
-      {% endfor %}
+				    <tr class="header">
+				      <th>Bracket <span class="resize_mobile">Name</span></th>
+				      <th>Champion</th>
+				      <th>Score</th>
+				      {% if has_games_left %}
+				        <th>Possible</th>
+				      {% endif %}
+				    </tr>
+				    {% for user in data %}
+				      <tr>
+				        <td class="standings_name"><a href="/bracket/{{user.userDisplayToken}}">{{ user.userName }}</a> {% if user.realName %}<span class="resize_mobile">({{ user.realName }})</span>{% endif %}</td>
+				        <td class="standings_champ"> {{ user.teamName }} <span class="resize_mobile">({{ user.userTieBreakerPoints }})</span></td>
+				        <td class="standings_score">{{ user.userScore }}</td>
+				          
+				        {% if has_games_left %}
+				          <td class="standings_score">{{ user.bestPossibleScore }}</td>
+				        {% endif %}
+				        </tr>
+				    {% endfor %}
       </tbody>
       </table>
     </div>

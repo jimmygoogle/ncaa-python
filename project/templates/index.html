@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Kaushan+Script|Herr+Von+Muellerhoff">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Abel">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Istok+Web|Roboto+Condensed:700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed" rel="stylesheet">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/main.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/navigation.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/user_info.css')}}">
@@ -27,7 +28,7 @@
   <body>
     <header>
       <nav id='cssmenu'>
-        <div id='head-mobile'></div>
+        <div id='head-mobile'>{{ pool_name }}</div>
         <div class='button'></div>
         <ul>
           <li><a href="/">HOME</a></li>
@@ -38,14 +39,14 @@
         </ul>
       </nav>
     </header>
-    <header class="hero">
-      <div class="hero-wrap">
-        <p class="intro" id="intro">{{ year }} {{ pool_name }} March Madness</p>
-        <h1 id="headline">Tournament</h1>
-      </div>
-    </header>
 
     <div>
+      <header class="tournament-title">
+        <div class="tournament-title-wrap">
+          <div class="intro">{{ year }} {{ pool_name }} <span class='march-madness-header'>March Madness</span></div>
+          <div class="tournament">Tournament</div>
+        </div>
+      </header>
       {% block content %}{% endblock %}
     </div>
 

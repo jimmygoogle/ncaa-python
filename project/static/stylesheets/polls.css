@@ -1,0 +1,89 @@
+.polls {
+  width: 100%;
+  font-size: 14px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.poll table {
+  border: 1px solid rgba(255, 255, 255, .35);
+  width: 100%;
+}
+
+.poll th {
+    border: none;
+    padding: 10px;
+    text-align: center;
+}
+
+.poll td {
+    text-align: left;
+    padding-left: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, .35);
+    color: #e2e2e2;
+}
+
+.poll .header {
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
+}
+
+.rank {
+  color: orange;
+}
+
+.title {
+  font-size: 20px;	
+	 font-weight: bold;
+	 padding: 10px 10px 10px 0px;
+	 color: #e2e2e2;
+}
+
+.other-votes-ap {
+  padding: 10px 10px 10px 0px;
+  color: #e2e2e2;
+  width: 100%;
+  float: left;
+}
+
+.other-votes-usa-today {
+  padding: 10px 10px 10px 0px;
+  color: #e2e2e2;
+  width: 100%;
+  float: left;
+}
+
+.other-votes-header { 
+  font-weight: bold;
+  color: #e2e2e2;
+}
+
+.ap-poll-data {
+  float: left;
+  width: 40%;
+  padding-right: 75px;
+}
+
+.usa-today-poll-data {
+  float: left;
+  width: 40%;
+}
+
+@media screen and (max-width: 800px) {
+		.ap-poll-data {
+		  width: 100%;
+		}
+		
+		.usa-today-poll-data {
+		  width: 100%;
+		}
+		
+		.other-votes-ap, .other-votes-usa-today, .title {
+    padding-left: 10px;
+  }
+}

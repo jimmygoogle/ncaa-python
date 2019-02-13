@@ -1,7 +1,7 @@
 from flask import jsonify
 from project.ncaa_class import Ncaa
+from project.mongo import Mongo
 from collections import OrderedDict
-from pymongo import MongoClient
 import requests 
 import configparser
 import datetime
@@ -18,48 +18,65 @@ class Polls(Ncaa):
         
         self.__ap_url = config.get('POLLS', 'AP_URL')
         self.__usa_today_url = config.get('POLLS', 'USA_TODAY_URL')
+        self.__collection_name = config.get('POLLS', 'MONGODB_COLLECTION')
 
         # the polls run off of the year of the start of the season
         self.__year = str(datetime.datetime.now().year - 1)
+        
+        self.__mongo = Mongo()
     
+    def reset_polls_collection(self):
+        '''Reset/drop the polls mongodb collection'''
+
+        mongodb = self.__mongo
+        self.debug(f"reset collection '{self.__collection_name}'")
+        mongodb.drop_collection(collection_name = self.__collection_name)
+        
     def get_usa_today_poll_data(self):
-        '''Call Sports Radar API and get USA Today Poll data'''
+        '''Get USA Today Poll data'''
         
-        #self.debug(self.__usa_today_url)
-        url = re.sub(r'YEAR', self.__year, self.__usa_today_url)
-
-        usa_today_response = requests.get(url)        
-#        self.debug(usa_today_response.content)
-        return usa_today_response.json()
-
-        
-        
+        return self.get_api_data(type = 'US')
+   
     def get_ap_poll_data(self):
-        '''Call Sports Radar API and get AP Poll data'''
+        '''Get AP Poll data'''
         
-        self.debug(self.__ap_url)
-        url = re.sub(r'YEAR', self.__year, self.__ap_url)
+        return self.get_api_data(type = 'AP')
 
-        ap_response = requests.get(url)
-        #self.debug(ap_response.json())
-        #time.sleep(5)    
+    def get_api_data(self, **kwargs):
+        '''Call Sports Radar API and get Top 25 poll data'''
 
-        client = MongoClient('mongodb://localhost:27017')
+        #self.reset_polls_collection()
+        mongodb = self.__mongo
         
-        #self.debug(ap_response.json())
+        # try and get results from mongodb
+        type = kwargs['type']
+        results = mongodb.query(collection_name = self.__collection_name, query = {'poll.alias': type})
         
-        db = client['ncaa']
-        polls = db['polls']
-        polls.drop()
-
-        result = polls.insert(ap_response.json())
-
-        myquery = {"poll.alias": "AP" }
+        # return the data
+        if len(results) > 0:
+            self.debug(f"got {type} from mongo")
+            return results
         
-        mydoc = polls.find(myquery)
+        # get results from api and store them
+        else:
+            self.debug(f"getting {type} from api")
+            
+            # set api url
+            if type == 'US':
+                api_url = self.__usa_today_url
+            else:
+                api_url = self.__ap_url 
 
-        for x in mydoc:
-            self.debug(f"booyah {x}")
+            # substitute the year in url
+            url = re.sub(r'YEAR', self.__year, api_url)
+    
+            # fetch the data
+            ap_response = requests.get(url)
+            time.sleep(2)    
+            
+            # insert poll data
+            results = ap_response.json()
+            mongodb.insert(collection_name = self.__collection_name, data = results)
 
-        for x in polls.find():
-            self.debug(x)
+            return results
+

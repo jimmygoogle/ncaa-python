@@ -7,55 +7,61 @@
 <section id="bracket">
   <div class="container">
     <div class="polls">
-        <table border="1">
-          <tr>
-	          <td>
-	            AP Poll
-							      <table>
-							        <tr class="header">
-							          <th>Rank</th>
+           <div class='ap-poll-data'>
+	            <div class='title'>{{ ap_rankings['poll']['name'] }}</div>
+							      <table class='poll'>
+							        <tr class='header'>
+							          <th class='rank'>Rank</th>
 							          <th>School</th>
 							          <th>Record</th>
 							          <th>Points</th>
 							          <th>Previous</th>
 							        </tr>
-							        {% for data in ap_rankings %}
+							        {% for data in ap_rankings['rankings'] %}
 							          <tr>
-							            <td>{{ data.rankings.rank }}</td>
-							            <td>{{ data.rankings.market }} ({{data.rankings.fp_votes}})</td>  
-							            <td>{{ data.rankings.wins }}-{{ data.rankings.losses }}</td>
-							            <td>{{ data.rankings.points }}</td>
-							            <td>{{ data.rankings.prev_rank }}</td>
+							            <td>{{ data['rank'] }}</td>
+							            <td>{{ data['market'] }} {% if data['fp_votes'] %}({{ data['fp_votes'] }}){% endif %}</td>  
+							            <td>{{ data['wins'] }}-{{ data['losses'] }}</td>
+							            <td>{{ data['points'] }}</td>
+							            <td>{{ data['prev_rank'] }}</td>
 							          </tr>
 							        {% endfor %}
 							      </table>
-							      Others receiving votes: 
-	          </td>
-	          <td>
-             USA Today Poll
-             <table>
+							      
+							      <div class='other-votes-ap'><span class='other-votes-header'>Others receiving votes: </span>
+							      {% for data in ap_rankings['candidates'] %}
+							        {{ data['market'] }} ({{ data['votes'] }}){{ ',' if not loop.last }}
+							      {% endfor %}
+							      </div> 
+	          </div>
+	          
+	          <div class='usa-today-poll-data'>
+             <div class='title'>{{ usa_today_rankings['poll']['name'] }}</div>
+             <table class='poll'>
                <tr class="header">
-                 <th>Rank</th>
+                 <th class='rank'>Rank</th>
                  <th>School</th>
                  <th>Record</th>
                  <th>Points</th>
                  <th>Previous</th>
                </tr>
-               {% for data in usa_rankings %}
+               {% for data in usa_today_rankings['rankings'] %}
                  <tr>
-                   <td>{{ data.rankings.rank }}</td>
-                   <td>{{ data.rankings.market }} ({{data.rankings.fp_votes}})</td>  
-                   <td>{{ data.rankings.wins }}-{{ data.rankings.losses }}</td>
-                   <td>{{ data.rankings.points }}</td>
-                   <td>{{ data.rankings.prev_rank }}</td>
+                   <td>{{ data['rank'] }}</td>
+                   <td>{{ data['market'] }} {% if data['fp_votes'] %}({{ data['fp_votes'] }}){% endif %}</td>  
+                   <td>{{ data['wins'] }}-{{ data['losses'] }}</td>
+                   <td>{{ data['points'] }}</td>
+                   <td>{{ data['prev_rank'] }}</td>
                  </tr>
                {% endfor %}
              </table>
-             Others receiving votes: 
-	          </td>
-          </tr>
-        </table>
-    </div>
+             
+             <div class='other-votes-usa-today'><span class='other-votes-header'>Others receiving votes: </span>
+             {% for data in ap_rankings['candidates'] %}
+               {{ data['market'] }} ({{ data['votes'] }}){{ ',' if not loop.last }}
+             {% endfor %}
+             </div> 
+	          </div>
   </div>
 </section>
 {% endblock %}

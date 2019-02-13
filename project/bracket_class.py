@@ -76,11 +76,9 @@ class Bracket(Ncaa):
         
         # handle missing picks from the the master bracket by using the empty bracket and filling in the missing picks
         if is_admin:
+            self.debug(user_picks)
             for pick in user_picks:
-                # get the index of the pick
-                index = user_picks.index(pick)
-                self.debug(f"pick is {pick}")
-                admin_picks[index] = {
+                admin_picks[pick['gameIDCalc']] = {
                     'gameID': pick['gameID'],
                     'teamID': pick['teamID'],
                     'seedID': pick['seedID'],

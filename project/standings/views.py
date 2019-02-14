@@ -8,9 +8,8 @@ pool = Pool()
 standings = Standings()
 standings_blueprint = Blueprint('standings', __name__, template_folder='templates')
 
-@standings_blueprint.route('/standings/<string:sweet_sixteen>/')
-@standings_blueprint.route('/standings/')
-def show_standings(sweet_sixteen=None):
+@standings_blueprint.route('/standings/<pool_type>')
+def show_standings(pool_type):
     
     pool_name = pool.get_pool_name()
 
@@ -18,7 +17,7 @@ def show_standings(sweet_sixteen=None):
         return redirect(url_for('pool.show_pool_form'))
 
     bracket_type = 'normal'
-    if sweet_sixteen:
+    if pool_type == 'sweetsixteen':
         bracket_type = 'sweetSixteen'
     
     ## get standings data and calculate scores

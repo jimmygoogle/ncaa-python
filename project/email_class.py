@@ -1,15 +1,9 @@
-from project.mysql_python import MysqlPython
 from flask import request, render_template, jsonify, g
 from project import session
 from project.ncaa_class import Ncaa
 from project.pool_class import Pool
 from project.user_class import User
-#from collections import defaultdict
 import sys
-#import hashlib
-#import time
-#import re
-#import ast
 import smtplib
 import ssl
 from email.mime.text import MIMEText

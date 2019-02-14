@@ -166,7 +166,7 @@ li {
 }
 
 .incorrectPick {
-  color: #f98e8e !important;
+  color: #ff6868  !important;
 }
 
 .champion1 li, .champion li, .round li {
@@ -313,24 +313,19 @@ li {
 }
 
 .pick-button {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   width: 140px;
   padding: 8px;
-  background: #004E89;
-  border-top-style: none;
-  border-bottom-style: none;  
-  border-right-style: none;
-  border-left-style: none;  
+  border: 1px solid rgba(255, 255, 255, .35);
   color: #fff;
   text-transform: uppercase;
   font-weight : bold;
   font-size: 10px;
+  background-color: Transparent;
+  outline:none;
 }
 
 .pick-button:hover {
-  background: #3F915F;
+  background: orange;
 }
 
 .picks-header {
@@ -339,7 +334,7 @@ li {
   font-weight : bold;
   letter-spacing: 1.5px;
   font-family: 'Istok Web', sans-serif;
-  color: #3F915F;
+  color: orange;
   text-align: center;
 }
 
@@ -362,22 +357,11 @@ li {
   }
 }
 
-@media screen and (min-width: 981px) and (max-width: 1099px) {
-  .container {margin: 0 1%;}
-  .champion {width: 14%;}
-  .split {width:43%; }
-  .split-one .vote-box {margin-left: 138px;}
-  .hero p.intro {font-size: 28px;}
-  .hero p.year {margin: 5px 0 10px;}
-}
-
 @media screen and (max-width: 980px) {
   .container {-webkit-flex-direction:column;-moz-flex-direction:column;flex-direction:column;}
+  .tournament-title-wrap { text-align: center;}
   .split, .champion {width: 90%;margin: 35px 5%;}
   .split {border-bottom: 1px solid #b6b6b6; padding-bottom: 20px;}
-  .hero p.intro {font-size: 24px;}
-  .hero h1 {font-size: 3em; margin: 15px 0;}
-  .hero p {font-size: 1em;}
   .elite-eight-top {transform: translate(0,0);}
   .elite-eight-bottom {transform: translate(0,0);}
   .round2-header {transform: translate(0,0);}
@@ -409,13 +393,8 @@ li {
 @media screen and (max-width: 400px) {
   .split {width: 95%;margin: 25px 2.5%;}
   .current {-webkit-flex-grow:1;-moz-flex-grow:1;flex-grow:1;}
-  .tournament-title {display: none;}
-  .tournament-title .tournament {font-size: 1.5em; letter-spacing: 0;margin:0; }
-  .tournament-title p.intro {font-size: 1em;margin-bottom: -10px;}
+  .tournament-title-wrap { text-align: center;}
   .round-details {font-size: 90%;}
-  .hero-wrap {padding: 2.5em;}
-  .tournament-title p.year {margin: 5px 0 5px; font-size: 14px; font-weight: bold;}
-  .tournament-title p.year i {font-size: 12px;}
   .current li.team {width: 80%;}
   .round-one .round-details {width: 80%;}
 }

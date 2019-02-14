@@ -84,7 +84,6 @@ def show_pool_form(pool_name=None):
             return redirect(url_for('pool.index'))
         else:
             return render_template('pool.html', 
-                year = datetime.datetime.now().year,
                 is_open = 1
             )
 

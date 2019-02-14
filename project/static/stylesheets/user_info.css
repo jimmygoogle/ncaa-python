@@ -17,8 +17,14 @@ hr.details {
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 
+.pool_details {
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 200px;
+}
 
-.pool_details, .bracket_details {
+.bracket_details {
   max-width: 300px;
   margin: 0 auto;
   text-align: center;
@@ -92,12 +98,12 @@ hr.details {
   -moz-box-sizing: border-box;
   width: 65%;
   padding: 3%;
-  background: #004E89;
   border-top-style: none;
   border-bottom-style: none;  
   border-right-style: none;
-  border-left-style: none;  
-  color: #fff;
+  border-left-style: none;
+  background-color: #0d1c51;
+  color: white;
   text-transform: uppercase;
   font-weight : bold;
   font-size: 20px;

@@ -11,10 +11,14 @@ def intialize_bracket():
     
     '''Show/update 64 teams for bracket'''
     
-    # update team / game data
+    # setup bracket
     if request.method == 'POST':
         admin = Admin()
-        return admin.initialize_new_bracket()
+        
+        if 'team_data' in request.values:
+            return admin.initialize_new_bracket()
+        else:
+            return admin.setup__start_dates_for_display()
 
     # show the game/team form
     else:

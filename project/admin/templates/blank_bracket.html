@@ -1,143 +1,159 @@
 <html>
 <head>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-				<script>
-				$(document).ready (function() {
-				  $('#js-submit-data').click(function(event){
-				    event.preventDefault();
-				
-				    let teamData = {};
-				    $('#bracket').find('input').each(function() {
-				      const seedID = $(this).attr('data-seed-id');
-				      const gameID = $(this).attr('data-game-id');
-				      const teamName = $(this).val();
-				
-				      teamData[teamName] = {seed_id: seedID, game_id: gameID};
-				    });
-				
-				    $.ajax({
-				      type: 'POST',
-				      url: window.location.pathname,
-				      data: {team_data: JSON.stringify(teamData)},
-				      success: function (result) {
-				        // check for errors better
-				        alert('All good');
-				      }
-				    });
-				  });
-				});
-				</script>
+<script src='https://code.jquery.com/jquery-3.3.1.min.js' integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=' crossorigin='anonymous'></script>
+<script>
+  $(document).ready (function() {
+    // submit new bracket team data
+    $('#js-submit-bracket_data').click(function(event){
+      event.preventDefault();
+
+      let teamData = {};
+      $('#bracket').find('input').each(function() {
+        const seedID = $(this).attr('data-seed-id');
+        const gameID = $(this).attr('data-game-id');
+        const teamName = $(this).val();
+
+        teamData[teamName] = {seed_id: seedID, game_id: gameID};
+      });
+
+      $.ajax({
+        type: 'POST',
+        url: window.location.pathname,
+        data: {team_data: JSON.stringify(teamData)},
+        success: function (result) {
+        // check for errors better
+          alert('All good');
+        }
+      });
+    });
+
+    // submit date data
+    $('#js-submit-date_data').click(function(event){
+      event.preventDefault();
+
+      $.ajax({
+        type: 'POST',
+        url: window.location.pathname,
+        data: {dates: JSON.stringify($("#dates").serializeArray())},
+        success: function (result) {
+        // check for errors better
+          alert('All good');
+        }
+      });
+    });
+  });
+</script>
 </head>
 <body>
   <div align='center'>
-      <form id="bracket">
+      <form id='bracket'>
         <table>
           <tbody>
             <tr>
               <td>
-                <table border="1">
+                <table border='1'>
                   <tbody>
                     <tr>
-                      <td><input type="text" data-seed-id="1" data-game-id="1" placeholder="Seed 1"> vs. <input type="text" data-seed-id="16" data-game-id="1" placeholder="Seed 16"></td>
+                      <td><input type='text' data-seed-id='1' data-game-id='1' placeholder='Seed 1'> vs. <input type='text' data-seed-id='16' data-game-id='1' placeholder='Seed 16'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="8" data-game-id="2" placeholder="Seed 8"> vs. <input type="text" data-seed-id="9" data-game-id="2" placeholder="Seed 9"></td>
+                      <td><input type='text' data-seed-id='8' data-game-id='2' placeholder='Seed 8'> vs. <input type='text' data-seed-id='9' data-game-id='2' placeholder='Seed 9'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="5" data-game-id="3" placeholder="Seed 5"> vs. <input type="text" data-seed-id="12" data-game-id="3" placeholder="Seed 12"></td>
+                      <td><input type='text' data-seed-id='5' data-game-id='3' placeholder='Seed 5'> vs. <input type='text' data-seed-id='12' data-game-id='3' placeholder='Seed 12'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="4" data-game-id="4" placeholder="Seed 4"> vs. <input type="text" data-seed-id="13" data-game-id="4" placeholder="Seed 13"></td>
+                      <td><input type='text' data-seed-id='4' data-game-id='4' placeholder='Seed 4'> vs. <input type='text' data-seed-id='13' data-game-id='4' placeholder='Seed 13'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="6" data-game-id="5" placeholder="Seed 6"> vs. <input type="text" data-seed-id="11" data-game-id="5" placeholder="Seed 11"></td>
+                      <td><input type='text' data-seed-id='6' data-game-id='5' placeholder='Seed 6'> vs. <input type='text' data-seed-id='11' data-game-id='5' placeholder='Seed 11'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="3" data-game-id="6" placeholder="Seed 3"> vs. <input type="text" data-seed-id="14" data-game-id="6" placeholder="Seed 14"></td>
+                      <td><input type='text' data-seed-id='3' data-game-id='6' placeholder='Seed 3'> vs. <input type='text' data-seed-id='14' data-game-id='6' placeholder='Seed 14'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="7" data-game-id="7" placeholder="Seed 7"> vs. <input type="text" data-seed-id="10" data-game-id="7" placeholder="Seed 10"></td>
+                      <td><input type='text' data-seed-id='7' data-game-id='7' placeholder='Seed 7'> vs. <input type='text' data-seed-id='10' data-game-id='7' placeholder='Seed 10'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="2" data-game-id="8" placeholder="Seed 2"> vs. <input type="text" data-seed-id="15" data-game-id="8" placeholder="Seed 15"></td>
+                      <td><input type='text' data-seed-id='2' data-game-id='8' placeholder='Seed 2'> vs. <input type='text' data-seed-id='15' data-game-id='8' placeholder='Seed 15'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="1" data-game-id="9" placeholder="Seed 1"> vs. <input type="text" data-seed-id="16" data-game-id="9" placeholder="Seed 16"></td>
+                      <td><input type='text' data-seed-id='1' data-game-id='9' placeholder='Seed 1'> vs. <input type='text' data-seed-id='16' data-game-id='9' placeholder='Seed 16'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="8" data-game-id="10" placeholder="Seed 8"> vs. <input type="text" data-seed-id="9" data-game-id="10" placeholder="Seed 9"></td>
+                      <td><input type='text' data-seed-id='8' data-game-id='10' placeholder='Seed 8'> vs. <input type='text' data-seed-id='9' data-game-id='10' placeholder='Seed 9'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="5" data-game-id="11" placeholder="Seed 5"> vs. <input type="text" data-seed-id="12" data-game-id="11" placeholder="Seed 12"></td>
+                      <td><input type='text' data-seed-id='5' data-game-id='11' placeholder='Seed 5'> vs. <input type='text' data-seed-id='12' data-game-id='11' placeholder='Seed 12'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="4" data-game-id="12" placeholder="Seed 4"> vs. <input type="text" data-seed-id="13" data-game-id="12" placeholder="Seed 13"></td>
+                      <td><input type='text' data-seed-id='4' data-game-id='12' placeholder='Seed 4'> vs. <input type='text' data-seed-id='13' data-game-id='12' placeholder='Seed 13'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="6" data-game-id="13" placeholder="Seed 6"> vs. <input type="text" data-seed-id="11" data-game-id="13" placeholder="Seed 11"></td>
+                      <td><input type='text' data-seed-id='6' data-game-id='13' placeholder='Seed 6'> vs. <input type='text' data-seed-id='11' data-game-id='13' placeholder='Seed 11'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="3" data-game-id="14" placeholder="Seed 3"> vs. <input type="text" data-seed-id="14" data-game-id="14" placeholder="Seed 14"></td>
+                      <td><input type='text' data-seed-id='3' data-game-id='14' placeholder='Seed 3'> vs. <input type='text' data-seed-id='14' data-game-id='14' placeholder='Seed 14'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="7" data-game-id="15" placeholder="Seed 7"> vs. <input type="text" data-seed-id="10" data-game-id="15" placeholder="Seed 10"></td>
+                      <td><input type='text' data-seed-id='7' data-game-id='15' placeholder='Seed 7'> vs. <input type='text' data-seed-id='10' data-game-id='15' placeholder='Seed 10'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="2" data-game-id="16" placeholder="Seed 2"> vs. <input type="text" data-seed-id="15" data-game-id="16" placeholder="Seed 15"></td>
+                      <td><input type='text' data-seed-id='2' data-game-id='16' placeholder='Seed 2'> vs. <input type='text' data-seed-id='15' data-game-id='16' placeholder='Seed 15'></td>
                     </tr>
                   </tbody>
                 </table>
               </td>
               <td>
-                <table border="1">
+                <table border='1'>
                   <tbody>
                     <tr>
-                      <td><input type="text" data-seed-id="1" data-game-id="17" placeholder="Seed 1"> vs. <input type="text" data-seed-id="16" data-game-id="17" placeholder="Seed 16"></td>
+                      <td><input type='text' data-seed-id='1' data-game-id='17' placeholder='Seed 1'> vs. <input type='text' data-seed-id='16' data-game-id='17' placeholder='Seed 16'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="8" data-game-id="18" placeholder="Seed 8"> vs. <input type="text" data-seed-id="9" data-game-id="18" placeholder="Seed 9"></td>
+                      <td><input type='text' data-seed-id='8' data-game-id='18' placeholder='Seed 8'> vs. <input type='text' data-seed-id='9' data-game-id='18' placeholder='Seed 9'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="5" data-game-id="19" placeholder="Seed 5"> vs. <input type="text" data-seed-id="12" data-game-id="19" placeholder="Seed 12"></td>
+                      <td><input type='text' data-seed-id='5' data-game-id='19' placeholder='Seed 5'> vs. <input type='text' data-seed-id='12' data-game-id='19' placeholder='Seed 12'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="4" data-game-id="20" placeholder="Seed 4"> vs. <input type="text" data-seed-id="13" data-game-id="20" placeholder="Seed 13"></td>
+                      <td><input type='text' data-seed-id='4' data-game-id='20' placeholder='Seed 4'> vs. <input type='text' data-seed-id='13' data-game-id='20' placeholder='Seed 13'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="6" data-game-id="21" placeholder="Seed 6"> vs. <input type="text" data-seed-id="11" data-game-id="21" placeholder="Seed 11"></td>
+                      <td><input type='text' data-seed-id='6' data-game-id='21' placeholder='Seed 6'> vs. <input type='text' data-seed-id='11' data-game-id='21' placeholder='Seed 11'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="3" data-game-id="22" placeholder="Seed 3"> vs. <input type="text" data-seed-id="14" data-game-id="22" placeholder="Seed 14"></td>
+                      <td><input type='text' data-seed-id='3' data-game-id='22' placeholder='Seed 3'> vs. <input type='text' data-seed-id='14' data-game-id='22' placeholder='Seed 14'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="7" data-game-id="23" placeholder="Seed 7"> vs. <input type="text" data-seed-id="10" data-game-id="23" placeholder="Seed 10"></td>
+                      <td><input type='text' data-seed-id='7' data-game-id='23' placeholder='Seed 7'> vs. <input type='text' data-seed-id='10' data-game-id='23' placeholder='Seed 10'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="2" data-game-id="24" placeholder="Seed 2"> vs. <input type="text" data-seed-id="15" data-game-id="24" placeholder="Seed 15"></td>
+                      <td><input type='text' data-seed-id='2' data-game-id='24' placeholder='Seed 2'> vs. <input type='text' data-seed-id='15' data-game-id='24' placeholder='Seed 15'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="1" data-game-id="25" placeholder="Seed 1"> vs. <input type="text" data-seed-id="16" data-game-id="25" placeholder="Seed 16"></td>
+                      <td><input type='text' data-seed-id='1' data-game-id='25' placeholder='Seed 1'> vs. <input type='text' data-seed-id='16' data-game-id='25' placeholder='Seed 16'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="8" data-game-id="26" placeholder="Seed 8"> vs. <input type="text" data-seed-id="9" data-game-id="26" placeholder="Seed 9"></td>
+                      <td><input type='text' data-seed-id='8' data-game-id='26' placeholder='Seed 8'> vs. <input type='text' data-seed-id='9' data-game-id='26' placeholder='Seed 9'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="5" data-game-id="27" placeholder="Seed 5"> vs. <input type="text" data-seed-id="12" data-game-id="27" placeholder="Seed 12"></td>
+                      <td><input type='text' data-seed-id='5' data-game-id='27' placeholder='Seed 5'> vs. <input type='text' data-seed-id='12' data-game-id='27' placeholder='Seed 12'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="4" data-game-id="28" placeholder="Seed 4"> vs. <input type="text" data-seed-id="13" data-game-id="28" placeholder="Seed 13"></td>
+                      <td><input type='text' data-seed-id='4' data-game-id='28' placeholder='Seed 4'> vs. <input type='text' data-seed-id='13' data-game-id='28' placeholder='Seed 13'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="6" data-game-id="29" placeholder="Seed 6"> vs. <input type="text" data-seed-id="11" data-game-id="29" placeholder="Seed 11"></td>
+                      <td><input type='text' data-seed-id='6' data-game-id='29' placeholder='Seed 6'> vs. <input type='text' data-seed-id='11' data-game-id='29' placeholder='Seed 11'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="3" data-game-id="30" placeholder="Seed 3"> vs. <input type="text" data-seed-id="14" data-game-id="30" placeholder="Seed 14"></td>
+                      <td><input type='text' data-seed-id='3' data-game-id='30' placeholder='Seed 3'> vs. <input type='text' data-seed-id='14' data-game-id='30' placeholder='Seed 14'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="7" data-game-id="31" placeholder="Seed 7"> vs. <input type="text" data-seed-id="10" data-game-id="31" placeholder="Seed 10"></td>
+                      <td><input type='text' data-seed-id='7' data-game-id='31' placeholder='Seed 7'> vs. <input type='text' data-seed-id='10' data-game-id='31' placeholder='Seed 10'></td>
                     </tr>
                     <tr>
-                      <td><input type="text" data-seed-id="2" data-game-id="32" placeholder="Seed 2"> vs. <input type="text" data-seed-id="15" data-game-id="32" placeholder="Seed 15"></td>
+                      <td><input type='text' data-seed-id='2' data-game-id='32' placeholder='Seed 2'> vs. <input type='text' data-seed-id='15' data-game-id='32' placeholder='Seed 15'></td>
                     </tr>
                   </tbody>
                 </table>
@@ -145,7 +161,31 @@
             </tr>
           </tbody>
         </table>
-        <button id="js-submit-data">Submit</button>
+        <button id='js-submit-bracket_data'>Submit</button>
+      </form>
+      
+      <form id='dates'>
+      <table>
+      <tr>
+        <td>Round 1 dates: <input type='text' name='round_one'></td>
+      </tr>
+      <tr>
+        <td>Round 2 dates: <input type='text' name='round_two'></td>
+      </tr>
+      <tr>
+        <td>Sweet 16 dates dates: <input type='text' name='round_three'></td>
+      </tr>
+      <tr>
+        <td>Eight 8 dates: <input type='text' name='round_four'></td>
+      </tr>
+      <tr>
+        <td>Final Four date: <input type='text' name='round_five'></td>
+      </tr>
+      <tr>
+        <td>Championship date: <input type='text' name='round_six'></td>
+      </tr>
+      </table>
+      <button id='js-submit-date_data'>Submit</button>
       </form>
   </div>
 </body>

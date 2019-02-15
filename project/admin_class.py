@@ -1,6 +1,8 @@
 from flask import request, jsonify
 from project.ncaa_class import Ncaa
+from project.polls_class import Polls
 from project.mysql_python import MysqlPython
+from project.mongo import Mongo
 import ast
 import configparser
 
@@ -9,11 +11,20 @@ class Admin(Ncaa):
 
     def __init__(self, **kwargs):
         self.__db = MysqlPython()
-        
-        # get edit token
+        self.__mongo = Mongo()
+
         config = configparser.ConfigParser()
         config.read("site.cfg")
+
         self.__edit_token = config.get('DEFAULT', 'ADMIN_EDIT_TOKEN')
+        self.__collection_name = config.get('DATES', 'MONGODB_COLLECTION')
+
+    def reset_dates_collection(self):
+        '''Reset/drop the dates mongodb collection'''
+
+        mongodb = self.__mongo
+        self.debug(f"reset collection '{self.__collection_name}'")
+        mongodb.drop_collection(collection_name = self.__collection_name)
         
     def get_edit_token(self):
         '''Get edit token'''
@@ -21,7 +32,15 @@ class Admin(Ncaa):
         return self.__edit_token
     
     def initialize_new_bracket(self):
-        '''Delete all the existing team data and insert new team data'''
+        '''Delete all the existing team data and insert new team data and clear out and repopulate top 25 poll data'''
+        
+        # delete the top 25 poll data
+        polls = Polls()
+        polls.reset_polls_collection
+        
+        # get the new AP poll data
+        polls.get_ap_poll_data()
+        polls.get_usa_today_poll_data()
 
         # delete all the current team data
         self.__db.insert(proc='DeleteTeams', params=[])
@@ -36,7 +55,29 @@ class Admin(Ncaa):
             
             self.__db.insert(proc='InsertTeamsData', params=[team_name, seed_id, game_id])
 
-        # TODO: this needs be error handling
+        # TODO: this needs better error handling
+        return jsonify({
+            'status' : 1,
+        })
+        
+    def setup__start_dates_for_display(self):
+        '''Write the game start dates to mongodb'''
+            
+        # clear out the old data
+        self.reset_dates_collection()
+        
+        # transform data for easier retrieval
+        data = ast.literal_eval(request.values['dates'])
+
+        dates = []
+        for item in data:
+            dates.append({item['name']: item['value']})
+
+        # insert new dates
+        mongodb = self.__mongo
+        mongodb.insert(collection_name = self.__collection_name, data = dates)
+
+        # TODO: this needs better error handling
         return jsonify({
             'status' : 1,
         })

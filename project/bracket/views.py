@@ -100,5 +100,6 @@ def user_bracket(user_token):
             user_data = data['user_info'],
             is_open = pool_is_open,
             edit_type = edit_type,
-            bracket_type = bracket_type
+            bracket_type = bracket_type,
+            dates = bracket.get_start_dates()
         )

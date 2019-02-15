@@ -44,7 +44,8 @@ def index():
                 show_user_bracket_form = 1,
                 is_open = 1,
                 edit_type = edit_type,
-                bracket_type = bracket_type
+                bracket_type = bracket_type,
+                dates = bracket.get_start_dates()
             )
         
         # the pool is closed so show the master bracket
@@ -62,6 +63,7 @@ def index():
                 team_data = data['team_data'],
                 show_user_bracket_form = 0,
                 is_open = 0,
+                dates = bracket.get_start_dates()
             )
 
 ## routes for pool setup/switching

@@ -24,7 +24,7 @@
         <!-- LEFT TOP 16 START -->
         <div class='round-details'>Round 1 
           <br />
-          <span class='date'>March 15-16</span>
+          <span class='date'>{{dates[0]['round_one']}}</span>
         </div>
         <ul class='matchup game1' data-games='65|97|113|121|125'>
           <li class='team team-top' id='slot1' data-team-id="{{team_data[0]['teamID']}}"> {{team_data[0]['seedID']}} {{team_data[0]['teamName']}}</li>
@@ -66,7 +66,7 @@
         <!-- LEFT TOP 8 START -->
         <div class='round-details round2-header'>Round 2
           <br />
-          <span class='date'>March 17-18</span>
+          <span class='date'>{{dates[1]['round_two']}}</span>
         </div>
         <ul class='matchup game33' data-games='97|114|121|125'>
           <li class='team team-top {{user_picks[0]['pickCSS']}}' id='slot65' data-team-id="{{user_picks[0]['teamID']}}"> {{user_picks[0]['seedID']}} {{user_picks[0]['teamName']}}</li>
@@ -93,7 +93,7 @@
         <div class='round-details sixteen-header'>
           Sweet Sixteen
           <br />
-          <span class='date'>March 22-23</span>
+          <span class='date'>{{dates[2]['round_three']}}</span>
         </div>
         <ul class='matchup game49' data-games='113|121|125'>
           <li class='team team-top {{user_picks[32]['pickCSS']}}' id='slot97' data-team-id="{{user_picks[32]['teamID']}}"> {{user_picks[32]['seedID']}} {{user_picks[32]['teamName']}}</li>
@@ -113,7 +113,7 @@
         <div class='round-details eight-header'>
           Elite Eight
           <br />
-          <span class='date'>March 24-25</span>
+          <span class='date'>{{dates[3]['round_four']}}</span>
         </div>
         <ul class='matchup game57 championship elite-eight-top' data-games='121|125'>
           <li class='team team-top {{user_picks[48]['pickCSS']}}' id='slot113' data-team-id="{{user_picks[48]['teamID']}}"> {{user_picks[48]['seedID']}} {{user_picks[48]['teamName']}}</li>
@@ -132,7 +132,7 @@
         <div class='round-details sixteen-header'>
           Sweet Sixteen
           <br />
-          <span class='date'>March 22-23</span>
+          <span class='date'>{{dates[2]['round_three']}}</span>
         </div> 
         <ul class='matchup game53' data-games='117|123|126'>
           <li class='team team-top {{user_picks[40]['pickCSS']}}' id='slot105' data-team-id="{{user_picks[40]['teamID']}}"> {{user_picks[40]['seedID']}} {{user_picks[40]['teamName']}}</li>
@@ -151,7 +151,7 @@
         <div class='round-details round2-header'>
           Round 2
           <br />
-          <span class='date'>March 17-18</span>
+          <span class='date'>{{dates[1]['round_two']}}</span>
         </div>      
         <ul class='matchup game41' data-games='105|117|123|126'>
           <li class='team team-top {{user_picks[16]['pickCSS']}}' id='slot81' data-team-id="{{user_picks[16]['teamID']}}"> {{user_picks[16]['seedID']}} {{user_picks[16]['teamName']}}</li>
@@ -178,7 +178,7 @@
         <div class='round-details'>
           Round 1
           <br />
-          <span class='date'>March 15-16</span>
+          <span class='date'>{{dates[0]['round_one']}}</span>
         </div>
         <ul class='matchup game17' data-games='81|105|117|123|126'>
           <li class='team team-top ' id='slot33' data-team-id="{{team_data[32]['teamID']}}"> {{team_data[32]['seedID']}} {{team_data[32]['teamName']}}</li>
@@ -222,7 +222,7 @@
         <div class='round-details'>
           Final Four
           <br />
-          <span class='date'>March 31</span>
+          <span class='date'>{{dates[4]['round_five']}}</span>
         </div>
         <ul class='matchup-less game61 championship final-four-left' data-games='125'>
           <li class='team team-top {{user_picks[56]['pickCSS']}}' id='slot121' data-team-id="{{user_picks[56]['teamID']}}"> {{user_picks[56]['seedID']}} {{user_picks[56]['teamName']}}</li>
@@ -234,7 +234,7 @@
         <div class='round-details'>
           Championship
           <br />
-          <span class='date'>April 2</span>
+          <span class='date'>{{dates[5]['round_six']}}</span>
         </div>
         <ul class='matchup-less game63 championship' data-games='none'>
           <li class='team team-top {{user_picks[60]['pickCSS']}}' id='slot125' data-team-id="{{user_picks[60]['teamID']}}"> {{user_picks[60]['seedID']}} {{user_picks[60]['teamName']}}</li>
@@ -246,7 +246,7 @@
         <div class='round-details'>
           Final Four
           <br />
-          <span class='date'>March 31</span>
+          <span class='date'>{{dates[4]['round_five']}}</span>
         </div>
         <ul class='matchup-less game62 championship final-four-right' data-games='126'>
           <li class='team team-top {{user_picks[58]['pickCSS']}}' id='slot123' data-team-id="{{user_picks[58]['teamID']}}"> {{user_picks[58]['seedID']}} {{user_picks[58]['teamName']}}</li>
@@ -270,7 +270,7 @@
         <div class='round-details'>
           Round 1
           <br />
-          <span class='date'>March 15-16</span>
+          <span class='date'>{{dates[0]['round_one']}}</span>
         </div>
         <ul class='matchup game9' data-games='73|101|115|122|125'>
           <li class='team team-top' id='slot17' data-team-id="{{team_data[16]['teamID']}}"> {{team_data[16]['seedID']}} {{team_data[16]['teamName']}}</li>
@@ -313,7 +313,7 @@
         <div class='round-details round2-header'>
           Round 2
           <br />
-          <span class='date'>March 17-18</span>
+          <span class='date'>{{dates[1]['round_two']}}</span>
         </div>
         <ul class='matchup game37' data-games='101|115|122|125'>
           <li class='team team-top {{user_picks[8]['pickCSS']}}' id='slot73' data-team-id="{{user_picks[8]['teamID']}}"> {{user_picks[8]['seedID']}} {{user_picks[8]['teamName']}}</li>
@@ -340,7 +340,7 @@
         <div class='round-details sixteen-header'>
           Sweet Sixteen
           <br />
-          <span class='date'>March 22-23</span>
+          <span class='date'>{{dates[2]['round_three']}}</span>
         </div>
         <ul class='matchup game51' data-games='115|122|125'>
           <li class='team team-top {{user_picks[36]['pickCSS']}}' id='slot101' data-team-id="{{user_picks[36]['teamID']}}"> {{user_picks[36]['seedID']}} {{user_picks[36]['teamName']}}</li>
@@ -360,7 +360,7 @@
         <div class='round-details eight-header'>
           Elite Eight
           <br />
-          <span class='date'>March 24-25</span>
+          <span class='date'>{{dates[3]['round_four']}}</span>
         </div>
         <ul class='matchup game58 championship elite-eight-top' data-games='122|125'>
           <li class='team team-top {{user_picks[50]['pickCSS']}}' id='slot115' data-team-id="{{user_picks[50]['teamID']}}"> {{user_picks[50]['seedID']}} {{user_picks[50]['teamName']}}</li>
@@ -379,7 +379,7 @@
         <div class='round-details sixteen-header'>
           Sweet Sixteen
           <br />
-          <span class='date'>March 22-23</span>
+          <span class='date'>{{dates[2]['round_three']}}</span>
         </div>
         <ul class='matchup game55' data-games='119|124|126'>
           <li class='team team-top {{user_picks[44]['pickCSS']}}' id='slot109' data-team-id="{{user_picks[44]['teamID']}}"> {{user_picks[44]['seedID']}} {{user_picks[44]['teamName']}}</li>
@@ -398,7 +398,7 @@
         <div class='round-details round2-header'>
           Round 2
           <br />
-          <span class='date'>March 17-18</span>
+          <span class='date'>{{dates[1]['round_two']}}</span>
         </div>
         <ul class='matchup game45' data-games='109|119|124|126'>
           <li class='team team-top {{user_picks[24]['pickCSS']}}' id='slot89' data-team-id="{{user_picks[24]['teamID']}}"> {{user_picks[24]['seedID']}} {{user_picks[24]['teamName']}}</li>
@@ -425,7 +425,7 @@
         <div class='round-details'> 
           Round 1
           <br />
-          <span class='date'>March 15-16</span>
+          <span class='date'>{{dates[0]['round_one']}}</span>
         </div>
         <ul class='matchup game25' data-games='89|109|119|124|126'>
           <li class='team team-top' id='slot49' data-team-id="{{team_data[48]['teamID']}}"> {{team_data[48]['seedID']}} {{team_data[48]['teamName']}}</li>

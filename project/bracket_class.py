@@ -4,8 +4,10 @@ from project.user_class import User
 from project.pool_class import Pool
 from project.email_class import Email
 from project.mysql_python import MysqlPython
+from project.mongo import Mongo
 from project import session
 import ast
+import configparser
 
 class Bracket(Ncaa):
     '''Bracket class to get/set bracket information for a user'''
@@ -233,6 +235,20 @@ class Bracket(Ncaa):
 
     def score_all_brackets(self):
         '''Score all user brackets. This is called after each admin bracket update'''
+        
         self.debug('score_all_brackets')
         self.__db.update(proc = 'ScoreAllBrackets', params = [])
+      
+    def get_start_dates(self):
+        '''Get the start dates for the rounds'''
         
+        mongodb = Mongo()
+        
+        config = configparser.ConfigParser()
+        config.read("site.cfg")
+        
+        date_collection_name = config.get('DATES', 'MONGODB_COLLECTION')
+        
+        results = mongodb.query(collection_name = date_collection_name, query = {})
+        return results
+          

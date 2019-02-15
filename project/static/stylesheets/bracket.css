@@ -357,6 +357,12 @@ li {
   }
 }
 
+@media screen and (min-width: 981px) and (max-width: 1299px) {
+  .page {
+    padding: 10px;
+  }	
+}
+
 @media screen and (max-width: 980px) {
   .container {-webkit-flex-direction:column;-moz-flex-direction:column;flex-direction:column;}
   .tournament-title-wrap { text-align: center;}

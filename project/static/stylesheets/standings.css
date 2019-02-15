@@ -34,6 +34,13 @@
   cursor: pointer;
 }
 
+@media screen and (min-width: 801px) and (max-width: 1299px) {
+  .standings {
+    width: 70%;
+    font-size: 1em;
+  }
+}
+
 @media screen and (max-width: 800px) {
 	 .standings {
 	   width: 100%;

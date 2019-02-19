@@ -8,5 +8,7 @@
 __pycache__
 venv
 instance/
-models
+mysql/
+models/
+init_db/
 site.cfg

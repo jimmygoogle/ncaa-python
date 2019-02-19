@@ -10,7 +10,22 @@ services:
       - .:/app
     depends_on:
       - mongo
+      - db
   mongo:
     image: mongo
     ports:
       - "27017:27017"
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'MarchMadness'
+      MYSQL_USER: 'march_madness'
+      MYSQL_PASSWORD: 'a2JwtCyZxgQf8T7F'
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - ./project/mysql/init_db:/docker-entrypoint-initdb.d

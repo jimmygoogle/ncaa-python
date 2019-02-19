@@ -5,6 +5,7 @@ from project.mysql_python import MysqlPython
 from project.mongo import Mongo
 import ast
 import configparser
+import re
 
 class Admin(Ncaa):
     '''Performs admin functions such as creating a new bracket or editing the master bracket'''
@@ -60,14 +61,14 @@ class Admin(Ncaa):
             'status' : 1,
         })
         
-    def setup__start_dates_for_display(self):
+    def setup_game_start_dates_for_display(self):
         '''Write the game start dates to mongodb'''
             
         # clear out the old data
         self.reset_dates_collection()
         
         # transform data for easier retrieval
-        data = ast.literal_eval(request.values['dates'])
+        data = ast.literal_eval(request.values['game_dates'])
 
         dates = []
         for item in data:
@@ -81,3 +82,35 @@ class Admin(Ncaa):
         return jsonify({
             'status' : 1,
         })
+
+    def setup_pool_open_close_dates(self):
+        '''Update pool start/end dates in DB'''
+
+        # update the start/end times
+        dates = ast.literal_eval(request.values['pool_dates'])
+        self.__db.update(proc = 'UpdatePoolData', params = [dates['normal_close'], dates['sweet_16_open'], dates['sweet_16_close']])
+
+        # TODO: this needs better error handling
+        return jsonify({
+            'status' : 1,
+        })
+        
+    def add_new_pool(self):
+        '''Add new pool to DB'''
+            
+        # try and add new pool and check to see if it already exists
+        data = ast.literal_eval(request.values['pool_name'])
+        self.__db.insert(proc = 'AddNewPool', params = [data[0]['value']])
+        errors = self.__db.errors
+
+        if len(errors) > 0:
+            self.debug('HEYO')
+            status = str(errors[0])
+        else:
+            status = 'ok'
+
+        # TODO: this needs better error handling
+        return jsonify({
+            'status' : status,
+        })
+ 

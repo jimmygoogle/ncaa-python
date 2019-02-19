@@ -14,11 +14,15 @@ def intialize_bracket():
     # setup bracket
     if request.method == 'POST':
         admin = Admin()
-        
+
         if 'team_data' in request.values:
             return admin.initialize_new_bracket()
-        else:
-            return admin.setup__start_dates_for_display()
+        elif 'game_dates' in request.values:
+            return admin.setup_game_start_dates_for_display()
+        elif 'pool_dates' in request.values:
+            return admin.setup_pool_open_close_dates()
+        elif 'pool_name' in request.values:
+            return admin.add_new_pool()
 
     # show the game/team form
     else:

@@ -27,20 +27,56 @@
       });
     });
 
-    // submit date data
-    $('#js-submit-date_data').click(function(event){
+    // submit game date data
+    $('#js-submit-game_date_data').click(function(event){
       event.preventDefault();
 
       $.ajax({
         type: 'POST',
         url: window.location.pathname,
-        data: {dates: JSON.stringify($("#dates").serializeArray())},
+        data: {game_dates: JSON.stringify($("#game_dates").serializeArray())},
         success: function (result) {
         // check for errors better
           alert('All good');
         }
       });
     });
+    
+    // submit add new pool
+    $('#js-submit-add_pool').click(function(event){
+      event.preventDefault();
+
+      $.ajax({
+        type: 'POST',
+        url: window.location.pathname,
+        data: {pool_name: $("input[name=pool_name]")},
+        success: function (result) {
+          alert(result['status']);
+        }
+      });
+    });
+
+    // submit pool start/end date data
+    $('#js-submit-pool_dates_data').click(function(event){
+      event.preventDefault();
+
+      const $form = $('#pool_dates');
+      const dates = {
+          normal_close: $form.find("input[name=normal_close]").val(),
+          sweet_16_open: $form.find("input[name=sweet_16_open]").val(), 
+          sweet_16_close: $form.find("input[name=sweet_16_close]").val() 
+      };
+
+      $.ajax({
+        type: 'POST',
+        url: window.location.pathname,
+        data: {pool_dates: JSON.stringify(dates)},
+        success: function (result) {
+          alert('All good');
+        }
+      });
+    });
+
   });
 </script>
 </head>
@@ -164,28 +200,52 @@
         <button id='js-submit-bracket_data'>Submit</button>
       </form>
       
-      <form id='dates'>
-      <table>
-      <tr>
-        <td>Round 1 dates: <input type='text' name='round_one'></td>
-      </tr>
-      <tr>
-        <td>Round 2 dates: <input type='text' name='round_two'></td>
-      </tr>
-      <tr>
-        <td>Sweet 16 dates dates: <input type='text' name='round_three'></td>
-      </tr>
-      <tr>
-        <td>Eight 8 dates: <input type='text' name='round_four'></td>
-      </tr>
-      <tr>
-        <td>Final Four date: <input type='text' name='round_five'></td>
-      </tr>
-      <tr>
-        <td>Championship date: <input type='text' name='round_six'></td>
-      </tr>
-      </table>
-      <button id='js-submit-date_data'>Submit</button>
+      <form id='game_dates'>
+        <table>
+          <tr>
+            <td>Round 1 dates: <input type='text' name='round_one'></td>
+          </tr>
+          <tr>
+            <td>Round 2 dates: <input type='text' name='round_two'></td>
+          </tr>
+          <tr>
+            <td>Sweet 16 dates dates: <input type='text' name='round_three'></td>
+          </tr>
+          <tr>
+            <td>Eight 8 dates: <input type='text' name='round_four'></td>
+          </tr>
+          <tr>
+            <td>Final Four date: <input type='text' name='round_five'></td>
+          </tr>
+          <tr>
+            <td>Championship date: <input type='text' name='round_six'></td>
+         </tr>
+       </table>
+      <button id='js-submit-game_date_data'>Submit</button>
+      </form>
+      
+      <form id='pool_dates'>
+        <table>
+        <tr>
+          <td>Pool close date/time: <input type='text' name='normal_close' placeholder='ex: 2018-03-19 14:52:58'></td>
+        </tr>
+        <tr>
+          <td>Sweet 16 pool open date/time : <input type='text' name='sweet_16_open' placeholder='ex: 2018-03-19 14:52:58'></td>
+        </tr>
+        <tr>
+          <td>Sweet 16 pool close date/time: <input type='text' name='sweet_16_close' placeholder='ex: 2018-03-19 14:52:58'></td>
+        </tr>
+        </table>
+        <button id='js-submit-pool_dates_data'>Submit</button>
+      </form>
+
+      <form id='add_pool'>
+        <table>
+        <tr>
+          <td>Add a new pool: <input type='text' name='pool_name' placeholder='Add a new pool'></td>
+        </tr>
+        </table>
+        <button id='js-submit-add_pool'>Submit</button>
       </form>
   </div>
 </body>

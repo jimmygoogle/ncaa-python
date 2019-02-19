@@ -1,5 +1,5 @@
 from flask import Flask, request, session, g
-
+import time;
 def create_app(is_testing=None):
     
     app = Flask(__name__, instance_relative_config=True)
@@ -10,7 +10,7 @@ def create_app(is_testing=None):
     with app.app_context():
     
         if is_testing is None:
-            #set up DB connection
+            #set up mysql connection
             db = MysqlPython()
             db.get_db()
             
@@ -23,6 +23,12 @@ def create_app(is_testing=None):
             flask_session = Session()
             app.config['SESSION_TYPE'] = 'filesystem'
             flask_session.init_app(app)
+            
+            # close the DB connections
+            @app.teardown_request
+            def teardown_request(response_or_exc):
+                db.close_db()
+                mongo.close_db()
     
     if __name__ == '__main__':
         app.debug = True

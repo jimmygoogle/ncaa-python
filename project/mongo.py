@@ -24,24 +24,26 @@ class Mongo(object):
             self.__database = config.get('MONGODB', 'MONGODB_DATABASE')
 
         self.errors = []
+        self.__client = None
 
     def get_db(self):
         '''Make a connection to mongo that will live for the duration of the request'''
 
         self.debug(f"get_db")
         if 'mongo' not in g:
-            client = MongoClient(f"mongodb://{self.__host}:{self.__port}")
-            g.mongo = client[self.__database]
- 
-#        except Error as error:
-#            
-#            self.debug(f"Could not connect ... {error}")
-#            self.errors.append(error)
-#            g.mongo = None
+            self.__client = MongoClient(f"mongodb://{self.__host}:{self.__port}")
+            g.mongo = self.__client[self.__database]
 
-        self.debug(g.mongo)
         return g.mongo
 
+    def close_db(self, e=None):
+        '''Close connection to mongodb'''
+            
+        g.pop('mongo', None)
+
+        if self.__client is not None:
+            self.__client.close()
+        
     def get_collection(self, **kwargs):
         '''Get/create the collection specified'''
         
@@ -67,35 +69,9 @@ class Mongo(object):
         collection = self.get_collection(**kwargs)
         collection.insert(data)
 
-#        except Error as error:
-#            pass
-##            self.debug(f"Failed to insert: {error}")
-##            self.errors.append(error)
-
 
     def query(self, **kwargs):
         '''Get data from the defined collection based on the query param'''
-        
-        
-        #client = MongoClient('mongodb://localhost:27017')
-        
-        #self.debug(ap_response.json())
-        
-#        db = client['ncaa']
-#        polls = db['polls']
-#        polls.drop()
-#
-#        result = polls.insert(ap_response.json())
-#
-#        myquery = {"poll.alias": "AP" }
-#        
-#        mydoc = polls.find(myquery)
-#
-#        for x in mydoc:
-#            self.debug(f"booyah {x}")
-#
-#        for x in polls.find():
-#            self.debug(x)
 
         # get collection and make a query
         collection = self.get_collection(**kwargs)
@@ -104,11 +80,6 @@ class Mongo(object):
         data = []
         for result in results:
            data.append(result)
-
-#        except Error as error:
-#            pass
-#            self.debug(f"Failed to query: {error}")
-#            self.errors.append(error)
 
         return data
 

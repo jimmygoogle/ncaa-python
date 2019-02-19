@@ -35,9 +35,6 @@ class MysqlPython(object):
 
         self.errors = []
 
-    def init_app(app):
-        app.teardown_appcontext(self.close_db)
-
     def get_db(self):
         '''Make a connection to the DB that will live for the duration of the request'''
 
@@ -49,7 +46,8 @@ class MysqlPython(object):
                     'user': self.__user,
                     'password': self.__password,
                     'charset': self.__charset,
-                    'autocommit': self.__auto_commit
+                    'autocommit': self.__auto_commit,
+                    'auth_plugin': 'mysql_native_password'
                 }
                 g.db = mysql.connector.connect(**dbconfig)
  
@@ -61,6 +59,8 @@ class MysqlPython(object):
         return g.db
     
     def close_db(self, e=None):
+        '''Close connection to mysql'''
+
         db = g.pop('db', None)
 
         if db is not None:

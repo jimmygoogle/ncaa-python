@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class='admin'>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+    {% for message in messages %}
+      <li><strong>{{ message }}</strong></li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+  <p>
+    <a href='/admin/new'>Setup a new bracket</a> | <a href='/admin/master'>Edit master bracket</a> | <a href='/admin/pool'>Create a new pool</a> | <a href='/admin/polls'>Reset Top 25 pools</a>
+  </p>
+</div>
+{% endblock %}

@@ -1,11 +1,15 @@
-from flask import request, jsonify
+from flask import request, jsonify, redirect
 from project.ncaa_class import Ncaa
 from project.polls_class import Polls
+from project.user_class import User
 from project.mysql_python import MysqlPython
 from project.mongo import Mongo
+from project import session
 import ast
 import configparser
 import re
+import hashlib
+import binascii
 
 class Admin(Ncaa):
     '''Performs admin functions such as creating a new bracket or editing the master bracket'''
@@ -19,6 +23,7 @@ class Admin(Ncaa):
 
         self.__edit_token = config.get('DEFAULT', 'ADMIN_EDIT_TOKEN')
         self.__collection_name = config.get('DATES', 'MONGODB_COLLECTION')
+        self.__admin_login_salt = config.get('DEFAULT', 'ADMIN_LOGIN_SALT')
 
     def reset_dates_collection(self):
         '''Reset/drop the dates mongodb collection'''
@@ -35,13 +40,8 @@ class Admin(Ncaa):
     def initialize_new_bracket(self):
         '''Delete all the existing team data and insert new team data and clear out and repopulate top 25 poll data'''
         
-        # delete the top 25 poll data
-        polls = Polls()
-        polls.reset_polls_collection
-        
-        # get the new AP poll data
-        polls.get_ap_poll_data()
-        polls.get_usa_today_poll_data()
+        # reset and repull top 25 poll data
+        self.reset_and_pull_poll_data()
 
         # delete all the current team data
         self.__db.insert(proc='DeleteTeams', params=[])
@@ -55,12 +55,26 @@ class Admin(Ncaa):
             game_id = team_data[team_name]['game_id']
             
             self.__db.insert(proc='InsertTeamsData', params=[team_name, seed_id, game_id])
-
+        
         # TODO: this needs better error handling
         return jsonify({
             'status' : 1,
         })
+
+    def reset_and_pull_poll_data(self):
+        '''Clear and repull AP and USA Today Top 25 polls'''
+
+        self.debug('reset_and_pull_poll_data')
+        # delete the top 25 poll data
+        polls = Polls()
+        polls.reset_polls_collection()
         
+        # get the new AP poll data
+        polls.get_ap_poll_data()
+        polls.get_usa_today_poll_data()
+        
+        return 1
+   
     def setup_game_start_dates_for_display(self):
         '''Write the game start dates to mongodb'''
             
@@ -99,12 +113,10 @@ class Admin(Ncaa):
         '''Add new pool to DB'''
             
         # try and add new pool and check to see if it already exists
-        data = ast.literal_eval(request.values['pool_name'])
-        self.__db.insert(proc = 'AddNewPool', params = [data[0]['value']])
+        self.__db.insert(proc = 'AddNewPool', params = [request.values['pool_name']])
         errors = self.__db.errors
 
         if len(errors) > 0:
-            self.debug('HEYO')
             status = str(errors[0])
         else:
             status = 'ok'
@@ -113,4 +125,43 @@ class Admin(Ncaa):
         return jsonify({
             'status' : status,
         })
+        
+    def process_admin_login(self):
+        '''Process admin token to see if they are allowed to login'''
+               
+        password = request.values['admin_password']
+        self.debug(f"entered password is {password}")
+        
+        results = self.__db.query(proc = 'CheckAdminPassword', params = [])
+        self.debug(results[0]['userPassword'])
+  
+        hashed_password = self.hash_password(password)
+        self.debug(f"hashed_password is  {hashed_password}")
+        
+        if results[0]['userPassword'] == hashed_password:
+            session['admin_logged_in'] = 1
+            return 1
+
+        return 0
+    
+    def is_logged_in(self):
+        '''Check if we are logged in'''
+        
+        if 'admin_logged_in' in session:
+            status = 1
+        else:
+            status = 0
+
+        return status
+ 
+    def hash_password(self, password):
+        '''Hash a password for admin'''
+
+        config = configparser.ConfigParser()
+        config.read("site.cfg")
+        
+        salt = config.get('DEFAULT', 'ADMIN_LOGIN_SALT').encode('utf-8')
+        pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
+        pwdhash = binascii.hexlify(pwdhash)
+        return (salt + pwdhash).decode('ascii')       
  

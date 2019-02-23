@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class='pool_details'>
+  <div id='message'>
+  {% if error %}
+    <p class='error'>{{ error }}
+  {% endif %}
+  </div>
+  <form id='login' action='/admin' method='post'>
+    <input name='admin_password' placeholder='Enter admin password' type='password'>
+    <input value='Login' type='submit'>
+  </form>
+</div>
+{% endblock %}

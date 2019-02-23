@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+  <script>
+    $(document).ready (function() {
+
+      // submit add new pool
+      $('#js-submit-add_pool').click(function(event){
+        event.preventDefault();
+
+        $.ajax({
+          type: 'POST',
+          url: window.location.pathname,
+          data: {pool_name: $('#add_pool').find("input[name=pool_name]").val()},
+          success: function (result) {
+            alert(result['status']);
+          }
+        });
+      });
+
+    }); 
+  </script>
+
+  <div class='pool_details'>
+      <form id='add_pool'>
+        <table>
+        <tr>
+          <td><input type='text' name='pool_name' placeholder='Add a new pool' value=''></td>
+        </tr>
+        </table>
+        <input id='js-submit-add_pool' value='Submit' type='submit'>
+      </form>
+  </div>
+  
+{% endblock %}

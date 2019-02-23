@@ -41,20 +41,6 @@
         }
       });
     });
-    
-    // submit add new pool
-    $('#js-submit-add_pool').click(function(event){
-      event.preventDefault();
-
-      $.ajax({
-        type: 'POST',
-        url: window.location.pathname,
-        data: {pool_name: $("input[name=pool_name]")},
-        success: function (result) {
-          alert(result['status']);
-        }
-      });
-    });
 
     // submit pool start/end date data
     $('#js-submit-pool_dates_data').click(function(event){
@@ -203,22 +189,22 @@
       <form id='game_dates'>
         <table>
           <tr>
-            <td>Round 1 dates: <input type='text' name='round_one'></td>
+            <td>Round 1 dates: <input type='text' name='round_one' value=''></td>
           </tr>
           <tr>
-            <td>Round 2 dates: <input type='text' name='round_two'></td>
+            <td>Round 2 dates: <input type='text' name='round_two' value=''></td>
           </tr>
           <tr>
-            <td>Sweet 16 dates dates: <input type='text' name='round_three'></td>
+            <td>Sweet 16 dates dates: <input type='text' name='round_three' value=''></td>
           </tr>
           <tr>
-            <td>Eight 8 dates: <input type='text' name='round_four'></td>
+            <td>Eight 8 dates: <input type='text' name='round_four' value=''></td>
           </tr>
           <tr>
-            <td>Final Four date: <input type='text' name='round_five'></td>
+            <td>Final Four date: <input type='text' name='round_five' value=''></td>
           </tr>
           <tr>
-            <td>Championship date: <input type='text' name='round_six'></td>
+            <td>Championship date: <input type='text' name='round_six' value=''></td>
          </tr>
        </table>
       <button id='js-submit-game_date_data'>Submit</button>
@@ -227,25 +213,16 @@
       <form id='pool_dates'>
         <table>
         <tr>
-          <td>Pool close date/time: <input type='text' name='normal_close' placeholder='ex: 2018-03-19 14:52:58'></td>
+          <td>Pool close date/time: <input type='text' name='normal_close' placeholder='ex: 2018-03-19 14:52:58' value=''></td>
         </tr>
         <tr>
-          <td>Sweet 16 pool open date/time : <input type='text' name='sweet_16_open' placeholder='ex: 2018-03-19 14:52:58'></td>
+          <td>Sweet 16 pool open date/time : <input type='text' name='sweet_16_open' placeholder='ex: 2018-03-19 14:52:58' value=''></td>
         </tr>
         <tr>
-          <td>Sweet 16 pool close date/time: <input type='text' name='sweet_16_close' placeholder='ex: 2018-03-19 14:52:58'></td>
+          <td>Sweet 16 pool close date/time: <input type='text' name='sweet_16_close' placeholder='ex: 2018-03-19 14:52:58' value=''></td>
         </tr>
         </table>
         <button id='js-submit-pool_dates_data'>Submit</button>
-      </form>
-
-      <form id='add_pool'>
-        <table>
-        <tr>
-          <td>Add a new pool: <input type='text' name='pool_name' placeholder='Add a new pool'></td>
-        </tr>
-        </table>
-        <button id='js-submit-add_pool'>Submit</button>
       </form>
   </div>
 </body>

@@ -128,15 +128,11 @@ class Admin(Ncaa):
         
     def process_admin_login(self):
         '''Process admin token to see if they are allowed to login'''
-               
-        password = request.values['admin_password']
-        self.debug(f"entered password is {password}")
-        
+
         results = self.__db.query(proc = 'CheckAdminPassword', params = [])
-        self.debug(results[0]['userPassword'])
-  
+
+        password = request.values['admin_password']
         hashed_password = self.hash_password(password)
-        self.debug(f"hashed_password is  {hashed_password}")
         
         if results[0]['userPassword'] == hashed_password:
             session['admin_logged_in'] = 1

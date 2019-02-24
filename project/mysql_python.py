@@ -9,28 +9,29 @@ import configparser
 
 class MysqlPython(object):
 
-    def __init__(self, **kwargs):        
+    def __init__(self, **kwargs): 
+        config = configparser.ConfigParser()
+        config.read("site.cfg")
+               
         # get connection from args
         if 'connection' in kwargs:
             self.__host = kwargs['hostname']
             self.__user = kwargs['user']
             self.__password = kwargs['password']
             self.__database = kwargs['database']
-            self.__charset = kwargs['charset']
-            self.__auto_commit = kwargs['auto_commit']
 
         # get connection from site.cfg
         else:
-            config = configparser.ConfigParser()
-            config.read("site.cfg")
-
             self.__host = config.get('MYSQL', 'MYSQL_HOST')
             self.__user = config.get('MYSQL', 'MYSQL_USER')
             self.__password = config.get('MYSQL', 'MYSQL_PASSWORD')
             self.__database = config.get('MYSQL', 'MYSQL_DATABASE')
-            self.__charset = config.get('MYSQL', 'CHARSET')
-            self.__auto_commit = config.get('MYSQL', 'AUTO_COMMIT')
-            
+        
+        # always pull from site.cfg
+        self.__charset = config.get('MYSQL', 'CHARSET')
+        self.__auto_commit = config.get('MYSQL', 'AUTO_COMMIT')
+        self.__port = config.get('MYSQL', 'MYSQL_PORT')
+
         self.__connection = None
 
         self.errors = []
@@ -43,6 +44,7 @@ class MysqlPython(object):
                 dbconfig = {
                     'host': self.__host,
                     'database': self.__database,
+                    'port': self.__port,
                     'user': self.__user,
                     'password': self.__password,
                     'charset': self.__charset,

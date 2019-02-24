@@ -18,7 +18,8 @@ class Pool(Ncaa):
         '''Validate pool name and then set it for use in the application'''
 
         result = self.__db.query(proc = 'PoolInfo', params = [pool_name])
-        self.debug(result)
+        #self.debug(result)
+
         status = 0;
         # we found our pool so set a cookie
         if len(result):
@@ -36,7 +37,7 @@ class Pool(Ncaa):
 
         # try and get pool name from session
         pool_name = session.get('pool_name')
-        self.debug(f"pool name is {pool_name}")
+        #self.debug(f"pool name is {pool_name}")
         
         return pool_name
 
@@ -62,7 +63,7 @@ class Pool(Ncaa):
         '''Get current status of all pools'''
         
         result = self.__db.query(proc = 'PoolStatus')
-        self.debug(result)
+        #self.debug(result)
 
         # figure out if either pool is open for easier checks        
         one_pool_is_open = 0

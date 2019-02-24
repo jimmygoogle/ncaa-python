@@ -29,7 +29,6 @@ class Mongo(object):
     def get_db(self):
         '''Make a connection to mongo that will live for the duration of the request'''
 
-        self.debug(f"get_db")
         if 'mongo' not in g:
             self.__client = MongoClient(f"mongodb://{self.__host}:{self.__port}")
             g.mongo = self.__client[self.__database]

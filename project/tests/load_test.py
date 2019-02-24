@@ -20,14 +20,6 @@ def generate_random_number(start, end):
 
 def fill_out_bracket():
     '''Fill out a bracket and submit it'''
-
-    # get random stuff
-    random.seed()
-    random_string = generate_random_string()
-    random_number_picks = generate_random_number(0, 2)
-    random_number_score = generate_random_number(135,180)
-    
-    print(f"random_string is {random_string} : random picks is {random_number_picks} : random_number_score is {random_number_score}")
     
     # open browser and navigate to site
     opts = Options()
@@ -35,19 +27,31 @@ def fill_out_bracket():
     assert opts.headless  # Operating in headless mode
     browser = Firefox(options=opts)
     
-    pool_name = sys.argv[1]
-    browser.get(f"http://www.itsawesomebaby.com/pool/{pool_name}")
+    # submit used defined brackets per child process
+    number_of_brackets = sys.argv[3]
+
+    for i in range(number_of_brackets):      
+        # get random stuff
+        random.seed()
+        random_string = generate_random_string()
+        random_number_picks = generate_random_number(0, 2)
+        random_number_score = generate_random_number(135,180)
+        
+        print(f"random_string is {random_string} : random picks is {random_number_picks} : random_number_score is {random_number_score}")
     
-    # make random picks
-    picks = ['chalk', 'mix', 'random']
-    element = picks[random_number_picks]
-    browser.find_element_by_id(element).click()
-    
-    # fill out user form and submit
-    browser.find_element_by_id('email').send_keys(f"{random_string}@mailinator.com")
-    browser.find_element_by_id('username').send_keys(random_string)
-    browser.find_element_by_id('tieBreaker').send_keys(random_number_score)
-    browser.find_element_by_id('submit_user_bracket').click()
+        pool_name = sys.argv[1]
+        browser.get(f"http://www.itsawesomebaby.com/pool/{pool_name}")
+        
+        # make random picks
+        picks = ['chalk', 'mix', 'random']
+        element = picks[random_number_picks]
+        browser.find_element_by_id(element).click()
+        
+        # fill out user form and submit
+        browser.find_element_by_id('email').send_keys(f"{random_string}@mailinator.com")
+        browser.find_element_by_id('username').send_keys(random_string)
+        browser.find_element_by_id('tieBreaker').send_keys(random_number_score)
+        browser.find_element_by_id('submit_user_bracket').click()
     
     # close the browser
     browser.close()

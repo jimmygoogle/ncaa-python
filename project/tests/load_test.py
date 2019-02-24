@@ -28,7 +28,7 @@ def fill_out_bracket():
     browser = Firefox(options=opts)
     
     # submit used defined brackets per child process
-    number_of_brackets = sys.argv[3]
+    number_of_brackets = int(sys.argv[3])
 
     for i in range(number_of_brackets):      
         # get random stuff
@@ -59,9 +59,7 @@ def fill_out_bracket():
 def spawn_children():
     '''Create forked processes and submit brackets'''
 
-    forks = 1
-    if len(sys.argv) == 3:
-        forks = int(sys.argv[2])
+    forks = int(sys.argv[2])
  
     for i in range(forks):
         try:

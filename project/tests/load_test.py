@@ -5,6 +5,7 @@ import random
 import os
 import sys
 import time;
+import argparse;
 
 def generate_random_string(length=8):
     '''Generate a random string N characters in length'''
@@ -18,7 +19,7 @@ def generate_random_number(start, end):
     
     return random.randint(start, end)
 
-def fill_out_bracket():
+def fill_out_bracket(args):
     '''Fill out a bracket and submit it'''
     
     # open browser and navigate to site
@@ -28,7 +29,7 @@ def fill_out_bracket():
     browser = Firefox(options=opts)
     
     # submit used defined brackets per child process
-    number_of_brackets = int(sys.argv[3])
+    number_of_brackets = int(args.brackets)
 
     for i in range(number_of_brackets):      
         # get random stuff
@@ -39,10 +40,11 @@ def fill_out_bracket():
         
         print(f"random_string is {random_string} : random picks is {random_number_picks} : random_number_score is {random_number_score}")
     
-        pool_name = sys.argv[1]
-        browser.get(f"http://www.itsawesomebaby.com/pool/{pool_name}")
+        pool_name = args.pool_name
+        url = args.url
+        browser.get(f"{url}/pool/{pool_name}")
         
-        # make random picks
+        # use the 'make picks' feature to fill out picks
         picks = ['chalk', 'mix', 'random']
         element = picks[random_number_picks]
         browser.find_element_by_id(element).click()
@@ -56,21 +58,20 @@ def fill_out_bracket():
     # close the browser
     browser.close()
     
-def spawn_children():
+def spawn_children(args):
     '''Create forked processes and submit brackets'''
 
-    forks = int(sys.argv[2])
- 
-    for i in range(forks):
+    children = int(args.children)
+    for i in range(children):
         try:
             pid = os.fork()
         except OSError:
-            sys.stderr.write("Could not create a child process\n")
+            print("Could not create a child process")
             continue
  
         if pid == 0:
-            print("In the child process {} that has the PID {}".format(i+1, os.getpid()))
-            fill_out_bracket()
+            print(f"In the child process {i+1} that has the PID {os.getpid()}")
+            fill_out_bracket(args)
             exit()
 
     # wait for the children to finish
@@ -80,6 +81,14 @@ def spawn_children():
 
 
 if __name__ == '__main__':
+    parser=argparse.ArgumentParser()
+
+    parser.add_argument('--children', help='Number of children to create')
+    parser.add_argument('--url', help='URL of the site to test')
+    parser.add_argument('--pool_name', help='Pool name')
+    parser.add_argument('--number_of_brackets', help='Number of brackets to create')
+
+    args = parser.parse_args()
     
     # create a whole bunch of children and try to overwhelm the server
-    spawn_children()
+    spawn_children(args)

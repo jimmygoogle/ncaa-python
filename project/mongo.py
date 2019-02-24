@@ -47,8 +47,7 @@ class Mongo(object):
         '''Get/create the collection specified'''
         
         collection_name = kwargs['collection_name']
-        self.debug(f"get collection '{collection_name}'")
- 
+
         connection = self.get_db()
         return connection[collection_name]
 
@@ -56,7 +55,6 @@ class Mongo(object):
         '''Drop the collection'''
 
         collection = self.get_collection(**kwargs)
-        self.debug(collection)
         collection.drop()
 
     def insert(self, **kwargs):

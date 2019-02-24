@@ -28,7 +28,7 @@ class Pool(Ncaa):
             # set pool name in the session
             session['pool_name'] = pool_name
             session['pool_id'] = result[0]['poolID']
-            self.debug(f"pool name is set in the session as {session['pool_name']} with pool id {session['pool_id']}")
+            #self.debug(f"pool name is set in the session as {session['pool_name']} with pool id {session['pool_id']}")
 
         return status
     

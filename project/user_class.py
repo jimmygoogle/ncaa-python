@@ -108,7 +108,7 @@ class User(Ncaa):
         else:
            user_id = self.update_user()
            
-        self.debug(f"Working with user {user_id}")
+        #self.debug(f"Working with user {user_id}")
            
         return user_id
    
@@ -156,10 +156,6 @@ class User(Ncaa):
         username = request.values['username']
         first_name = request.values['first_name']
         tie_breaker_points = request.values['tie_breaker_points']
-        
-        self.debug(f"updating first_name {first_name}")
-        self.debug(f"updating username {username}")
-        self.debug(f"edit_token is {edit_token}")
 
         user_id = self.__db.update(proc = 'UpdateUser', params = [
             edit_token,

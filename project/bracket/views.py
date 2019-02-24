@@ -31,7 +31,7 @@ def user_bracket(user_token):
         return redirect(url_for('pool.show_pool_form'))
     
     year = datetime.datetime.now().year
-    bracket.debug(f"user token is {user_token} for {request.method}")
+    #bracket.debug(f"user token is {user_token} for {request.method}")
 
     # user is submitting bracket data so process it and add/update it in the DB
     if request.method == 'POST':

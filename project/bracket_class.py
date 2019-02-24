@@ -78,7 +78,6 @@ class Bracket(Ncaa):
         
         # handle missing picks from the the master bracket by using the empty bracket and filling in the missing picks
         if is_admin:
-            self.debug(user_picks)
             for pick in user_picks:
                 admin_picks[pick['gameIDCalc']] = {
                     'gameID': pick['gameID'],
@@ -104,8 +103,6 @@ class Bracket(Ncaa):
 
         # calculate best possible score for each user
         user_data = []
-        
-        self.debug(f'Getting data for {user_token} or maybe admin {is_admin}')
 
         # get the user picks
         user_picks = self.get_user_picks(is_admin = is_admin, user_token = user_token)
@@ -190,14 +187,11 @@ class Bracket(Ncaa):
         user_picks = request.values['user_picks']
         edit_type = request.values['edit_type']
         
-        self.__user.debug(kwargs)
-        
         # figure out if we are editing the master bracket since we call different procedures
         is_admin = 0
         if 'is_admin' in kwargs and kwargs['is_admin'] is not None and kwargs['is_admin'] != 0 :
             is_admin = 1
-        
-        self.__user.debug(f"is admin {is_admin}")
+
         # we have an edit token set it so the user can be updated
         if 'edit_user_token' in kwargs:
             self.__user.set_edit_token(kwargs['edit_user_token'])
@@ -235,8 +229,7 @@ class Bracket(Ncaa):
 
     def score_all_brackets(self):
         '''Score all user brackets. This is called after each admin bracket update'''
-        
-        self.debug('score_all_brackets')
+
         self.__db.update(proc = 'ScoreAllBrackets', params = [])
       
     def get_start_dates(self):

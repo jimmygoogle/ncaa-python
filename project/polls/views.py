@@ -16,13 +16,6 @@ def index():
     if pool_name is None:
         return redirect(url_for('pool.show_pool_form'))
     else:
-        #data = polls.get_polls_data()
-        #x = polls.get_ap_poll_data()
-        #
-        #return "here"
-        #polls.debug(data)
-        usa = polls.get_usa_today_poll_data()
-        polls.debug(usa)
         # render the polls
         return render_template('polls.html',
             pool_name = pool_name,

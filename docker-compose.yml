@@ -1,9 +1,9 @@
-version: '2.1'
+version: '3'
 services:
   web:
     restart: always
-    network_mode: host
     build: .
+    command: python ./app.py
     ports:
       - 5000:5000
     volumes:
@@ -11,12 +11,14 @@ services:
     depends_on:
       - mongo
       - db
+      - redis
   mongo:
     image: mongo
     ports:
       - "27017:27017"
+ 
   db:
-    image: mysql:5.7
+    image: mysql:latest
     restart: always
     environment:
       MYSQL_DATABASE: 'MarchMadness'
@@ -27,3 +29,14 @@ services:
       - '3307:3306'
     volumes:
       - ./project/mysql/init_db:/docker-entrypoint-initdb.d
+
+  celery:
+    build: .
+    command: celery worker -A project.celery_worker.celery -l info
+    volumes:
+      - .:/app
+ 
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"

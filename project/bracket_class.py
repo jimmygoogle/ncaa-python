@@ -1,11 +1,11 @@
-from flask import request, jsonify
+from flask import request, jsonify, current_app
 from project.ncaa_class import Ncaa
 from project.user_class import User
 from project.pool_class import Pool
-from project.email_class import Email
+from project.email_class import send_confirmation_email
 from project.mysql_python import MysqlPython
 from project.mongo import Mongo
-from project import session
+#from project import session
 import ast
 import configparser
 
@@ -16,7 +16,6 @@ class Bracket(Ncaa):
         self.__db = MysqlPython()
         self.__pool = Pool()
         self.__user = User()
-        self.__email = Email()
 
     def get_base_teams(self):
         '''Get base teams data for display'''
@@ -160,7 +159,16 @@ class Bracket(Ncaa):
 
             # send confirmation email if this is a new bracket
             if kwargs['action'] == 'add':
-                self.__email.send_confirmation_email(token = self.__user.get_edit_token())
+                results = send_confirmation_email.delay(
+                    token = self.__user.get_edit_token(),
+                    pool_name = self.__pool.get_pool_name(),
+                    pool_status = self.__pool.check_pool_status(),
+                    email_address = request.values['email_address'], 
+                    bracket_type_name = request.values['bracket_type_name'],
+                    username = request.values['username'],
+                    url = request.url_root
+                )
+
                 message = 'Your bracket has been submitted. <br/> Good luck!'
             
             # set updated message

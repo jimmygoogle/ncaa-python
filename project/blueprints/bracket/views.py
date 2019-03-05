@@ -11,9 +11,9 @@ bracket_blueprint = Blueprint('bracket', __name__, template_folder='templates')
 def user_bracket(user_token):
     ''' Show the user bracket form '''
 
+    bracket = Bracket()
     pool = Pool()
     user = User()
-    bracket = Bracket()
     
     # check to see if we are the admin/master bracket
     admin_user_token = user.get_admin_edit_token()

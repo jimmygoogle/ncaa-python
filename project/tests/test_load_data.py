@@ -90,5 +90,5 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     
-    # create a whole bunch of children and try to overwhelm the server
+    # create a whole bunch of children and load data
     spawn_children(args)

@@ -38,10 +38,7 @@ class Admin(Ncaa):
         return self.__edit_token
     
     def initialize_new_bracket(self):
-        '''Delete all the existing team data and insert new team data and clear out and repopulate top 25 poll data'''
-        
-        # reset and repull top 25 poll data
-        self.reset_and_pull_poll_data()
+        '''Delete all the existing team data and insert new team data'''
 
         # delete all the current team data
         self.__db.insert(proc='DeleteTeams', params=[])

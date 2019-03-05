@@ -48,8 +48,7 @@ class MysqlPython(object):
                     'user': self.__user,
                     'password': self.__password,
                     'charset': self.__charset,
-                    'autocommit': self.__auto_commit,
-                    'auth_plugin': 'mysql_native_password'
+                    'autocommit': self.__auto_commit
                 }
                 g.db = mysql.connector.connect(**dbconfig)
  

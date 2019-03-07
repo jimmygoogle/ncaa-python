@@ -118,8 +118,13 @@ class User(Ncaa):
         bracket_type_name = request.values['bracket_type_name']
         email_address = request.values['email_address']
         username = request.values['username']
-        first_name = request.values['first_name']
         tie_breaker_points = request.values['tie_breaker_points']
+        first_name = request.values['first_name']
+        
+        # handle error "Failed calling stored routine; bytearray index out of range error"
+        # TODO: find a proper fix
+        if first_name == '':
+            first_name = ' '
 
         # setup user tokens
         display_token = self.setup_user_display_token(

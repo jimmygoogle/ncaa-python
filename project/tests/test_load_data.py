@@ -29,7 +29,7 @@ def fill_out_bracket(args):
     browser = Firefox(options=opts)
     
     # submit used defined brackets per child process
-    number_of_brackets = int(args.brackets)
+    number_of_brackets = int(args.number_of_brackets)
 
     for i in range(number_of_brackets):      
         # get random stuff
@@ -43,7 +43,7 @@ def fill_out_bracket(args):
         pool_name = args.pool_name
         url = args.url
         browser.get(f"{url}/pool/{pool_name}")
-        
+
         # use the 'make picks' feature to fill out picks
         picks = ['chalk', 'mix', 'random']
         element = picks[random_number_picks]
@@ -75,7 +75,7 @@ def spawn_children(args):
             exit()
 
     # wait for the children to finish
-    for i in range(forks):
+    for i in range(children):
         finished = os.waitpid(0, 0)
         print(f"finished {finished}")
 

@@ -158,9 +158,8 @@ function makePicks(type) {
   for (let index = 1; index <= 63; index++) {
     
     teams = []
-    $('.game'+index).find('li').each(function(){
-      // get seed and team 
-      // ex: 1 Virginia
+    $('.game' + index).find('li').each(function(){
+      // get seed and team ... ex: 1 Virginia
       const teamInfo = $(this).html().split(' ');
       const seedId = teamInfo[1]; 
 
@@ -187,16 +186,44 @@ function makePicks(type) {
           case 'chalk':
             return a.seed_id - b.seed_id;
           case 'mix':
-            const data = {};
-            data[a.seed_id] = weights[a.round][a.seed_id];
-            data[b.seed_id] = weights[b.round][b.seed_id];
+            
+            // if the seeds equal pick a random one since we dont know the teams
+            if(a.seed_id == b.seed_id) {
+              return 0.5 - Math.random();
+            }
+            // make a pick based on weight
+            // this logic might need to be reworked with a better method
+            else {
+              let data = {};
+              data[a.seed_id] = weights[a.round][a.seed_id];
+              data[b.seed_id] = weights[b.round][b.seed_id];
 
-            return weightedRandom(data);
+              // figure out the seed with better probability
+              if(weights[a.round][a.seed_id] < weights[b.round][b.seed_id]) {
+                higher_probability_seed = b.seed_id;
+                lower_probability_seed = a.seed_id;
+              }
+              else {
+                higher_probability_seed = a.seed_id;
+                lower_probability_seed = b.seed_id;
+              }
+
+              // generate random number
+              random_number = generateRandomNumber(data); 
+              
+              // if the random number is less than or equal to the lower probability seed return that one
+              if(parseFloat(random_number) <= parseFloat(data[ lower_probability_seed ])) {
+                return -1;
+              }
+              // return the higher seed
+              else {
+                return 0;
+              }
+            }
         }
       });
-      
+
       // set pick
-      //console.log('picking %s for game %s', teams[0].seed_id, index);
       teams[0].game.trigger('click');
     }    
   }
@@ -227,28 +254,19 @@ function getRound(game) {
   return round;
 }
 
-function weightedRandom(data) {
+function generateRandomNumber(data) {
   let index;
   let sum = 0; 
-  
+
   // determine max
   const min = 0;
   let max = 0;
   for (index in data) {
     max += data[index];
   }
-  
-  // generate random number between min and max
-  const rand = Math.random() * (max - min) + min;
-  //console.log(data);
-  //console.log('min is %s and max is %s', min, max);
-  //console.log('rand is %s', rand);
 
-  for (index in data) {
-    sum += data[index];
-    //console.log('sum is %s', sum);
-    if (rand >= sum) return index;
-  }
+  // generate random number between min and max
+  return (Math.random() * (max - min) + min).toFixed(3);
 }
     
 function loadUserPicks() {
@@ -310,7 +328,7 @@ function validateUserInput() {
   const emailAddress = $userBracketInfoForm.find('#email').val();
   const username = $userBracketInfoForm.find('#username').val();
   const firstName = $userBracketInfoForm.find('#firstname').val();
-  const tieBreakerPoints = $userBracketInfoForm.find('#tieBreaker').val();
+  const tieBreakerPoints = parseInt($userBracketInfoForm.find('#tieBreaker').val());
 
   let formAction = 'POST';
   
@@ -367,8 +385,8 @@ function validateUserInput() {
       status = false;
     }
 
-    if(status && !tieBreakerPoints.match(/\b[0-9]{1,3}\b/)) {
-      error_message = 'Please enter a valid guess for your total points.';
+    if(status && (tieBreakerPoints < 100 || tieBreakerPoints > 200)) {
+      error_message = 'Please enter a valid guess<br>for your total points.';
       $userBracketInfoForm.find('#tieBreaker').focus();
       status = false;
     }
@@ -413,7 +431,7 @@ function validateUserInput() {
         .empty()
         .show()
         .append(result['error']);
-        
+
         if( multipleEdits && result['error'] === '') {
           $("#submit_user_bracket").show();
           $("#auto_picks").show();
@@ -429,7 +447,7 @@ function validateUserInput() {
 function setUserPick(obj) {
   // set team user picked ex: 5 Utah
   const userPickedTeam = obj.text();
-  console.log('setUserPick');
+  //console.log('setUserPick');
 
   // get game number and all possible game slots that the user pick could play in
   // ex: class = "matchup game1 65|97|113|121|125" (we need the 2nd and 3rd element)

@@ -41,6 +41,11 @@ class Pool(Ncaa):
         
         return pool_name
 
+    def get_admin_pool_name(self):
+        '''Get the pool name from the admin'''
+
+        return 'admin'
+
     def validate_pool_name(self, pool_name):
         '''Check the pool name passed in the request against the defined pools in the DB'''
         

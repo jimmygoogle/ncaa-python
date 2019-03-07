@@ -97,7 +97,12 @@ class Bracket(Ncaa):
         is_admin = kwargs['is_admin']
         user_token = kwargs['user_token']
 
-        pool_name = self.__pool.get_pool_name()
+        pool_name = ''
+        if is_admin:
+            pool_name = self.__pool.get_admin_pool_name()
+        else: 
+            pool_name = self.__pool.get_pool_name()
+
         pool_status = self.__pool.check_pool_status()
 
         # calculate best possible score for each user

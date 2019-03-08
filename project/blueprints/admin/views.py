@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
-from project.ncaa_class import Ncaa
-from project.admin_class import Admin
-from project.bracket_class import Bracket
+from project.ncaa import Ncaa
+from project.admin import Admin
+from project.bracket import Bracket
 
 admin = Admin()
 admin_blueprint = Blueprint('admin', __name__, template_folder='templates')

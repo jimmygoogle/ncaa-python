@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, url_for, redirect
-from project.pool_class import Pool
-from project.polls_class import Polls
+from project.pool import Pool
+from project.polls import Polls
 import datetime
 
 pool = Pool()

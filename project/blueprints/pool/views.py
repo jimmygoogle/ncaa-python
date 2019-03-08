@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, url_for, redirect, jsonify, g
-from project.ncaa_class import Ncaa
-from project.pool_class import Pool
-from project.bracket_class import Bracket
+from project.ncaa import Ncaa
+from project.pool import Pool
+from project.bracket import Bracket
 import datetime
 
 pool = Pool()

@@ -1,7 +1,6 @@
 from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect, g
-#from project.ncaa_class import Ncaa
-from project.standings_class import Standings
-from project.pool_class import Pool
+from project.standings import Standings
+from project.pool import Pool
 import datetime
 
 pool = Pool()

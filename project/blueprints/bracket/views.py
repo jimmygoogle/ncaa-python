@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect
-from project.pool_class import Pool
-from project.bracket_class import Bracket
-from project.user_class import User
+from project.pool import Pool
+from project.bracket import Bracket
+from project.user import User
 import datetime
 
 bracket_blueprint = Blueprint('bracket', __name__, template_folder='templates')

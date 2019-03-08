@@ -446,7 +446,7 @@ function validateUserInput() {
 
 function setUserPick(obj) {
   // set team user picked ex: 5 Utah
-  const userPickedTeam = obj.text();
+  const userPickedTeam = obj.text().trim();
   //console.log('setUserPick');
 
   // get game number and all possible game slots that the user pick could play in

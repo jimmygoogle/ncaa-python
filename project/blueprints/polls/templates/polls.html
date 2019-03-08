@@ -10,7 +10,7 @@
            <div class='ap-poll-data'>
              <div class='title'>{{ ap_rankings['poll']['name'] }}</div>
              <table class='poll'>
-               <tr class='header'>
+               <tr>
                  <th class='rank'>Rank</th>
                  <th>School</th>
                  <th>Record</th>
@@ -23,7 +23,7 @@
                  <td>{{ data['market'] }} {% if data['fp_votes'] %}<span class='resize_mobile'>({{ data['fp_votes'] }})</span>{% endif %}</td>
                  <td>{{ data['wins'] }}-{{ data['losses'] }}</td>
                  <td>{{ data['points'] }}</td>
-                 <td>{{ data['prev_rank'] }}</td>
+                 <td><span class='ranking'>{{ data['prev_rank'] }}</span><span class="{{ data['movement'] }}">{% if data['movement'] == "up" %}&#8593;{% elif data['movement'] == "down" %}&#8595;{% else %}&nbsp;{% endif %}</span></td>
                </tr>
                {% endfor %}
              </table>
@@ -38,7 +38,7 @@
 	          <div class='usa-today-poll-data'>
              <div class='title'>{{ usa_today_rankings['poll']['name'] }}</div>
              <table class='poll'>
-               <tr class="header">
+               <tr>
                  <th class='rank'>Rank</th>
                  <th>School</th>
                  <th>Record</th>
@@ -51,7 +51,7 @@
                    <td>{{ data['market'] }} {% if data['fp_votes'] %}<span class='resize_mobile'>({{ data['fp_votes'] }})</span>{% endif %}</td>
                    <td>{{ data['wins'] }}-{{ data['losses'] }}</td>
                    <td>{{ data['points'] }}</td>
-                   <td>{{ data['prev_rank'] }}</td>
+                   <td><span class='ranking'>{{ data['prev_rank'] }}</span><span class="{{ data['movement'] }}">{% if data['movement'] == "up" %}&#8593;{% elif data['movement'] == "down" %}&#8595;{% else %}&nbsp;{% endif %}</span></td>
                  </tr>
                {% endfor %}
              </table>

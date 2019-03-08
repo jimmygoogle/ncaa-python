@@ -54,7 +54,7 @@ class Polls(Ncaa):
         
         # return the data
         if len(results) > 0:
-            self.debug(f"got {type} from mongo")
+            #self.debug(f"got {type} from mongo")
             return results
         
         # get results from api and store them
@@ -74,9 +74,25 @@ class Polls(Ncaa):
             ap_response = requests.get(url)
             time.sleep(2)    
             
-            # insert poll data
-            results = ap_response.json()
+            # set movement rankings CSS class and insert poll data
+            results = self.set_ranking_movements(ap_response.json())
             mongodb.insert(collection_name = self.__collection_name, data = results)
 
             return results
 
+    def set_ranking_movements(self, rankings):
+        '''Set the CSS class based on the ranking of the current week versus the previous week'''
+
+        for data in rankings['rankings']:
+            movement = 'none'
+            
+            # figure out if they moved up, down or not at all
+            if 'prev_rank' in data:
+                if data['rank'] > data['prev_rank']:
+                    movement = 'down'
+                elif data['rank'] < data['prev_rank']:
+                    movement = 'up'
+
+            data['movement'] = movement
+            
+        return rankings

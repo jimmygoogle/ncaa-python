@@ -258,10 +258,9 @@ li {
   padding-bottom: 2em;
   text-align: center;
   font-size: 14px;
-  color: white;
-  text-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  color: orange;
   letter-spacing: .5px;
-  font-family: 'Holtwood One SC', serif;
+  font-weight: bold;
   font-size: 18px;
 } 
 

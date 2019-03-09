@@ -160,8 +160,8 @@ function makePicks(type) {
     teams = []
     $('.game' + index).find('li').each(function(){
       // get seed and team ... ex: 1 Virginia
-      const teamInfo = $(this).html().split(' ');
-      const seedId = teamInfo[1]; 
+      const teamInfo = $(this).html().trim().split(' ');
+      const seedId = teamInfo[0]; 
 
       if(!seedId) {
         return true;
@@ -172,8 +172,8 @@ function makePicks(type) {
       const game = gameData[1].match(/game(\d+)/);
       const round = getRound(game[1]);
       
-      data = {seed_id: seedId, round: round, game: $(this)};
-      teams.push({seed_id: seedId, round: round, game: $(this)});
+      const data = {seed_id: seedId, round: round, game: $(this)};
+      teams.push(data);
     });
     
     if(teams.length) {
@@ -184,9 +184,14 @@ function makePicks(type) {
           case 'random':
             return 0.5 - Math.random();
           case 'chalk':
-            return a.seed_id - b.seed_id;
+            // if the seeds equal pick a random one since we dont know the teams
+            if(a.seed_id == b.seed_id) {
+              return 0.5 - Math.random();
+            }
+            else{
+              return a.seed_id - b.seed_id;
+            }
           case 'mix':
-            
             // if the seeds equal pick a random one since we dont know the teams
             if(a.seed_id == b.seed_id) {
               return 0.5 - Math.random();
@@ -209,15 +214,15 @@ function makePicks(type) {
               }
 
               // generate random number
-              random_number = generateRandomNumber(data); 
+              random_number = generateRandomNumber(data);
               
               // if the random number is less than or equal to the lower probability seed return that one
               if(parseFloat(random_number) <= parseFloat(data[ lower_probability_seed ])) {
-                return -1;
+                return b.seed_id - a.seed_id;
               }
               // return the higher seed
               else {
-                return 0;
+                return a.seed_id - b.seed_id;
               }
             }
         }
@@ -227,6 +232,10 @@ function makePicks(type) {
       teams[0].game.trigger('click');
     }    
   }
+}
+
+customSort = function(a,b) {
+  return [a.a, a.b] > [b.a, b.b] ? 1:-1;
 }
 
 function getRound(game) {

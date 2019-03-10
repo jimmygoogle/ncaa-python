@@ -20,6 +20,8 @@ services:
   db:
     image: mysql:8.0
     restart: always
+    volumes:
+      - db_data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: 'MarchMadness'
       MYSQL_USER: 'march_madness'
@@ -40,3 +42,5 @@ services:
     image: redis:alpine
     ports:
       - "6379:6379"
+volumes:
+  db_data:

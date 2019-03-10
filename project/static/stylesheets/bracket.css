@@ -169,6 +169,10 @@ li {
   color: #ff6868  !important;
 }
 
+.correctPick {
+  color: #92f292  !important;
+}
+
 .champion1 li, .champion li, .round li {
   border: 1px solid rgba(255, 255, 255, .35);
   color: white;
@@ -257,11 +261,11 @@ li {
   margin: 0;
   padding-bottom: 2em;
   text-align: center;
-  font-size: 14px;
+  font-size: 20px;
   color: orange;
   letter-spacing: .5px;
   font-weight: bold;
-  font-size: 18px;
+  text-transform: uppercase;
 } 
 
 .game1, .game2, .game3, .game4, .game5, .game6, .game7, .game8,

@@ -19,8 +19,8 @@
           {% endif %}
         </tr>
         {% for user in data %}
-        <tr>
-          <td class="standings_name"><a href="/bracket/{{user.userDisplayToken}}">{{ user.userName }}</a> {% if user.realName != ' '%}<span class="resize_mobile">({{ user.realName }})</span>{% endif %}</td>
+        <tr bracket='/bracket/{{user.userDisplayToken}}'>
+          <td class="standings_name">{{ user.userName }} {% if user.realName != ' '%}<span class="resize_mobile">({{ user.realName }})</span>{% endif %}</td>
           <td class="standings_champ"> {{ user.teamName }} <span class="resize_mobile">({{ user.userTieBreakerPoints }})</span></td>
           <td class="standings_score">{{ user.userScore }}</td>
 

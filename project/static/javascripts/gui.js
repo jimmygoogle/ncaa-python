@@ -37,7 +37,7 @@ function setFinalGame() {
 function setStandings() {
   //make all rows in standings clickable
   $('.standings').find('tr').click(function() {
-    const href = $(this).find("a").attr("href");
+    const href = $(this).attr('bracket');
     if(href) {
         window.location = href;
     }

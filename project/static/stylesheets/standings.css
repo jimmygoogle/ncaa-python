@@ -30,8 +30,13 @@
   color: #e2e2e2;
 }
 
-.standings tr:hover {
+.standings tr:hover td {
   cursor: pointer;
+  color: orange;
+}
+
+.standings a:hover {
+  color: orange;
 }
 
 @media screen and (min-width: 801px) and (max-width: 1299px) {

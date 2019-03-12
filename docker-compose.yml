@@ -20,8 +20,6 @@ services:
   db:
     image: mysql:8.0
     restart: always
-    volumes:
-      - db_data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: 'MarchMadness'
       MYSQL_USER: 'march_madness'
@@ -31,6 +29,8 @@ services:
       - '3307:3306'
     volumes:
       - ./project/mysql/init_db:/docker-entrypoint-initdb.d
+      - ./project/mysql/my.cnf:/etc/my.cnf
+      - db_data:/var/lib/mysql
 
   celery:
     build: .

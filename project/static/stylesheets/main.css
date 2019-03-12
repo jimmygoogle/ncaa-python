@@ -78,3 +78,18 @@ body {
 .admin a {
   color: white;
 }
+
+.my_footer {
+  color: white;
+  font-size: 10px;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  padding-top: 20px;
+  text-align: center;
+}
+
+.my_footer a{
+  color: orange;
+}
+

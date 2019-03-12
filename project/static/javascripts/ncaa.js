@@ -313,7 +313,7 @@ function checkUserPool() {
   url:  "/pool",
   data: {
     'dataPosted': 1,
-    'poolName': $("input#userPoolName").val()
+    'poolName': $("input#userPoolName").val().toLowerCase()
   },
   success: function(result) {
     //pool finder failed

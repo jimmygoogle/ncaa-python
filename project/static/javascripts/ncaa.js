@@ -421,8 +421,9 @@ function validateUserInput() {
     };
 
     // hide the submit button and auto picks
-    $("#submit_user_bracket").hide();
-    $("#auto_picks").hide();
+    $('#submit_user_bracket').hide();
+    $('#auto_picks').hide();
+    $('#loading').show();
 
     $.ajax({
       type: formAction,
@@ -430,6 +431,9 @@ function validateUserInput() {
       data: data,
       success: function(result) {
         // show message
+        
+        $('#loading').hide();
+        
         $("#message")
         .empty()
         .show()

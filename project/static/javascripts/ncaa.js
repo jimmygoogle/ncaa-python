@@ -10,7 +10,12 @@ $(document).ready (
     $('li').click(function() {
       setUserPick($(this));
     });
-    
+
+    $('#reset').click(function(event){
+      event.preventDefault();
+      resetPicks();
+    });
+
     $('#chalk').click(function(event){
       event.preventDefault();
       makePicks('chalk');
@@ -36,6 +41,20 @@ $(document).ready (
     });
   }
 );
+
+function resetPicks() {
+
+  // loop through all games and reset picks
+  for (let index = 33; index <= 63; index++) {
+
+    $('.game' + index).find('li').each(function(){
+      $(this).empty();
+      $(this).attr('data-team-id', '');
+    });
+  }
+
+  userPicks = {};
+}
 
 function makePicks(type) {
   let game = '';

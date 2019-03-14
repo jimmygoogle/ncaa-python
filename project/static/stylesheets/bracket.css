@@ -325,6 +325,11 @@ li {
   font-size: 10px;
   background-color: Transparent;
   outline:none;
+  margin-bottom: 10px;
+}
+
+.reset {
+  height: 42px;
 }
 
 .pick-button:hover {

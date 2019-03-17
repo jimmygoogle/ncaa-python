@@ -5,7 +5,7 @@ from project.pool import Pool
 from project.email import send_confirmation_email
 from project.mysql_python import MysqlPython
 from project.mongo import Mongo
-#from project import session
+from collections import defaultdict
 import ast
 import configparser
 
@@ -164,7 +164,7 @@ class Bracket(Ncaa):
 
             # send confirmation email if this is a new bracket
             if kwargs['action'] == 'add':
-                results = send_confirmation_email.delay(
+                results = send_confirmation_email.s(
                     token = self.__user.get_edit_token(),
                     pool_name = self.__pool.get_pool_name(),
                     pool_status = self.__pool.check_pool_status(),
@@ -172,7 +172,7 @@ class Bracket(Ncaa):
                     bracket_type_name = request.values['bracket_type_name'],
                     username = request.values['username'],
                     url = request.url_root
-                )
+                ).apply_async(seconds=10)
 
                 message = 'Your bracket has been submitted. <br/> Good luck!'
             
@@ -244,7 +244,101 @@ class Bracket(Ncaa):
         '''Score all user brackets. This is called after each admin bracket update'''
 
         self.__db.update(proc = 'ScoreAllBrackets', params = [])
-      
+        
+        # calculate best possible scores now
+        self.precalculate_best_possible_scores()
+
+    def precalculate_best_possible_scores(self, **kwargs):
+        '''Precalculate the best possible scores for all users since doing this on the fly is slow'''
+
+        # get the best possible score for each bracket type
+        best_possible_data_full = self.__db.query(proc = 'BestPossibleScore', params = [1])
+        best_possible_data_sweet_sixteen = self.__db.query(proc = 'BestPossibleScore', params = [3])
+        
+        # get all pools
+        pools = self.__db.query(proc = 'GetAllPools', params = [])
+        
+        # bracket types
+        #bracket_types = ['normal', 'sweetSixteen']
+        bracket_types = ['normal']
+        
+        # loop through each pool
+        for pool in pools:
+            pool_name = pool['poolName']
+            
+            if pool_name == 'admin':
+                continue
+            
+            self.debug(f"working with {pool_name}")
+
+            # loop through each bracket type for each pool
+            for bracket_type in bracket_types:
+                
+                bracket_type += 'Bracket'
+                
+                # get pool status, standings and remaining teams for bracket by type
+                pool_status = self.__pool.check_pool_status(bracket_type)
+                standings_data = self.__db.query(proc = 'Standings', params = [pool_status['is_open'], pool_name, bracket_type])
+                remaining_teams_data = self.__db.query(proc = 'RemainingTeams', params = [pool_name, bracket_type])
+    
+                if bracket_type == 'normalBracket':
+                    #remaining_teams_data = remaining_teams_data_full
+                    best_possible_data = best_possible_data_full
+                else:
+                    #remaining_teams_data = remaining_teams_data_sweet_sixteen
+                    best_possible_data = best_possible_data_sweet_sixteen
+                
+                calculated_results = self.calculate_best_possible_scores(standings_data = standings_data, best_possible_data = best_possible_data, remaining_teams_data = remaining_teams_data)
+                
+                for data in calculated_results:
+                    self.__db.query(proc = 'UpdateBestPossibleScore', params = [data['bestPossibleScore'], data['userID']])
+            
+    def calculate_best_possible_scores(self, **kwargs):
+        '''
+        Calculate the best possible scores left for each user
+        
+        Some of the variable case names are mixed here as that is how they were previously coming from the DB, this can be addressed later
+        
+        '''
+
+        standings_data = kwargs['standings_data']
+        remaining_teams_data = kwargs['remaining_teams_data']
+
+        # best possible data
+        best_possible_data = kwargs['best_possible_data']
+        best_possible_score = best_possible_data[0]['bestPossibleScore']
+        adjusted_score = best_possible_data[0]['adjustedScore']
+
+        # build standings lookup table
+        array_index = 0;
+        standings_lookup = defaultdict(dict)
+        incorrect_picks = defaultdict(dict)
+
+        for data in standings_data:
+            token = data['userDisplayToken']
+            standings_lookup[token] = array_index
+            incorrect_picks[token] = {}
+            data['bestPossibleScore'] = adjusted_score
+
+            array_index += 1
+
+        # figure out the best possible score remaining for each user
+        for data in remaining_teams_data:
+            token = data['userDisplayToken']
+            team_name = data['teamName']
+            index = standings_lookup[token]
+
+            # user pick is wrong so set the wrong team so we can follow it to the final four
+            if data['userPick'] == 'incorrectPick':
+                incorrect_picks[token][team_name] = 1;     
+                standings_data[index]['bestPossibleScore'] -= data['gameRoundScore']
+    
+            # this is an incorrect final four pick so decrement the total of correct teams left
+            if data['userPick'] == '' and token in incorrect_picks and team_name in incorrect_picks[token]:
+                standings_data[index]['bestPossibleScore'] -= data['gameRoundScore']
+
+        return standings_data
+   
     def get_start_dates(self):
         '''Get the start dates for the rounds'''
         

@@ -164,17 +164,22 @@ class Bracket(Ncaa):
 
             # send confirmation email if this is a new bracket
             if kwargs['action'] == 'add':
+                
+                url = request.url_root
+                token = self.__user.get_edit_token()
+
                 results = send_confirmation_email.s(
-                    token = self.__user.get_edit_token(),
+                    token = token,
+                    url = url,
                     pool_name = self.__pool.get_pool_name(),
                     pool_status = self.__pool.check_pool_status(),
                     email_address = request.values['email_address'], 
                     bracket_type_name = request.values['bracket_type_name'],
-                    username = request.values['username'],
-                    url = request.url_root
+                    username = request.values['username']              
                 ).apply_async(seconds=10)
 
-                message = 'Your bracket has been submitted. <br/> Good luck!'
+                edit_url = f"{url}bracket/{token}?action=e"
+                message = f"Your bracket has been submitted.<br/>Good luck!<br/><br/>You can edit your bracket <a href='{edit_url}'>here</a> until the tip off of the first game on Thursday."
             
             # set updated message
             else:

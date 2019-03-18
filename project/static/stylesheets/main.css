@@ -85,7 +85,7 @@ body {
   width: 100%;
   left: 0;
   bottom: 0;
-  padding-top: 20px;
+  padding: 20px 0 20px 0;
   text-align: center;
 }
 

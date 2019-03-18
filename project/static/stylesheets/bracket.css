@@ -348,6 +348,10 @@ li {
   cursor: pointer;
 }
 
+.help-image {
+  vertical-align: text-top;
+}
+
 @media screen and (min-width: 640px) {
   .champion1 {
     margin: 0;

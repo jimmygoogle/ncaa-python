@@ -6,6 +6,10 @@ $(document).ready (
     // load the 'userPicks' object
     loadUserPicks();
     
+    $('.picks-header').click(function(){
+      $('.auto-picks-buttons').toggle();
+    });
+    
     // control bracket flow
     $('li').click(function() {
       setUserPick($(this));

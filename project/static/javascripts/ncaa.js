@@ -502,11 +502,6 @@ function setUserPick(obj) {
   // clear all previous picks (in case user is changing pick)
   clearPreviousPicks(gameData[1], userPickedTeam, gameSlots);
 
-  // show bracket form now that they have picked enough games
-  if((game[1] == 61 || game[1] == 62) && $('#userBracketInfoForm')) {
-    $('.bracket_details').removeClass('hidden');
-  }
-
   // set data so it can be submitted to DB
   setUserFormData(gameData[1], teamID);
 

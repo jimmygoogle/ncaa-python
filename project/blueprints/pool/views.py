@@ -19,16 +19,18 @@ def index():
     else:
         year = datetime.datetime.now().year
         pool_status = pool.check_pool_status()
-        
+
         # bracket is open for submissions so get bracket page
         if pool_status['any']['is_open']:
             
             # set the bracket type
-            bracket_type = 'normalBracket'
-            
-            if pool_status['sweetSixteenBracket'] == 1:
+            if pool_status['sweetSixteenBracket']['is_open'] == 1:
                 bracket_type = 'sweetSixteenBracket'
-                
+                user_picks = bracket.get_master_bracket_data()['user_picks']
+            else:
+                user_picks = bracket.get_empty_picks()
+                bracket_type = 'normalBracket'
+
             # set the bracket edit type
             edit_type = 'add'
 
@@ -39,7 +41,7 @@ def index():
                 data_team = '',
                 data_pick = '',
                 user_data = [{}],
-                user_picks = bracket.get_empty_picks(),
+                user_picks = user_picks,
                 team_data = bracket.get_base_teams(),
                 show_user_bracket_form = 1,
                 is_open = 1,

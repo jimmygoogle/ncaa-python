@@ -44,7 +44,7 @@ class Bracket(Ncaa):
     def get_master_bracket_data(self):
         '''Get master bracket data for display'''
 
-        return self.get_user_bracket_for_display(is_admin = 1, user_token = None, action = 'view')
+        return self.get_user_bracket_for_display(is_admin = 1, user_token = None, action = 'view', bracket_type = 'normalBracket')
 
     def get_user_picks(self, **kwargs):
         '''Get the picks for the user (token)'''
@@ -96,6 +96,7 @@ class Bracket(Ncaa):
         action = kwargs['action']
         is_admin = kwargs['is_admin']
         user_token = kwargs['user_token']
+        bracket_type = kwargs['bracket_type']
 
         pool_name = ''
         if is_admin:
@@ -103,13 +104,18 @@ class Bracket(Ncaa):
         else: 
             pool_name = self.__pool.get_pool_name()
 
-        pool_status = self.__pool.check_pool_status()
+        #pool_status = self.__pool.check_pool_status()
 
         # calculate best possible score for each user
         user_data = []
 
         # get the user picks
         user_picks = self.get_user_picks(is_admin = is_admin, user_token = user_token)
+
+        # if this is a sweet 16 bracket fill in the 2 previous rounds from master 
+        if bracket_type == 'sweetSixteenBracket':    
+            master_bracket_picks = self.__db.query(proc = 'MasterBracket', params = [])
+            user_picks = master_bracket_picks + user_picks
 
         # set styling for incorrect picks
         incorrect_picks = {}
@@ -264,9 +270,8 @@ class Bracket(Ncaa):
         pools = self.__db.query(proc = 'GetAllPools', params = [])
         
         # bracket types
-        #bracket_types = ['normal', 'sweetSixteen']
-        bracket_types = ['normal']
-        
+        bracket_types = ['normal', 'sweetSixteen']
+
         # loop through each pool
         for pool in pools:
             pool_name = pool['poolName']

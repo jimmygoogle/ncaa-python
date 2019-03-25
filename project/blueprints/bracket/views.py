@@ -48,25 +48,30 @@ def user_bracket(user_token):
         show_user_bracket_form = 0
         edit_type = 'add'
         bracket_type = ''
-        pool_is_open = 1
-
-        # set bracket type based on open pool
-        if pool_status['normalBracket']['is_open']:
-            bracket_type = 'normalBracket'
-        elif pool_status['sweetSixteenBracket']['is_open']:
-            bracket_type = 'sweetSixteenBracket'
-        else:
-            pool_is_open = 0
-
-        # the pools are always open for the admin user
-        # i chose to do this here rather than make the if/elif/else more confusing
-        if is_admin:
-            pool_is_open = 1
+        pool_is_open = 0
 
         # we are trying to show a bracket for editing
         if 'action' in request.values and request.values['action'] == 'e':
             action = 'edit'
             edit_type = 'edit'
+            
+        # set bracket type based on open pool
+        if pool_status['normalBracket']['is_open']:
+            bracket_type = 'normalBracket'
+
+            if action != 'view':
+                pool_is_open = 1
+
+        elif pool_status['sweetSixteenBracket']['is_open']:
+            bracket_type = 'sweetSixteenBracket'
+            
+            if action != 'view':
+                pool_is_open = 1
+
+        # the pools are always open for the admin user
+        # i chose to do this here rather than make the if/elif/else more confusing
+        if is_admin:
+            pool_is_open = 1
 
         # decide whether or not to allow the user to edit their bracket based on the pool close date/time
         show_user_bracket_form = 0
@@ -75,7 +80,7 @@ def user_bracket(user_token):
             show_user_bracket_form = 1   
         
         # get user data (bracket and info) for display purposes
-        data = bracket.get_user_bracket_for_display(action = action, user_token = user_token, is_admin = is_admin)
+        data = bracket.get_user_bracket_for_display(action = action, user_token = user_token, is_admin = is_admin, bracket_type = bracket_type)
         
         # add logic for setting display of user's winning pick
         data_team = ''
@@ -83,9 +88,9 @@ def user_bracket(user_token):
 
         # add the winning pick
         # we need to account for the master bracket here as well as it wont have a winning pick until the tournament is over
-        if 'pickCSS' in data['user_picks'][62]:
-            data_pick = data['user_picks'][62]['pickCSS']
-            data_team = str(data['user_picks'][62]['seedID']) + ' ' + data['user_picks'][62]['teamName']
+        if 'pickCSS' in data['user_picks'][-1]:
+            data_pick = data['user_picks'][-1]['pickCSS']
+            data_team = str(data['user_picks'][-1]['seedID']) + ' ' + data['user_picks'][-1]['teamName']
 
         # render the bracket
         return render_template('bracket.html',

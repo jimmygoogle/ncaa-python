@@ -11,10 +11,10 @@ function setFinalGame() {
   const winner = $('#bracket').find('#ncaaWinner').attr('data-team-id');
   const pickCss = $('#bracket').find('#ncaaWinner').attr('data-pick');
 
-  if(!winner) {
+  if(!winner || winner == 0) {
     return false;
   }
-  
+
   // show hidden bracket details form
   $('.bracket_details').removeClass('hidden');
 

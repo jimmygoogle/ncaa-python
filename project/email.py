@@ -37,6 +37,7 @@ def send_confirmation_email(**kwargs):
             username = kwargs['username'],
             pool_status = kwargs['pool_status'],
             bracket_type_name = kwargs['bracket_type_name'],
+            bracket_type_label = kwargs['bracket_type_label'],
             url = kwargs['url']
         ), 'html')
         message.attach(content)
@@ -54,6 +55,9 @@ def get_email_confirmation_template(**kwargs):
 
     pool_status = kwargs['pool_status']
     bracket_type_name = kwargs['bracket_type_name']
+    bracket_type_label = kwargs['bracket_type_label']
+    edit_token = kwargs['user_edit_token']
+    url = kwargs['url']
 
     return render_template('email.html',
         pool_name = kwargs['pool_name'],
@@ -61,5 +65,5 @@ def get_email_confirmation_template(**kwargs):
         username = kwargs['username'],
         email = kwargs['info_email'],
         closing_date_time = pool_status[bracket_type_name]['closing_date_time'],
-        edit_url = kwargs['url'] + 'bracket/' + kwargs['user_edit_token'] + '?action=e'
+        edit_url = f"{url}bracket/{bracket_type_label}/{edit_token}?action=e"
     )

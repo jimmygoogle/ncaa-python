@@ -357,16 +357,17 @@ function validateUserInput() {
   const $userBracketInfoForm = $('#userBracketInfoForm');
   const editTypeValue = $userBracketInfoForm.find('#editType').val();
   const bracketTypeName = $userBracketInfoForm.find('#bracketType').val();
+  const bracketTypeLabel = $userBracketInfoForm.find('#bracketTypeLabel').val();  
   const emailAddress = $userBracketInfoForm.find('#email').val();
   const username = $userBracketInfoForm.find('#username').val();
   const firstName = $userBracketInfoForm.find('#firstname').val();
   const tieBreakerPoints = parseInt($userBracketInfoForm.find('#tieBreaker').val());
 
   let formAction = 'POST';
-  
-  // this is kind a hack for the bracket route
+
+  // this is kind a hack for the bracket router
   const rand_string = Math.random().toString(36).substring(7);
-  let url = window.location.href + 'bracket/' + rand_string;
+  let url = window.location.href + 'bracket/' + bracketTypeLabel + '/' + rand_string;
 
   if( (editTypeValue == 'admin') || (editTypeValue == 'edit')) {
     multipleEdits = true;
@@ -439,6 +440,7 @@ function validateUserInput() {
       first_name: firstName,
       tie_breaker_points: tieBreakerPoints,
       bracket_type_name: bracketTypeName,
+      bracket_type_label: bracketTypeLabel,
       user_picks: JSON.stringify(userPicks),
       edit_type: editTypeValue
     };

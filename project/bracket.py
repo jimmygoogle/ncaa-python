@@ -97,14 +97,14 @@ class Bracket(Ncaa):
         is_admin = kwargs['is_admin']
         user_token = kwargs['user_token']
         bracket_type = kwargs['bracket_type']
+        
+        #self.debug(f"getting bracket for {user_token} and type {bracket_type}")
 
         pool_name = ''
         if is_admin:
             pool_name = self.__pool.get_admin_pool_name()
         else: 
             pool_name = self.__pool.get_pool_name()
-
-        #pool_status = self.__pool.check_pool_status()
 
         # calculate best possible score for each user
         user_data = []
@@ -173,18 +173,20 @@ class Bracket(Ncaa):
                 
                 url = request.url_root
                 token = self.__user.get_edit_token()
+                bracket_type_label = request.values['bracket_type_label']
 
                 results = send_confirmation_email.s(
                     token = token,
                     url = url,
                     pool_name = self.__pool.get_pool_name(),
                     pool_status = self.__pool.check_pool_status(),
-                    email_address = request.values['email_address'], 
+                    email_address = request.values['email_address'],
                     bracket_type_name = request.values['bracket_type_name'],
+                    bracket_type_label = bracket_type_label,
                     username = request.values['username']              
                 ).apply_async(seconds=10)
 
-                edit_url = f"{url}bracket/{token}?action=e"
+                edit_url = f"{url}bracket/{bracket_type_label}/{token}?action=e"
                 message = f"Your bracket has been submitted.<br/>Good luck!<br/><br/>You can edit your bracket <a href='{edit_url}'>here</a> until the tip off of the first game on Thursday."
             
             # set updated message
@@ -278,8 +280,6 @@ class Bracket(Ncaa):
             
             if pool_name == 'admin':
                 continue
-            
-            self.debug(f"working with {pool_name}")
 
             # loop through each bracket type for each pool
             for bracket_type in bracket_types:

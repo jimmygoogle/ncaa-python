@@ -26,10 +26,12 @@ def index():
             # set the bracket type
             if pool_status['sweetSixteenBracket']['is_open'] == 1:
                 bracket_type = 'sweetSixteenBracket'
+                bracket_type_label = 'sweet'
                 user_picks = bracket.get_master_bracket_data()['user_picks']
             else:
                 user_picks = bracket.get_empty_picks()
                 bracket_type = 'normalBracket'
+                bracket_type_label = 'full'
 
             # set the bracket edit type
             edit_type = 'add'
@@ -47,6 +49,7 @@ def index():
                 is_open = 1,
                 edit_type = edit_type,
                 bracket_type = bracket_type,
+                bracket_type_label = bracket_type_label,
                 dates = bracket.get_start_dates()
             )
         

@@ -11,14 +11,15 @@ pool = Pool()
 user = User()
     
 ## show brackets for display or editing
-@bracket_blueprint.route('/bracket/<user_token>', methods=['GET', 'POST', 'PUT'])
-def user_bracket(user_token):
+@bracket_blueprint.route('/bracket/<bracket_type_label>/<user_token>', methods=['GET', 'POST', 'PUT'])
+#@bracket_blueprint.route('/bracket/<bracket_type_label>/<user_token>', methods=['GET', 'POST', 'PUT'])
+def user_bracket(user_token, bracket_type_label):
     ''' Show the user bracket form '''
     
     # check to see if we are the admin/master bracket
     admin_user_token = user.get_admin_edit_token()
     is_admin = 0
-    
+
     # if the user token equals the admin token
     if admin_user_token == user_token:
         is_admin = 1
@@ -31,7 +32,16 @@ def user_bracket(user_token):
         return redirect(url_for('pool.show_pool_form'))
     
     year = datetime.datetime.now().year
-    #bracket.debug(f"user token is {user_token} for {request.method}")
+    
+    # set the bracket type
+    if bracket_type_label == 'full':
+        bracket_type = 'normalBracket'
+    elif bracket_type_label == 'sweet':
+        bracket_type = 'sweetSixteenBracket'
+    else:
+        bracket_type = None
+        
+    #bracket.debug(f"user token is {user_token} for {request.method} and type {bracket_type}")
 
     # user is submitting bracket data so process it and add/update it in the DB
     if request.method == 'POST':
@@ -47,7 +57,6 @@ def user_bracket(user_token):
         action = 'view'
         show_user_bracket_form = 0
         edit_type = 'add'
-        bracket_type = ''
         pool_is_open = 0
 
         # we are trying to show a bracket for editing
@@ -56,16 +65,11 @@ def user_bracket(user_token):
             edit_type = 'edit'
             
         # set bracket type based on open pool
-        if pool_status['normalBracket']['is_open']:
-            bracket_type = 'normalBracket'
-
-            if action != 'view':
+        if action != 'view':
+            if pool_status['normalBracket']['is_open']:
                 pool_is_open = 1
 
-        elif pool_status['sweetSixteenBracket']['is_open']:
-            bracket_type = 'sweetSixteenBracket'
-            
-            if action != 'view':
+            elif pool_status['sweetSixteenBracket']['is_open']:
                 pool_is_open = 1
 
         # the pools are always open for the admin user

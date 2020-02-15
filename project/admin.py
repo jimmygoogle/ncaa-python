@@ -108,9 +108,8 @@ class Admin(Ncaa):
         
     def add_new_pool(self):
         '''Add new pool to DB'''
-            
-        # try and add new pool and check to see if it already exists
-        self.__db.insert(proc = 'AddNewPool', params = [request.values['pool_name']])
+
+        self.__db.insert(proc = 'AddNewPool', params = [request.values['pool_name'], request.values['paypal_merchant_id'], request.values['payment_amount'], request.values['payment_message']])
         errors = self.__db.errors
 
         if len(errors) > 0:

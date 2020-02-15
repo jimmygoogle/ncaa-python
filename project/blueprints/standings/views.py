@@ -9,7 +9,8 @@ standings_blueprint = Blueprint('standings', __name__, template_folder='template
 
 @standings_blueprint.route('/standings/<pool_type>')
 def show_standings(pool_type):
-    
+    ''' Get the standings '''
+
     pool_name = pool.get_pool_name()
 
     if pool_name is None:

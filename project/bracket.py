@@ -8,6 +8,9 @@ from project.mongo import Mongo
 from collections import defaultdict
 import ast
 import configparser
+from project.paypal_client import PayPalClient
+from paypalcheckoutsdk.orders import OrdersGetRequest
+from paypalhttp import HttpError
 
 class Bracket(Ncaa):
     '''Bracket class to get/set bracket information for a user'''
@@ -16,6 +19,7 @@ class Bracket(Ncaa):
         self.__db = MysqlPython()
         self.__pool = Pool()
         self.__user = User()
+        self.__paypal = PayPalClient()
 
     def get_base_teams(self):
         '''Get base teams data for display'''
@@ -97,8 +101,6 @@ class Bracket(Ncaa):
         is_admin = kwargs['is_admin']
         user_token = kwargs['user_token']
         bracket_type = kwargs['bracket_type']
-        
-        #self.debug(f"getting bracket for {user_token} and type {bracket_type}")
 
         pool_name = ''
         if is_admin:
@@ -137,7 +139,7 @@ class Bracket(Ncaa):
             
             if action == 'edit':
                 proc = 'GetUserByEditToken'
- 
+
             user_info = self.__db.query(proc = proc, params = [user_token, pool_name])
             self.__user.set_username(user_info[0]['userName'])
             
@@ -156,7 +158,7 @@ class Bracket(Ncaa):
 
     def process_user_bracket(self, **kwargs):
         '''Process the data the user submitted and add it to the DB'''
-    
+
         if not kwargs['is_admin'] and not self.__pool.are_pools_open():
             error = 'The pool is no longer open.'
             message = ''
@@ -205,14 +207,8 @@ class Bracket(Ncaa):
     def process_pick_data(self, **kwargs):
         '''Process the user picks and add them to the DB'''
 
-        bracket_type_name = request.values['bracket_type_name']
-        email_address = request.values['username']
-        username = request.values['bracket_type_name']
-        first_name = request.values['first_name']
-        tie_breaker_points = request.values['tie_breaker_points']
         user_picks = request.values['user_picks']
-        edit_type = request.values['edit_type']
-        
+
         # figure out if we are editing the master bracket since we call different procedures
         is_admin = 0
         if 'is_admin' in kwargs and kwargs['is_admin'] is not None and kwargs['is_admin'] != 0 :
@@ -283,7 +279,6 @@ class Bracket(Ncaa):
 
             # loop through each bracket type for each pool
             for bracket_type in bracket_types:
-                
                 bracket_type += 'Bracket'
                 
                 # get pool status, standings and remaining teams for bracket by type
@@ -308,7 +303,6 @@ class Bracket(Ncaa):
         Calculate the best possible scores left for each user
         
         Some of the variable case names are mixed here as that is how they were previously coming from the DB, this can be addressed later
-        
         '''
 
         standings_data = kwargs['standings_data']
@@ -316,7 +310,6 @@ class Bracket(Ncaa):
 
         # best possible data
         best_possible_data = kwargs['best_possible_data']
-        best_possible_score = best_possible_data[0]['bestPossibleScore']
         adjusted_score = best_possible_data[0]['adjustedScore']
 
         # build standings lookup table
@@ -361,4 +354,16 @@ class Bracket(Ncaa):
         
         results = mongodb.query(collection_name = date_collection_name, query = {})
         return results
-          
+
+    def check_user_payment(self, order_id):
+        '''Check that the user's order ID is in fact valid'''
+
+        status = False
+        try:
+            request = OrdersGetRequest(order_id)
+            self.__paypal.client.execute(request)
+            status = True
+        except IOError as ioe:
+            self.debug(ioe)
+
+        return status

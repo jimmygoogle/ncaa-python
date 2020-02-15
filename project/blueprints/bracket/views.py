@@ -12,7 +12,6 @@ user = User()
     
 ## show brackets for display or editing
 @bracket_blueprint.route('/bracket/<bracket_type_label>/<user_token>', methods=['GET', 'POST', 'PUT'])
-#@bracket_blueprint.route('/bracket/<bracket_type_label>/<user_token>', methods=['GET', 'POST', 'PUT'])
 def user_bracket(user_token, bracket_type_label):
     ''' Show the user bracket form '''
     
@@ -76,6 +75,7 @@ def user_bracket(user_token, bracket_type_label):
         # i chose to do this here rather than make the if/elif/else more confusing
         if is_admin:
             pool_is_open = 1
+            edit_type = 'admin'
 
         # decide whether or not to allow the user to edit their bracket based on the pool close date/time
         show_user_bracket_form = 0

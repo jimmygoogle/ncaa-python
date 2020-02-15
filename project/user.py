@@ -120,6 +120,7 @@ class User(Ncaa):
         username = request.values['username']
         tie_breaker_points = request.values['tie_breaker_points']
         first_name = request.values['first_name']
+        transaction_order_id = request.values['transaction_order_id']
         
         # handle error "Failed calling stored routine; bytearray index out of range error"
         # TODO: find a proper fix
@@ -147,9 +148,10 @@ class User(Ncaa):
             first_name,
             edit_token, 
             display_token,
-            bracket_type_name
+            bracket_type_name,
+            transaction_order_id
         ])
-        
+
         return user_id
         
     def update_user(self, **kwargs):

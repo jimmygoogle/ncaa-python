@@ -14,6 +14,8 @@ class Pool(Ncaa):
         # set pool specific attributes
         self.pool_name = ''
 
+        Ncaa.__init__(self)
+
     def set_pool_name(self, pool_name):
         '''Validate pool name and then set it for use in the application'''
 
@@ -37,8 +39,6 @@ class Pool(Ncaa):
 
         # try and get pool name from session
         pool_name = session.get('pool_name')
-        #self.debug(f"pool name is {pool_name}")
-        
         return pool_name
 
     def get_admin_pool_name(self):
@@ -85,3 +85,28 @@ class Pool(Ncaa):
             return status
         else:
             return status[bracket_type]
+
+    def get_pool_info(self):
+        '''Get all info for pool'''
+
+        pool_name = self.get_pool_name()
+        result = self.__db.query(proc = 'PoolInfo', params = [pool_name])
+        #self.debug(result)
+        return result
+
+    def get_pool_payment_info(self):
+        result = self.get_pool_info()
+
+        data = {}
+        if result[0]['paymentAmount'] > 0:
+            data = {
+                'payment_amount': result[0]['paymentAmount'],
+                'paypal_merchant_id': result[0]['payPalMerchantId'],
+                'payment_message': result[0]['paymentMessage']
+            }
+
+        return data
+
+
+
+    

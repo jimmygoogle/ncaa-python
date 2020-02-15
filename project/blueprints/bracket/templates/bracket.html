@@ -1,6 +1,17 @@
 {% extends "index.html" %}
 
 {% block content %}
+
+{% if show_user_bracket_form %}
+  <div id="payment" data-pay-to-play="{{requires_payment}}">
+    {% if requires_payment %}
+      <div class='payment-message-header-wait'>Please wait while your payment is processed ...</div>
+      <div class='payment-message-header'>{{payment_message}}</div>
+      <div id="paypal-button-container"></div>
+    {% endif %}
+  </div>
+{% endif %}
+
 <section id='bracket'>
   <!-- show buttons to allow users to autofill their bracket -->
   {% if show_user_bracket_form %}

@@ -20,13 +20,48 @@
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/polls.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/bracket.css')}}">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    
+
     {% if is_open %}
-    <script src="{{url_for('static', filename='javascripts/ncaa.js')}}"> type="text/javascript"></script>
+      <script src="{{url_for('static', filename='javascripts/ncaa.js')}}"> type="text/javascript"></script>
     {% endif %}
     <script src="{{url_for('static', filename='javascripts/gui.js')}}"> type="text/javascript"></script>
   </head>
   <body>
+    {% if is_open %}
+      {% if requires_payment %}
+        <script src="https://www.paypal.com/sdk/js?client-id={{paypal_client_id}}&merchant-id=CVM23DVWGUUQQ"></script>
+
+        <script>
+          paypal.Buttons({
+            createOrder: function(data, actions) {
+              // This function sets up the details of the transaction, including the amount and line item details.
+              $('#paypal-button-container').hide();
+              $('.payment-message-header').hide();
+              setTimeout(function(){ $('.payment-message-header-wait').show(); }, 2000);
+              return actions.order.create({
+                purchase_units: [{
+                  amount: {
+                    value: {{payment_amount}}
+                  }
+                }]
+              });
+            },
+            onApprove: function(data, actions) {
+              // This function captures the funds from the transaction.
+              return actions.order.capture().then(function(details) {
+                // This function shows a transaction success message to your buyer.
+                console.log('Transaction completed by ' + details.payer.name.given_name + " and order id is " + data.orderID);
+                //console.log(details)
+
+                // set the order id and allow user to continue
+                $('#transactionOrderId').val(data.orderID);
+                allowPlayer();
+              });
+            }
+          }).render('#paypal-button-container');
+        </script>
+      {% endif %}
+    {% endif %}
     {% if year %}
     <header>
       <nav id='cssmenu'>

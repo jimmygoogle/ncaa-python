@@ -2,52 +2,90 @@ let userPicks = {};
 
 $(document).ready (
   function() {
-
     // load the 'userPicks' object
     loadUserPicks();
-    
-    $('.picks-header').click(function(){
-      $('.auto-picks-buttons').toggle();
-    });
-    
-    // control bracket flow
-    $('li').click(function() {
-      setUserPick($(this));
-    });
 
-    $('#reset').click(function(event){
-      event.preventDefault();
-      resetPicks();
-    });
-
-    $('#chalk').click(function(event){
-      event.preventDefault();
-      makePicks('chalk');
-    });
-
-    $('#mix').click(function(event){
-      makePicks('mix');
-    });
-
-    $('#random').click(function(event){
-      makePicks('random');
-    });
-    // submit form to set/check user pool name
-    $('#poolNameForm').submit(function(event) {
-      event.preventDefault();
-      checkUserPool();
-    });
-    
-    // validate and submit user bracket form
-    $('#submit_user_bracket').click(function(event) {
-      event.preventDefault();
-      validateUserInput();
-    });
+    // hide the ability to submit information before they pay
+    if(payToPlay()) {
+      blockPlayer();
+    }
+    // bind all events to allow the user to play
+    else {
+      setupPlayerBracket();
+    }
   }
 );
 
-function resetPicks() {
+function setupPlayerBracket() {
+  // control bracket flow
+  $('li').click(function() {
+    setUserPick($(this));
+  });
 
+  // show/hide auto picks
+  $('.picks-header').click(function() {
+    $('.auto-picks-buttons').toggle();
+  });
+
+  // reset/clear auto picks
+  $('#reset').click(function(event){
+    event.preventDefault();
+    resetPicks();
+  });
+
+  // pick all favorites
+  $('#chalk').click(function(event){
+    event.preventDefault();
+    makePicks('chalk');
+  });
+
+  // make weighted picks
+  $('#mix').click(function(event){
+    makePicks('mix');
+  });
+
+  // make random picks
+  $('#random').click(function(event){
+    makePicks('random');
+  });
+
+  // submit form to set/check user pool name
+  $('#poolNameForm').submit(function(event) {
+    event.preventDefault();
+    checkUserPool();
+  });
+
+  // validate and submit user bracket form
+  $('#submit_user_bracket').click(function(event) {
+    event.preventDefault();
+    data = validateUserInput();
+
+    if(data) {
+      submitBracket(data);
+    }
+  });
+}
+
+function blockPlayer() {
+  $('#bracket').addClass('blur');
+}
+
+function allowPlayer() {
+  $('.payment-message-header-wait').hide();
+  $('#bracket').removeClass('blur');
+  setupPlayerBracket();
+}
+
+function payToPlay() {
+  return $('#payment').attr('data-pay-to-play') == 1 ? 1 : 0
+}
+
+function toggleDisplayForPicks() {
+  $('.auto-picks').toggle();
+  $('.bracket_details').toggle();
+}
+
+function resetPicks() {
   // loop through all games and reset picks
   for (let index = 33; index <= 63; index++) {
 
@@ -353,7 +391,6 @@ function checkUserPool() {
 
 function validateUserInput() {
   let status = true;
-  let multipleEdits = false;
   const $userBracketInfoForm = $('#userBracketInfoForm');
   const editTypeValue = $userBracketInfoForm.find('#editType').val();
   const bracketTypeName = $userBracketInfoForm.find('#bracketType').val();
@@ -362,18 +399,7 @@ function validateUserInput() {
   const username = $userBracketInfoForm.find('#username').val();
   const firstName = $userBracketInfoForm.find('#firstname').val();
   const tieBreakerPoints = parseInt($userBracketInfoForm.find('#tieBreaker').val());
-
-  let formAction = 'POST';
-
-  // this is kind a hack for the bracket router
-  const rand_string = Math.random().toString(36).substring(7);
-  let url = window.location.href + 'bracket/' + bracketTypeLabel + '/' + rand_string;
-
-  if( (editTypeValue == 'admin') || (editTypeValue == 'edit')) {
-    multipleEdits = true;
-    formAction = 'PUT';
-    url = window.location.href;
-  }
+  const transactionOrderId = $userBracketInfoForm.find('#transactionOrderId').val();
 
   let error_message;
   // get rid of error messages once the pool is submitted
@@ -384,7 +410,7 @@ function validateUserInput() {
     const expectedNumberOfGames = (bracketTypeName == 'sweetSixteenBracket') ? 15 : 63;
 
     //make sure all games are filled in when we are filling out a bracket
-    if(Object.keys(userPicks).length !== expectedNumberOfGames && (editTypeValue == 'add')) {
+    if(status && Object.keys(userPicks).length !== expectedNumberOfGames && (editTypeValue == 'add')) {
       error_message = 'Please pick all of the games.';
       status = false;
     }
@@ -425,59 +451,101 @@ function validateUserInput() {
     }
   }
 
+    // check if they paid (if they are supposed to pay)
+    if(status && payToPlay() && editTypeValue !== 'admin') {
+      if (transactionOrderId == '') {
+        error_message = "We don't recognize your payment information. Please contact support (jim@jimandmeg.com) for assistance.";
+        status = false;
+      }
+      // check the `transactionOrderId` to make sure its valid
+      else {
+        status = validatePayment(transactionOrderId);
+
+        if(!status) {
+          error_message = "We don't recognize your payment information. Please contact support (jim@jimandmeg.com) for assistance.";
+        }
+      }
+    }
+
   // show error message
   if(error_message) {
     $("#error")
     .empty()
     .append(error_message);
+    return false;
   }
 
-  if(status) {
-    // set base data
-    const data = {
-      email_address: emailAddress,
-      username: username,
-      first_name: firstName,
-      tie_breaker_points: tieBreakerPoints,
-      bracket_type_name: bracketTypeName,
-      bracket_type_label: bracketTypeLabel,
-      user_picks: JSON.stringify(userPicks),
-      edit_type: editTypeValue
-    };
+  return {
+    email_address: emailAddress,
+    username: username,
+    first_name: firstName,
+    tie_breaker_points: tieBreakerPoints,
+    bracket_type_name: bracketTypeName,
+    bracket_type_label: bracketTypeLabel,
+    user_picks: JSON.stringify(userPicks),
+    edit_type: editTypeValue,
+    transaction_order_id: transactionOrderId
+  };
+}
 
-    // hide the submit button and auto picks
-    $('#submit_user_bracket').hide();
-    $('#auto_picks').hide();
-    $('#loading').show();
+function validatePayment(transactionOrderId) {
+  const url = window.location.href + 'check-user-payment';
+  const result = $.ajax({
+    async: false,
+    type: "GET",
+    url:  url,
+    data: {
+      'transaction_order_id': transactionOrderId
+    }
+  });
 
-    $.ajax({
-      type: formAction,
-      url: url,
-      data: data,
-      success: function(result) {
-        // show message
-        
-        $('#loading').hide();
-        
-        $("#message")
-        .empty()
-        .show()
-        .append(result['message']);
-        
-        // show error
-        $("#error")
-        .empty()
-        .show()
-        .append(result['error']);
+  return result['responseJSON'];
+}
 
-        if( multipleEdits && result['error'] === '') {
-          $("#submit_user_bracket").show();
-          $("#auto_picks").show();
-        }
+function submitBracket(data) {
+  let formAction = 'POST';
+  let multipleEdits = false;
+
+  // this is kind a hack for the bracket router
+  const rand_string = Math.random().toString(36).substring(7);
+  let url = window.location.href + 'bracket/' + data['bracket_type_label'] + '/' + rand_string;
+
+  if( (data['edit_type'] == 'admin') || (data['edit_type'] == 'edit')) {
+    multipleEdits = true;
+    formAction = 'PUT';
+    url = window.location.href;
+  }
+
+  // hide the submit button and auto picks
+  $('#submit_user_bracket').hide();
+  $('#auto_picks').hide();
+  $('#loading').show();
+
+  $.ajax({
+    type: formAction,
+    url: url,
+    data: data,
+    success: function(result) {
+      // show message
+      $('#loading').hide();
+
+      $("#message")
+      .empty()
+      .show()
+      .append(result['message']);
+
+      // show error
+      $("#error")
+      .empty()
+      .show()
+      .append(result['error']);
+
+      if( multipleEdits && result['error'] === '') {
+        $("#submit_user_bracket").show();
+        $("#auto_picks").show();
       }
-    });
-
-  }
+    }
+  });
 
   return(false);
 }

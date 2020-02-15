@@ -158,7 +158,6 @@ class User(Ncaa):
         '''Update the user information based on their edit token value'''
       
         edit_token = self.get_edit_token()
-        bracket_type_name = request.values['bracket_type_name']
         email_address = request.values['email_address']
         username = request.values['username']
         first_name = request.values['first_name']

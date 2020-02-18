@@ -8,7 +8,6 @@ admin_blueprint = Blueprint('admin', __name__, template_folder='templates')
 
 @admin_blueprint.route('/admin', methods=['GET', 'POST'])
 def admin_login():
-    
     '''Show/process admin login'''
 
     admin = Admin()
@@ -47,7 +46,6 @@ def show_admin_login_page(error = None):
 
 @admin_blueprint.route('/admin/new', methods=['GET', 'POST'])
 def intialize_bracket():
-    
     '''Show/update 64 teams for bracket'''
     
     admin = Admin()
@@ -71,7 +69,6 @@ def intialize_bracket():
 
 @admin_blueprint.route('/admin/master')
 def edit_admin_bracket():
-    
     '''Show/update master bracket'''
     
     admin = Admin()
@@ -87,7 +84,6 @@ def edit_admin_bracket():
   
 @admin_blueprint.route('/admin/pool', methods=['GET', 'POST'])
 def add_pools():
-    
     '''Add new pools'''
 
     admin = Admin()
@@ -106,7 +102,6 @@ def add_pools():
     
 @admin_blueprint.route('/admin/polls')
 def reset_polls():
-    
     '''Reset Top 25 polls data'''
     
     admin = Admin()

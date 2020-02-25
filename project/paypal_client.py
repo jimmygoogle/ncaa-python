@@ -12,7 +12,7 @@ class PayPalClient:
 
         """Set up and return PayPal Python SDK environment with PayPal access credentials.
            This sample uses SandboxEnvironment. In production, use LiveEnvironment."""
-        if config.get('DEFAULT', 'ENVIRONMENT') == 'development'
+        if config.get('DEFAULT', 'ENVIRONMENT') == 'development':
             self.environment = SandboxEnvironment(client_id=self.client_id, client_secret=self.client_secret)
         else:
             self.environment = LiveEnvironment(client_id=self.client_id, client_secret=self.client_secret)

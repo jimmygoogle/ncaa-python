@@ -108,9 +108,6 @@ class Bracket(Ncaa):
         else: 
             pool_name = self.__pool.get_pool_name()
 
-        # calculate best possible score for each user
-        user_data = []
-
         # get the user picks
         user_picks = self.get_user_picks(is_admin = is_admin, user_token = user_token)
 
@@ -204,6 +201,76 @@ class Bracket(Ncaa):
             'error': error
         })
 
+    def set_next_game(self, game_id):
+        '''Set the next game the user will play in in the next round'''
+
+        game_mappings = {
+            1: 33,
+            2: 33,
+            3: 34,
+            4: 34,
+            5: 35,
+            6: 35,
+            7: 36,
+            8: 36,
+            9: 37,
+            10: 37,
+            11: 38,
+            12: 38,
+            13: 39,
+            14: 39,
+            15: 40,
+            16: 40,
+            17: 41,
+            18: 41,
+            19: 42,
+            20: 42,
+            21: 43,
+            22: 43,
+            23: 44,
+            24: 44,
+            25: 45,
+            26: 45,
+            27: 46,
+            28: 46,
+            29: 47,
+            30: 47,
+            31: 48,
+            32: 48,
+            33: 49,
+            34: 49,
+            35: 50,
+            36: 50,
+            37: 51,
+            38: 51,
+            39: 52,
+            40: 52,
+            41: 53,
+            42: 53,
+            43: 54,
+            44: 54,
+            45: 55,
+            46: 55,
+            47: 56,
+            48: 56,
+            49: 57,
+            50: 57,
+            51: 58,
+            52: 58,
+            53: 59,
+            54: 59,
+            55: 60,
+            56: 60,
+            57: 61,
+            58: 61,
+            59: 62,
+            60: 62,
+            61: 63,
+            62: 63
+        }
+
+        return game_mappings[game_id]
+
     def process_pick_data(self, **kwargs):
         '''Process the user picks and add them to the DB'''
 
@@ -249,6 +316,20 @@ class Bracket(Ncaa):
                 game_id
             ])
 
+            # set the game/team relationship
+            if is_admin == 1:
+                # figure out the next game the winner will play in
+                game_id = self.set_next_game(int(game_id))
+                #self.debug(f"next game is {game_id}")
+
+                game_data = self.__db.query(proc = 'GetTeamsGame', params = [game_id])
+                #self.debug(f"working on game {game_id} for team {team_id}")
+
+                if len(game_data) == 0:
+                    self.__db.insert(proc = 'AddTeamsGame', params = [game_id, team_id, team_id])
+                else:
+                    self.__db.update(proc = 'UpdateTeamsGame', params = [game_id, team_id])
+
     def score_all_brackets(self):
         '''Score all user brackets. This is called after each admin bracket update'''
 
@@ -261,8 +342,9 @@ class Bracket(Ncaa):
         '''Precalculate the best possible scores for all users since doing this on the fly is slow'''
 
         # get the best possible score for each bracket type
-        best_possible_data_full = self.__db.query(proc = 'BestPossibleScore', params = [1])
-        best_possible_data_sweet_sixteen = self.__db.query(proc = 'BestPossibleScore', params = [3])
+        pool_name = self.__pool.get_pool_name()
+        best_possible_data_full = self.__db.query(proc = 'BestPossibleScore', params = [1, pool_name])
+        best_possible_data_sweet_sixteen = self.__db.query(proc = 'BestPossibleScore', params = [3, pool_name])
         
         # get all pools
         pools = self.__db.query(proc = 'GetAllPools', params = [])

@@ -78,7 +78,7 @@ def edit_admin_bracket():
 
     token = admin.get_edit_token()
 
-    url = request.url_root + f"bracket/{token}?action=e"  
+    url = request.url_root + f"bracket/full/{token}?action=e"  
     return redirect(url)
 
   

@@ -4,7 +4,6 @@
 
   <script>
     $(document).ready (function() {
-
       // submit add new pool
       $('#js-submit-add_pool').click(function(event){
         event.preventDefault();
@@ -14,9 +13,11 @@
           url: window.location.pathname,
           data: {
             pool_name: $('#pool_name').val(),
-            paypal_merchant_id: $('#paypal_merchant_id').val(),
-            payment_amount: $('#payment_amount').val(),
-            payment_message: $('#payment_message').val()
+            paypal_merchant_id: $('#paypal_merchant_id').val() || ' ',
+            payment_amount: $('#payment_amount').val() | 0,
+            payment_message: $('#payment_message').val() || ' ',
+            round_scores: $('#round_scores').val() || ' ',
+            seed_bonus_scoring: $('#seed_bonus_scoring').is(':checked') ? 1 : 0
           },
           success: function (result) {
             alert(result['status']);
@@ -37,6 +38,12 @@
           <td><input type='text' id='paypal_merchant_id' name='paypal_merchant_id' placeholder='PayPal Merchant ID' value=''></td>
           <td><input type='text' id='payment_amount' name='payment_amount' placeholder='Cost of pool entry' value=''></td>
           <td><textarea id='payment_message' name='payment_message' placeholder='Message for payment...' value=''></textarea></td>
+        </tr>
+        <tr colspan=3>
+          <td><input type='text' id='round_scores' placeholder='Round scores' value=''></td>
+        </tr>
+        <tr colspan=3>
+          <td><label>Seed bonus scoring: </label><input type='checkbox' id='seed_bonus_scoring' value='1'></td>
         </tr>
         </table>
         <input id='js-submit-add_pool' value='Submit' type='submit'>

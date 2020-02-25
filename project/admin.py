@@ -24,6 +24,8 @@ class Admin(Ncaa):
         self.__edit_token = config.get('DEFAULT', 'ADMIN_EDIT_TOKEN')
         self.__collection_name = config.get('DATES', 'MONGODB_COLLECTION')
         self.__admin_login_salt = config.get('DEFAULT', 'ADMIN_LOGIN_SALT')
+        self.__admin_login_salt = config.get('DEFAULT', 'ADMIN_LOGIN_SALT')
+        self.__default_scoring = ast.literal_eval(config.get('DEFAULT', 'DEFAULT_SCORING'))
 
     def reset_dates_collection(self):
         '''Reset/drop the dates mongodb collection'''
@@ -53,6 +55,9 @@ class Admin(Ncaa):
             
             self.__db.insert(proc='InsertTeamsData', params=[team_name, seed_id, game_id])
         
+        # add team / game relationship
+        self.__db.insert(proc='InitializeTeamsGame', params=[])
+
         # TODO: this needs better error handling
         return jsonify({
             'status' : 1,
@@ -109,12 +114,33 @@ class Admin(Ncaa):
     def add_new_pool(self):
         '''Add new pool to DB'''
 
-        self.__db.insert(proc = 'AddNewPool', params = [request.values['pool_name'], request.values['paypal_merchant_id'], request.values['payment_amount'], request.values['payment_message']])
+        pool_id = self.__db.insert(proc = 'AddNewPool', params = [
+            request.values['pool_name'],
+            request.values['paypal_merchant_id'],
+            request.values['payment_amount'],
+            request.values['payment_message'],
+            request.values['seed_bonus_scoring']
+        ])
         errors = self.__db.errors
 
         if len(errors) > 0:
             status = str(errors[0])
         else:
+            # handle customized round scoring
+            round_score = []
+
+            if request.values['round_scores'] != ' ':
+                round_score = request.values['round_scores'].split(',')
+            else:
+                round_score = self.__default_scoring
+
+            # add customized round scores
+            for index, round_id in enumerate([1, 2, 3, 4, 5, 6]):
+                self.__db.insert(proc = 'AddNewPoolRoundScore', params = [
+                    pool_id,
+                    round_id,
+                    round_score[index]
+                ])
             status = 'ok'
 
         # TODO: this needs better error handling

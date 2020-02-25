@@ -97,16 +97,9 @@ class Pool(Ncaa):
     def get_pool_payment_info(self):
         result = self.get_pool_info()
 
-        data = {}
-        if result[0]['paymentAmount'] > 0:
-            data = {
-                'payment_amount': result[0]['paymentAmount'],
-                'paypal_merchant_id': result[0]['payPalMerchantId'],
-                'payment_message': result[0]['paymentMessage']
-            }
+        return{
+            'payment_amount': result[0]['paymentAmount'],
+            'paypal_merchant_id': result[0]['payPalMerchantId'],
+            'payment_message': result[0]['paymentMessage']
+        }
 
-        return data
-
-
-
-    

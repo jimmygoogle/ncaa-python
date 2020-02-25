@@ -127,6 +127,9 @@ class User(Ncaa):
         if first_name == '':
             first_name = ' '
 
+        if transaction_order_id == '':
+            transaction_order_id = ' '
+
         # setup user tokens
         display_token = self.setup_user_display_token(
             email_address = email_address,

@@ -168,7 +168,8 @@ class Bracket(Ncaa):
             error = ''
 
             # send confirmation email if this is a new bracket
-            if kwargs['action'] == 'add':
+            pool_name = self.__pool.get_pool_name()
+            if kwargs['action'] == 'add' and pool_name != 'test':
                 
                 url = request.url_root
                 token = self.__user.get_edit_token()
@@ -177,7 +178,7 @@ class Bracket(Ncaa):
                 results = send_confirmation_email.s(
                     token = token,
                     url = url,
-                    pool_name = self.__pool.get_pool_name(),
+                    pool_name = pool_name,
                     pool_status = self.__pool.check_pool_status(),
                     email_address = request.values['email_address'],
                     bracket_type_name = request.values['bracket_type_name'],

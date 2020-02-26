@@ -45,6 +45,7 @@ def fill_out_bracket(args):
         browser.get(f"{url}/pool/{pool_name}")
 
         # use the 'make picks' feature to fill out picks
+        browser.find_element_by_id('picks-header').click()
         picks = ['chalk', 'mix', 'random']
         element = picks[random_number_picks]
         browser.find_element_by_id(element).click()

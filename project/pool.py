@@ -92,14 +92,14 @@ class Pool(Ncaa):
         pool_name = self.get_pool_name()
         result = self.__db.query(proc = 'PoolInfo', params = [pool_name])
         #self.debug(result)
-        return result
+        return result[0]
 
     def get_pool_payment_info(self):
         result = self.get_pool_info()
 
         return{
-            'payment_amount': result[0]['paymentAmount'],
-            'paypal_merchant_id': result[0]['payPalMerchantId'],
-            'payment_message': result[0]['paymentMessage']
+            'payment_amount': result['paymentAmount'],
+            'paypal_merchant_id': result['payPalMerchantId'],
+            'payment_message': result['paymentMessage']
         }
 

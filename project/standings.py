@@ -25,4 +25,9 @@ class Standings(Ncaa):
         result = self.__db.query(proc = 'AreThereGamesLeft', params = [])
         games_left = result[0]['status']
 
+        # we are using the seed bonus scoring just ignore the best possible score
+        pool_info = self.__pool.get_pool_info()
+        if pool_info['seedBonusScoring'] == 1:
+            games_left = 0
+
         return (data, games_left)

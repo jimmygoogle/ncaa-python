@@ -317,7 +317,7 @@ class Bracket(Ncaa):
             ])
 
             # set the game/team relationship
-            if is_admin == 1:
+            if is_admin == 1 and int(game_id) < 63:
                 # figure out the next game the winner will play in
                 game_id = self.set_next_game(int(game_id))
                 #self.debug(f"next game is {game_id}")

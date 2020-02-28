@@ -19,7 +19,6 @@ class Bracket(Ncaa):
         self.__db = MysqlPython()
         self.__pool = Pool()
         self.__user = User()
-        self.__paypal = PayPalClient()
 
     def get_base_teams(self):
         '''Get base teams data for display'''
@@ -355,9 +354,10 @@ class Bracket(Ncaa):
 
         # loop through each pool
         for pool in pools:
+
             pool_name = pool['poolName']
             
-            if pool_name == 'admin':
+            if pool_name == 'admin' or pool['seedBonusScoring'] == 1:
                 continue
 
             # loop through each bracket type for each pool
@@ -444,7 +444,7 @@ class Bracket(Ncaa):
         status = False
         try:
             request = OrdersGetRequest(order_id)
-            self.__paypal.client.execute(request)
+            PayPalClient().client.execute(request)
             status = True
         except IOError as ioe:
             self.debug(ioe)

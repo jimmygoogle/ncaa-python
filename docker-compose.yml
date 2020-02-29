@@ -13,6 +13,7 @@ services:
       - db
       - redis
   mongo:
+    restart: always
     image: mongo
     ports:
       - "27017:27017"
@@ -33,12 +34,14 @@ services:
       - db_data:/var/lib/mysql
 
   celery:
+    restart: always
     build: .
     command: celery worker -A project.celery_worker.celery -l info
     volumes:
       - .:/app
  
   redis:
+    restart: always
     image: redis:alpine
     ports:
       - "6379:6379"

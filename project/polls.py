@@ -22,13 +22,11 @@ class Polls(Ncaa):
 
         # the polls run off of the year of the start of the season
         self.__year = str(datetime.datetime.now().year - 1)
-        
-        self.__mongo = Mongo()
     
     def reset_polls_collection(self):
         '''Reset/drop the polls mongodb collection'''
 
-        mongodb = self.__mongo
+        mongodb = Mongo()
         self.debug(f"reset collection '{self.__collection_name}'")
         mongodb.drop_collection(collection_name = self.__collection_name)
         
@@ -46,7 +44,7 @@ class Polls(Ncaa):
         '''Call Sports Radar API and get Top 25 poll data'''
 
         #self.reset_polls_collection()
-        mongodb = self.__mongo
+        mongodb = Mongo()
         
         # try and get results from mongodb
         type = kwargs['type']

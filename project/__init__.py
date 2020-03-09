@@ -18,12 +18,10 @@ db = MysqlPython()
 mongo = Mongo()
 
 def create_app(is_testing=None, celery_app=None):
-    
     app = Flask(__name__)
 
     with app.app_context():    
         if is_testing is None:
-
             # dont load the DB stuff for celery
             if celery_app is None:
                 # set up mysql connection
@@ -51,7 +49,7 @@ def create_app(is_testing=None, celery_app=None):
    
     if __name__ == '__main__':
         app.debug = True
-        app.run(host='0.0.0.0')
+        app.run(host='0.0.0.0', port=5000)
 
     # import blue prints
     from project.blueprints.pool.views import pool_blueprint

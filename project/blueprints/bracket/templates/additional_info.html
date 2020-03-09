@@ -9,7 +9,7 @@
   
   <input type='email' name='email' id='email' placeholder='Email address' value="{{user_data[0]['emailAddress']}}"/>
   <input type='text' name='username' id='username' placeholder='Bracket Name' value="{{user_data[0]['userName']}}"/>
-  <input type='text' name='firstname' id='firstname' placeholder='First name (optional)' value="{{user_data[0]['realName']}}"/>
+  <input type='hidden' name='firstname' id='firstname' placeholder='First name (optional)' value="{{user_data[0]['realName']}}"/>
   <input type='tel' name='tieBreaker' id='tieBreaker' placeholder='Total pts of final game' value="{{user_data[0]['tieBreakerPoints']}}"/>
   <input type='hidden' name='bracketType' id='bracketType' value="{{bracket_type}}"/>
   <input type='hidden' name='bracketTypeLabel' id='bracketTypeLabel' value="{{bracket_type_label}}"/>

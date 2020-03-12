@@ -3,7 +3,6 @@
 body {
   font-family: 'Istok Web', sans-serif;
   background: url('/static/images/background.jpg') no-repeat #000;
-  background-repeat: repeat;
   min-height: 100%;
   margin: 0;
 }

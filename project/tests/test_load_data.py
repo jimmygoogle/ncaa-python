@@ -4,15 +4,14 @@ import string
 import random
 import os
 import sys
-import time;
-import argparse;
+import time
+import argparse
 
 def generate_random_string(length=8):
     '''Generate a random string N characters in length'''
 
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(length))
-
 
 def generate_random_number(start, end):
     '''Generate a random between the start and the end params'''
@@ -31,10 +30,15 @@ def fill_out_bracket(args):
     # submit used defined brackets per child process
     number_of_brackets = int(args.number_of_brackets)
 
+    # use random words for the username and emails
+    word_file = "/usr/share/dict/words"
+    words = open(word_file).read().splitlines()
+    words_length = (len(words)) - 1
+
     for i in range(number_of_brackets):      
         # get random stuff
         random.seed()
-        random_string = generate_random_string()
+        random_string = words[generate_random_number(0, words_length)].lower()
         random_number_picks = generate_random_number(0, 2)
         random_number_score = generate_random_number(135,180)
         

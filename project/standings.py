@@ -18,7 +18,8 @@ class Standings(Ncaa):
         pool_status = self.__pool.check_pool_status(bracket_type)
 
         # fetch the user standings
-        data = self.__db.query(proc = 'Standings', params = [pool_status['is_open'], pool_name, bracket_type])
+        data = self.__db.query(proc = 'Standings', params = 0, pool_name, bracket_type])
+        #data = self.__db.query(proc = 'Standings', params = [pool_status['is_open'], pool_name, bracket_type])
         
         # get number of games played to see if there are games left
         # this will help determine if we show the best possible score column in the standings

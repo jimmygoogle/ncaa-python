@@ -9,6 +9,7 @@ from . import celery
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from python_http_client.exceptions import HTTPError
 
 @celery.task()
 def send_confirmation_email(**kwargs):
@@ -21,7 +22,7 @@ def send_confirmation_email(**kwargs):
         pool_name = kwargs['pool_name'].upper()
         year = datetime.datetime.now().year
 
-        content= get_email_confirmation_template(
+        content = get_email_confirmation_template(
             year = year,
             info_email = config.get('EMAIL', 'INFO_EMAIL'),
             pool_name = pool_name,
@@ -45,6 +46,8 @@ def send_confirmation_email(**kwargs):
             response = sg.send(message)
         except Exception as e:
             print(e.message)
+        except HTTPError as e:
+            print(e.to_dict)
 
 def get_email_confirmation_template(**kwargs):
     '''Build email template for confirmation email'''
@@ -63,3 +66,4 @@ def get_email_confirmation_template(**kwargs):
         closing_date_time = pool_status[bracket_type_name]['closing_date_time'],
         edit_url = f"{url}bracket/{bracket_type_label}/{edit_token}?action=e"
     )
+

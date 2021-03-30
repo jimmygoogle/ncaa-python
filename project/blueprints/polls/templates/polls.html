@@ -57,7 +57,7 @@
              </table>
              
              <div class='other-votes-usa-today'><span class='other-votes-header'>Others receiving votes: </span>
-             {% for data in ap_rankings['candidates'] %}
+             {% for data in usa_today_rankings['candidates'] %}
                {{ data['market'] }} ({{ data['votes'] }}){{ ',' if not loop.last }}
              {% endfor %}
              </div> 

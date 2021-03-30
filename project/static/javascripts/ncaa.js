@@ -344,7 +344,7 @@ function loadUserPicks() {
   const bracketType = $userBracketInfoForm.find('#bracketType').val();
   const editTypeValue = $userBracketInfoForm.find('#editType').val();
   
-  if(editTypeValue == 'admin' || editTypeValue == 'add') {
+  if(editTypeValue == 'add') {
     return false;
   }
 

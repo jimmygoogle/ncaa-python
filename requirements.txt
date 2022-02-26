@@ -1,7 +1,7 @@
 amqp==5.0.9
 billiard==3.6.4.0
 cached-property==1.5.1
-celery==5.1.2
+celery==5.2.2
 certifi==2018.11.29
 cffi==1.15.0
 chardet==3.0.4

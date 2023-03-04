@@ -20,8 +20,7 @@ def index():
         return render_template('polls.html',
             pool_name = pool_name,
             year = datetime.datetime.now().year,
-            ap_rankings = polls.get_ap_poll_data()[0],
-            #usa_today_rankings = {}
-            usa_today_rankings = polls.get_usa_today_poll_data()[0]
+            ap_rankings = polls.get_ap_poll_data(),
+            usa_today_rankings = polls.get_usa_today_poll_data()
         )
 

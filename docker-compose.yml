@@ -9,7 +9,6 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - mongo
       - db
       - redis
   db:

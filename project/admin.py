@@ -3,23 +3,27 @@ from project.ncaa import Ncaa
 from project.polls import Polls
 from project.user import User
 from project.mysql_python import MysqlPython
-from project.mongo import Mongo
 from project import session
 import ast
 import configparser
 import re
 import hashlib
 import binascii
+import redis
+import json
 
 class Admin(Ncaa):
     '''Performs admin functions such as creating a new bracket or editing the master bracket'''
 
     def __init__(self, **kwargs):
         self.__db = MysqlPython()
-        self.__mongo = Mongo()
 
         config = configparser.ConfigParser()
         config.read("site.cfg")
+
+        redis_host = config.get('REDIS', 'REDIS_HOST')
+        redis_port = config.get('REDIS', 'REDIS_PORT')
+        self.__redis = redis.Redis(host=redis_host, port=redis_port, db=0)
 
         self.__edit_token = config.get('DEFAULT', 'ADMIN_EDIT_TOKEN')
         self.__collection_name = config.get('DATES', 'MONGODB_COLLECTION')
@@ -27,13 +31,6 @@ class Admin(Ncaa):
         self.__admin_login_salt = config.get('DEFAULT', 'ADMIN_LOGIN_SALT')
         self.__default_scoring = ast.literal_eval(config.get('DEFAULT', 'DEFAULT_SCORING'))
 
-    def reset_dates_collection(self):
-        '''Reset/drop the dates mongodb collection'''
-
-        mongodb = self.__mongo
-        self.debug(f"reset collection '{self.__collection_name}'")
-        mongodb.drop_collection(collection_name = self.__collection_name)
-        
     def get_edit_token(self):
         '''Get edit token'''
             
@@ -78,11 +75,8 @@ class Admin(Ncaa):
         return 1
    
     def setup_game_start_dates_for_display(self):
-        '''Write the game start dates to mongodb'''
-            
-        # clear out the old data
-        self.reset_dates_collection()
-        
+        '''Write the game start dates to redis'''
+
         # transform data for easier retrieval
         data = ast.literal_eval(request.values['game_dates'])
 
@@ -91,8 +85,8 @@ class Admin(Ncaa):
             dates.append({item['name']: item['value']})
 
         # insert new dates
-        mongodb = self.__mongo
-        mongodb.insert(collection_name = self.__collection_name, data = dates)
+        redis = self.__redis
+        redis.set('dates', json.dumps(dates))
 
         # TODO: this needs better error handling
         return jsonify({

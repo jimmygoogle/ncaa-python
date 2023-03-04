@@ -4,10 +4,11 @@ from project.user import User
 from project.pool import Pool
 from project.email import send_confirmation_email
 from project.mysql_python import MysqlPython
-from project.mongo import Mongo
 from collections import defaultdict
 import ast
 import configparser
+import redis
+import json
 from project.paypal_client import PayPalClient
 from paypalcheckoutsdk.orders import OrdersGetRequest
 from paypalhttp import HttpError
@@ -106,6 +107,10 @@ class Bracket(Ncaa):
             pool_name = self.__pool.get_admin_pool_name()
         else: 
             pool_name = self.__pool.get_pool_name()
+            if pool_name is None:
+                result = self.__db.query(proc = 'GetPoolFromUser', params = [user_token])
+                pool_name = result[0]['pool_name']
+                self.__pool.set_pool_name(pool_name)
 
         # get the user picks
         user_picks = self.get_user_picks(is_admin = is_admin, user_token = user_token)
@@ -427,16 +432,16 @@ class Bracket(Ncaa):
    
     def get_start_dates(self):
         '''Get the start dates for the rounds'''
-        
-        mongodb = Mongo()
-        
+
         config = configparser.ConfigParser()
         config.read("site.cfg")
-        
-        date_collection_name = config.get('DATES', 'MONGODB_COLLECTION')
-        
-        results = mongodb.query(collection_name = date_collection_name, query = {})
-        return results
+
+        redis_host = config.get('REDIS', 'REDIS_HOST')
+        redis_port = config.get('REDIS', 'REDIS_PORT')
+        r = redis.Redis(host=redis_host, port=redis_port, db=0)
+
+        results = r.get('dates')
+        return json.loads(results)
 
     def check_user_payment(self, order_id):
         '''Check that the user's order ID is in fact valid'''

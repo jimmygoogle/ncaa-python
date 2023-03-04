@@ -1,7 +1,6 @@
 from flask import Flask, request, session, g
 from celery import Celery
 from project.mysql_python import MysqlPython
-from project.mongo import Mongo
 import configparser
 
 config = configparser.ConfigParser()
@@ -15,7 +14,6 @@ redis_url = f"redis://{redis_host}:{redis_port}/0"
 celery = Celery(__name__, broker=redis_url)
 
 db = MysqlPython()
-mongo = Mongo()
 
 def create_app(is_testing=None, celery_app=None):
     app = Flask(__name__)
@@ -26,9 +24,6 @@ def create_app(is_testing=None, celery_app=None):
             if celery_app is None:
                 # set up mysql connection
                 db.get_db()
-            
-                # set up mongo connection
-                mongo.get_db()
 
             # setup session
             from flask_session import Session
@@ -45,7 +40,6 @@ def create_app(is_testing=None, celery_app=None):
             @app.teardown_request
             def teardown_request(response_or_exc):
                 db.close_db()
-                mongo.close_db()        
    
     if __name__ == '__main__':
         app.debug = True

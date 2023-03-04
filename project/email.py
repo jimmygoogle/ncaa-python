@@ -45,7 +45,7 @@ def send_confirmation_email(**kwargs):
             sg = SendGridAPIClient(config.get('EMAIL', 'SEND_API_KEY'))
             response = sg.send(message)
         except Exception as e:
-            print(e)
+            print(e.message)
         except HTTPError as e:
             print(e.to_dict)
 
@@ -66,3 +66,4 @@ def get_email_confirmation_template(**kwargs):
         closing_date_time = pool_status[bracket_type_name]['closing_date_time'],
         edit_url = f"{url}bracket/{bracket_type_label}/{edit_token}?action=e"
     )
+

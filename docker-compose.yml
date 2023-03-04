@@ -12,12 +12,6 @@ services:
       - mongo
       - db
       - redis
-  mongo:
-    restart: always
-    image: mongo
-    ports:
-      - "27017:27017"
- 
   db:
     image: mysql:8.0
     restart: always
@@ -27,19 +21,16 @@ services:
       MYSQL_PASSWORD: 'a2JwtCyZxgQf8T7F'
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
     ports:
-      - '3307:3306'
+      - '3306:3306'
     volumes:
       - ./project/mysql/init_db:/docker-entrypoint-initdb.d
-      - ./project/mysql/my.cnf:/etc/my.cnf
       - db_data:/var/lib/mysql
-
   celery:
     restart: always
     build: .
     command: celery worker -A project.celery_worker.celery -l info
     volumes:
       - .:/app
- 
   redis:
     restart: always
     image: redis:alpine

@@ -5,11 +5,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import configparser
 import datetime
-from . import celery
 import os
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
-from python_http_client.exceptions import HTTPError
+import boto3
+from . import celery
 
 @celery.task()
 def send_confirmation_email(**kwargs):
@@ -34,20 +32,37 @@ def send_confirmation_email(**kwargs):
             url = kwargs['url']
         )
 
-        message = Mail(
-            from_email = config.get('EMAIL', 'MAIL_FROM'),
-            to_emails = kwargs['email_address'],
-            subject = '\U0001F3C0' + f" Welcome to the {str(year)} {pool_name} March Madness Pool",
-            html_content = content
-        )
         try:
-            # send email through sendgrid
-            sg = SendGridAPIClient(config.get('EMAIL', 'SEND_API_KEY'))
-            response = sg.send(message)
+            charset = 'UTF-8'
+
+            ses_client = boto3.client(
+                'ses',
+                aws_access_key_id = config.get('AWS', 'ACCESS_KEY'),
+                aws_secret_access_key = config.get('AWS', 'SECRET_KEY')
+            )
+
+            ses_client.send_email(
+                Destination={
+                    "ToAddresses": [
+                        kwargs['email_address']
+                    ],
+                },
+                Message={
+                    "Body": {
+                        "Html": {
+                            "Charset": charset,
+                            "Data": content,
+                        }
+                    },
+                    "Subject": {
+                        "Charset": charset,
+                        "Data": '\U0001F3C0' + f" Welcome to the {str(year)} {pool_name} March Madness Pool",
+                    },
+                },
+                Source=config.get('EMAIL', 'MAIL_FROM'),
+            )
         except Exception as e:
-            print(e.message)
-        except HTTPError as e:
-            print(e.to_dict)
+            print(e)
 
 def get_email_confirmation_template(**kwargs):
     '''Build email template for confirmation email'''

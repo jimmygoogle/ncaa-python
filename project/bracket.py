@@ -2,7 +2,7 @@ from flask import request, jsonify, current_app
 from project.ncaa import Ncaa
 from project.user import User
 from project.pool import Pool
-from project.email import send_confirmation_email
+from project.confirmation_email import send_confirmation_email
 from project.mysql_python import MysqlPython
 from collections import defaultdict
 import ast
@@ -171,8 +171,9 @@ class Bracket(Ncaa):
             # send confirmation email if this is a new bracket
             pool_name = self.__pool.get_pool_name()
             if kwargs['action'] == 'add' and pool_name != 'test':
-                
-                url = request.url_root
+                # TODO: fix this
+                # url = request.url_root
+                url = 'https://www.itsawesomebaby.com/'
                 token = self.__user.get_edit_token()
                 bracket_type_label = request.values['bracket_type_label']
 

@@ -18,12 +18,9 @@ Jinja2==3.1.2
 kombu==5.2.4
 MarkupSafe==2.1.2
 mysql-connector-python==8.0.15
-paypal-checkout-serversdk==1.0.1
-paypalhttp==1.0.1
 prompt-toolkit==3.0.38
 protobuf==3.7.0
 pycparser==2.21
-pymongo==3.7.2
 pyOpenSSL==23.0.0
 python-http-client==3.3.7
 pytz==2022.7.1

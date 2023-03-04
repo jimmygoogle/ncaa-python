@@ -9,9 +9,6 @@ import ast
 import configparser
 import redis
 import json
-from project.paypal_client import PayPalClient
-from paypalcheckoutsdk.orders import OrdersGetRequest
-from paypalhttp import HttpError
 
 class Bracket(Ncaa):
     '''Bracket class to get/set bracket information for a user'''
@@ -443,15 +440,3 @@ class Bracket(Ncaa):
         results = r.get('dates')
         return json.loads(results)
 
-    def check_user_payment(self, order_id):
-        '''Check that the user's order ID is in fact valid'''
-
-        status = False
-        try:
-            request = OrdersGetRequest(order_id)
-            PayPalClient().client.execute(request)
-            status = True
-        except IOError as ioe:
-            self.debug(ioe)
-
-        return status

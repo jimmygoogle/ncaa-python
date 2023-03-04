@@ -13,9 +13,6 @@
           url: window.location.pathname,
           data: {
             pool_name: $('#pool_name').val(),
-            paypal_merchant_id: $('#paypal_merchant_id').val() || ' ',
-            payment_amount: $('#payment_amount').val() | 0,
-            payment_message: $('#payment_message').val() || ' ',
             round_scores: $('#round_scores').val() || ' ',
             seed_bonus_scoring: $('#seed_bonus_scoring').is(':checked') ? 1 : 0
           },
@@ -33,11 +30,6 @@
         <table>
         <tr colspan=3>
           <td><input type='text' id='pool_name' placeholder='Add a new pool' value=''></td>
-        </tr>
-        <tr>
-          <td><input type='text' id='paypal_merchant_id' name='paypal_merchant_id' placeholder='PayPal Merchant ID' value=''></td>
-          <td><input type='text' id='payment_amount' name='payment_amount' placeholder='Cost of pool entry' value=''></td>
-          <td><textarea id='payment_message' name='payment_message' placeholder='Message for payment...' value=''></textarea></td>
         </tr>
         <tr colspan=3>
           <td><input type='text' id='round_scores' placeholder='Round scores' value=''></td>

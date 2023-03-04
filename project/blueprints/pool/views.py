@@ -33,16 +33,6 @@ def index():
             # set the bracket edit type
             edit_type = 'add'
 
-            # check to see if the pool requires payment to enter
-            info = pool.get_pool_payment_info()
-
-            requires_payment = 0
-            paypal_merchant_id = ''
-
-            if info['payment_amount'] > 0:
-                requires_payment = 1
-                paypal_merchant_id = info['paypal_merchant_id']
-
             # render the bracket
             return render_template('bracket.html',
                 pool_name = pool_name,
@@ -57,12 +47,7 @@ def index():
                 edit_type = edit_type,
                 bracket_type = bracket_type,
                 bracket_type_label = bracket_type_label,
-                dates = bracket.get_start_dates(),
-                requires_payment = requires_payment,
-                paypal_client_id = pool.paypal_client_id,
-                paypal_merchant_id = paypal_merchant_id,
-                payment_amount = 10,
-                payment_message = info['payment_message']
+                dates = bracket.get_start_dates()
             )
         
         # the pool is closed so show the master bracket
@@ -107,15 +92,12 @@ def show_pool_form(pool_name=None):
                 is_open = 1
             )
 
-@pool_blueprint.route('/check-user-payment')
-def check_payment():
-    ''' Make sure the user really paid '''
-
-    # check paypal to make sure the transaction order id is valid
-    result = bracket.check_user_payment(request.values['transaction_order_id'])
-    return jsonify(result)
-
 ## set demo mode (portfolio)
 @pool_blueprint.route('/demo')
 def demo_mode():
     return redirect('/pool/butler')
+
+## show pricing
+@pool_blueprint.route('/pricing')
+def xxxx():
+    return render_template('pricing.html')

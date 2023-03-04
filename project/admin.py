@@ -110,9 +110,9 @@ class Admin(Ncaa):
 
         pool_id = self.__db.insert(proc = 'AddNewPool', params = [
             request.values['pool_name'],
-            request.values['paypal_merchant_id'],
-            request.values['payment_amount'],
-            request.values['payment_message'],
+            '',
+            0,
+            '',
             request.values['seed_bonus_scoring']
         ])
         errors = self.__db.errors

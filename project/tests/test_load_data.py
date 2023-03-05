@@ -1,5 +1,6 @@
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
+from selenium.common.exceptions import NoSuchElementException
 import string
 import random
 import os
@@ -23,8 +24,7 @@ def fill_out_bracket(args):
     
     # open browser and navigate to site
     opts = Options()
-    opts.set_headless()
-    assert opts.headless  # Operating in headless mode
+    opts.headless = True
     browser = Firefox(options=opts)
     
     # submit used defined brackets per child process
@@ -43,13 +43,16 @@ def fill_out_bracket(args):
         random_number_score = generate_random_number(135,180)
         
         print(f"random_string is {random_string} : random picks is {random_number_picks} : random_number_score is {random_number_score}")
-    
-        pool_name = args.pool_name
+
         url = args.url
-        browser.get(f"{url}/pool/{pool_name}")
+        browser.get(f"{url}/pool/test")
 
         # use the 'make picks' feature to fill out picks
-        browser.find_element_by_id('picks-header').click()
+        try:
+            browser.find_element_by_id('picks-header').click()
+        except NoSuchElementException:
+            browser.close()
+
         picks = ['chalk', 'mix', 'random']
         element = picks[random_number_picks]
         browser.find_element_by_id(element).click()
@@ -90,7 +93,6 @@ if __name__ == '__main__':
 
     parser.add_argument('--children', help='Number of children to create')
     parser.add_argument('--url', help='URL of the site to test')
-    parser.add_argument('--pool_name', help='Pool name')
     parser.add_argument('--number_of_brackets', help='Number of brackets to create')
 
     args = parser.parse_args()

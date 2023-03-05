@@ -170,6 +170,7 @@ class Bracket(Ncaa):
 
             # send confirmation email if this is a new bracket
             pool_name = self.__pool.get_pool_name()
+
             if kwargs['action'] == 'add' and pool_name != 'test':
                 # TODO: fix this
                 # url = request.url_root

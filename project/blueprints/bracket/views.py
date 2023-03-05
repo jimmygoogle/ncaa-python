@@ -27,8 +27,8 @@ def user_bracket(user_token, bracket_type_label):
     pool_name = pool.get_pool_name()
     pool_status = pool.check_pool_status()
 
-    if pool_name is None:
-        return redirect(url_for('pool.show_pool_form'))
+    # if pool_name is None:
+    #     return redirect(url_for('pool.show_pool_form'))
     
     year = datetime.datetime.now().year
     
@@ -85,7 +85,15 @@ def user_bracket(user_token, bracket_type_label):
         
         # get user data (bracket and info) for display purposes
         data = bracket.get_user_bracket_for_display(action = action, user_token = user_token, is_admin = is_admin, bracket_type = bracket_type)
-        
+
+        # try and get the pool name again
+        if pool_name is None:
+            pool_name = pool.get_pool_name()
+
+            # something isnt right
+            if pool_name is None:
+                return redirect(url_for('pool.show_pool_form'))
+
         # add logic for setting display of user's winning pick
         data_team = ''
         data_pick = ''

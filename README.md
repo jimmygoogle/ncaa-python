@@ -2,10 +2,6 @@
 
 It's awesome baby! A March Madness bracket written in Python, MySQL, and Docker. It was previously written in PHP and node.js but this is the Python version of that application. The DB files and schema are currently unavailable, this repo is mainly for code portfolio purposes.
 
-## A 'very' basic guide to getting started
-
-TODO
-
 ## Demo
 You can see a demo [here](http://www.itsawesomebaby.com/demo)
 

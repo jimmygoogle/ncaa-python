@@ -451,22 +451,6 @@ function validateUserInput() {
     }
   }
 
-    // check if they paid (if they are supposed to pay)
-    if(status && payToPlay() && editTypeValue !== 'admin') {
-      if (transactionOrderId == '') {
-        error_message = "We don't recognize your payment information. Please contact support (jim@jimandmeg.com) for assistance.";
-        status = false;
-      }
-      // check the `transactionOrderId` to make sure its valid
-      else {
-        status = validatePayment(transactionOrderId);
-
-        if(!status) {
-          error_message = "We don't recognize your payment information. Please contact support (jim@jimandmeg.com) for assistance.";
-        }
-      }
-    }
-
   // show error message
   if(error_message) {
     $("#error")
@@ -486,20 +470,6 @@ function validateUserInput() {
     edit_type: editTypeValue,
     transaction_order_id: transactionOrderId
   };
-}
-
-function validatePayment(transactionOrderId) {
-  const url = window.location.href + 'check-user-payment';
-  const result = $.ajax({
-    async: false,
-    type: "GET",
-    url:  url,
-    data: {
-      'transaction_order_id': transactionOrderId
-    }
-  });
-
-  return result['responseJSON'];
 }
 
 function submitBracket(data) {

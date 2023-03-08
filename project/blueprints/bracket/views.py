@@ -9,6 +9,14 @@ bracket_blueprint = Blueprint('bracket', __name__, template_folder='templates')
 bracket = Bracket()
 pool = Pool()
 user = User()
+
+## determine if the bracket name is in use in the pool
+@bracket_blueprint.route('/bracket/user', methods=['GET'])
+def is_available():
+    pool_name = pool.get_pool_name()
+    username = request.values['username']
+
+    return user.is_username_availble(pool_name, username)
     
 ## show brackets for display or editing
 @bracket_blueprint.route('/bracket/<bracket_type_label>/<user_token>', methods=['GET', 'POST', 'PUT'])

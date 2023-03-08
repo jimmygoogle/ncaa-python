@@ -270,7 +270,8 @@ class Bracket(Ncaa):
             59: 62,
             60: 62,
             61: 63,
-            62: 63
+            62: 63,
+            63: None,
         }
 
         return game_mappings[game_id]
@@ -308,16 +309,22 @@ class Bracket(Ncaa):
 
         # convert the picks string to a dictionary
         user_picks_dict = ast.literal_eval(user_picks)
+        upset_bonus_dict = ast.literal_eval( request.values['upset_bonus'] )
 
         # loop through the game data and insert it
         for game_id in user_picks_dict:
             team_id = user_picks_dict[game_id]
+            upset_bonus = upset_bonus_dict[game_id]
+            game_id = int(game_id)
+
+            #self.debug(f"working with game {game_id} : did user pick upset {upset_bonus}")
 
             # insert user's game' picks
             self.__db.insert(proc = insert_proc, params = [
                 user_id,
                 team_id,
-                game_id
+                game_id,
+                upset_bonus
             ])
 
             # set the game/team relationship

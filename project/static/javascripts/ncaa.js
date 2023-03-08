@@ -1,18 +1,11 @@
 let userPicks = {};
+let upsetBonus = {};
 
 $(document).ready (
   function() {
     // load the 'userPicks' object
     loadUserPicks();
-
-    // hide the ability to submit information before they pay
-    if(payToPlay()) {
-      blockPlayer();
-    }
-    // bind all events to allow the user to play
-    else {
-      setupPlayerBracket();
-    }
+    setupPlayerBracket();
   }
 );
 
@@ -66,20 +59,6 @@ function setupPlayerBracket() {
   });
 }
 
-function blockPlayer() {
-  $('#bracket').addClass('blur');
-}
-
-function allowPlayer() {
-  $('.payment-message-header-wait').hide();
-  $('#bracket').removeClass('blur');
-  setupPlayerBracket();
-}
-
-function payToPlay() {
-  return $('#payment').attr('data-pay-to-play') == 1 ? 1 : 0
-}
-
 function toggleDisplayForPicks() {
   $('.auto-picks').toggle();
   $('.bracket_details').toggle();
@@ -96,6 +75,7 @@ function resetPicks() {
   }
 
   userPicks = {};
+  upsetBonus = {};
 }
 
 function makePicks(type) {
@@ -366,6 +346,7 @@ function loadUserPicks() {
     userPicks[63] = winnerTeamID;
   }
   //console.log(userPicks);
+  //console.log(upsetBonus);
 }
 
 function checkUserPool() {
@@ -399,7 +380,6 @@ function validateUserInput() {
   const username = $userBracketInfoForm.find('#username').val();
   const firstName = $userBracketInfoForm.find('#firstname').val();
   const tieBreakerPoints = parseInt($userBracketInfoForm.find('#tieBreaker').val());
-  const transactionOrderId = $userBracketInfoForm.find('#transactionOrderId').val();
 
   let error_message;
   // get rid of error messages once the pool is submitted
@@ -449,6 +429,20 @@ function validateUserInput() {
       $userBracketInfoForm.find('#tieBreaker').focus();
       status = false;
     }
+
+    // # TOOO this shouldnt return a 200
+    // tell user if the user name is already used
+    $.ajax({
+      async: false,
+      type: 'GET',
+      url: window.location.href + '/bracket/user',
+      data: {
+        username
+      },
+      success: function(result) {
+        error_message = result['error'];
+      }
+    });
   }
 
   // show error message
@@ -467,8 +461,8 @@ function validateUserInput() {
     bracket_type_name: bracketTypeName,
     bracket_type_label: bracketTypeLabel,
     user_picks: JSON.stringify(userPicks),
-    edit_type: editTypeValue,
-    transaction_order_id: transactionOrderId
+    upset_bonus: JSON.stringify(upsetBonus),
+    edit_type: editTypeValue
   };
 }
 
@@ -485,6 +479,8 @@ function submitBracket(data) {
     formAction = 'PUT';
     url = window.location.href;
   }
+
+  multipleEdits = true;
 
   // hide the submit button and auto picks
   $('#submit_user_bracket').hide();
@@ -523,6 +519,8 @@ function submitBracket(data) {
 function setUserPick(obj) {
   // set team user picked ex: 5 Utah
   const userPickedTeam = obj.text().trim();
+  const pickedTeamData = userPickedTeam.split(' ');
+  const userPickedSeed = parseInt(pickedTeamData[0]);
   //console.log('setUserPick');
 
   // get game number and all possible game slots that the user pick could play in
@@ -540,10 +538,22 @@ function setUserPick(obj) {
   }
 
   // clear all previous picks (in case user is changing pick)
-  clearPreviousPicks(gameData[1], userPickedTeam, gameSlots);
+  const otherGameSeed = clearPreviousPicks(gameData[1], userPickedTeam, gameSlots);
+
+  // figure out if the pick is eligble for an upset bonus
+  let upsetBonusFlag = 0;
+
+  //console.log("userPickedSeed is "  + userPickedSeed);
+  //console.log("otherGameSeed is "  + otherGameSeed);
+
+  if (otherGameSeed && (userPickedSeed > otherGameSeed)) {
+    upsetBonusFlag = 1;
+  }
+
+  //console.log("upsetBonusFlag is " + upsetBonusFlag);
 
   // set data so it can be submitted to DB
-  setUserFormData(gameData[1], teamID);
+  setUserFormData(gameData[1], teamID, upsetBonusFlag);
 
   // slot data looks like 81|105|119|127
   if(gameSlots) {
@@ -567,11 +577,13 @@ function setUserPick(obj) {
     }
   }
   //console.log(userPicks);
+  //console.log(upsetBonus);
 }
 
-function setUserFormData(gameData, teamID) {
+function setUserFormData(gameData, teamID, upsetBonusFlag) {
   const gameID = parseInt(gameData.match(/\d+/));
   userPicks[gameID] = teamID;
+  upsetBonus[gameID] = upsetBonusFlag;
 }
 
 function clearPreviousPicks(gameNumber, userPickedTeam, slotString) {
@@ -605,6 +617,10 @@ function clearPreviousPicks(gameNumber, userPickedTeam, slotString) {
         }
       }
     });
+
+    // return seed
+    const team_data = getOtherTeamInGame.split(' ');
+    return parseInt(team_data[0]);
   }
 }
 

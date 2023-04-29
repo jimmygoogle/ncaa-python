@@ -176,9 +176,6 @@ class User(Ncaa):
 
         result = self.__db.query(proc = 'BracketNameAvailable', params = [pool_name, username])
 
-        self.debug(f"checking {pool_name} to see if {username} is available")
-        self.debug(result)
-
         error = None
         if result[0]['available'] > 0:
             error = f"'{username}' is already taken.<br/>Please choose another bracket name."

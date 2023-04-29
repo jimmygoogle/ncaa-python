@@ -117,10 +117,16 @@ class Bracket(Ncaa):
             master_bracket_picks = self.__db.query(proc = 'MasterBracket', params = [])
             user_picks = master_bracket_picks + user_picks
 
-        # set styling for incorrect picks
+        # set styling for incorrect picks and add upset bonus data
         incorrect_picks = {}
+        upset_bonus_data = {}
         for pick in user_picks:
             team_id = pick['teamID']
+
+            # upset_bonus_data[ pick['gameID'] ] = {
+            #     'flag': pick['upsetBonus'],
+            #     'opponent_team_id': pick['opponentTeamID'],
+            # }
 
             if pick['pickCSS'] == 'incorrectPick':
                 incorrect_picks[team_id] = 1;
@@ -139,6 +145,7 @@ class Bracket(Ncaa):
                 proc = 'GetUserByEditToken'
 
             user_info = self.__db.query(proc = proc, params = [user_token, pool_name])
+            self.debug(f"token is {user_token} for {pool_name} {user_info}")
             self.__user.set_username(user_info[0]['userName'])
             
             # set bracket display name
@@ -151,7 +158,8 @@ class Bracket(Ncaa):
             'team_data': team_data, 
             'user_picks': user_picks, 
             'user_info': user_info, 
-            'bracket_display_name': bracket_display_name
+            'bracket_display_name': bracket_display_name,
+            'upset_bonus_data': upset_bonus_data,
         }
 
     def process_user_bracket(self, **kwargs):
@@ -279,8 +287,6 @@ class Bracket(Ncaa):
     def process_pick_data(self, **kwargs):
         '''Process the user picks and add them to the DB'''
 
-        user_picks = request.values['user_picks']
-
         # figure out if we are editing the master bracket since we call different procedures
         is_admin = 0
         if 'is_admin' in kwargs and kwargs['is_admin'] is not None and kwargs['is_admin'] != 0 :
@@ -308,13 +314,13 @@ class Bracket(Ncaa):
         self.__db.insert(proc = clear_proc, params = params)
 
         # convert the picks string to a dictionary
-        user_picks_dict = ast.literal_eval(user_picks)
+        user_picks_dict = ast.literal_eval( request.values['user_picks'] )
         upset_bonus_dict = ast.literal_eval( request.values['upset_bonus'] )
 
         # loop through the game data and insert it
         for game_id in user_picks_dict:
             team_id = user_picks_dict[game_id]
-            upset_bonus = upset_bonus_dict[game_id]
+            upset_bonus_data = upset_bonus_dict[game_id]
             game_id = int(game_id)
 
             #self.debug(f"working with game {game_id} : did user pick upset {upset_bonus}")
@@ -324,7 +330,8 @@ class Bracket(Ncaa):
                 user_id,
                 team_id,
                 game_id,
-                upset_bonus
+                upset_bonus_data['flag'],
+                upset_bonus_data['opponent_team_id']
             ])
 
             # set the game/team relationship

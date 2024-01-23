@@ -23,7 +23,12 @@ class Admin(Ncaa):
 
         redis_host = config.get('REDIS', 'REDIS_HOST')
         redis_port = config.get('REDIS', 'REDIS_PORT')
-        self.__redis = redis.Redis(host=redis_host, port=redis_port, db=0)
+        self.__redis = redis.Redis(
+            host=redis_host,
+            port=redis_port,
+            db=0,
+            decode_responses=True
+        )
 
         self.__edit_token = config.get('DEFAULT', 'ADMIN_EDIT_TOKEN')
         self.__collection_name = config.get('DATES', 'MONGODB_COLLECTION')
@@ -66,7 +71,7 @@ class Admin(Ncaa):
         self.debug('reset_and_pull_poll_data')
         # delete the top 25 poll data
         polls = Polls()
-        polls.reset_polls_collection()
+        #polls.reset_polls_collection()
         
         # get the new AP poll data
         polls.get_ap_poll_data()
@@ -108,12 +113,17 @@ class Admin(Ncaa):
     def add_new_pool(self):
         '''Add new pool to DB'''
 
+        # if 'seed_bonus_scoring' in request.values:
+        #     seed_bonus_scoring = 1
+        # else:
+        #     seed_bonus_scoring = 0
+
         pool_id = self.__db.insert(proc = 'AddNewPool', params = [
             request.values['pool_name'],
-            '',
+            ' ',
             0,
-            '',
-            request.values['seed_bonus_scoring']
+            ' ',
+            0
         ])
         errors = self.__db.errors
 
@@ -130,6 +140,12 @@ class Admin(Ncaa):
 
             # add customized round scores
             for index, round_id in enumerate([1, 2, 3, 4, 5, 6]):
+                self.debug('AddNewPoolRoundScore')
+                self.debug([
+                    pool_id,
+                    round_id,
+                    round_score[index]
+                ])
                 self.__db.insert(proc = 'AddNewPoolRoundScore', params = [
                     pool_id,
                     round_id,
@@ -175,5 +191,4 @@ class Admin(Ncaa):
         salt = config.get('DEFAULT', 'ADMIN_LOGIN_SALT').encode('utf-8')
         pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
         pwdhash = binascii.hexlify(pwdhash)
-        return (salt + pwdhash).decode('ascii')       
- 
+        return (salt + pwdhash).decode('ascii')    

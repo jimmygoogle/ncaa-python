@@ -96,6 +96,10 @@ li {
 
 .split-two .round {margin: 0 0 0 2.5%;}
 
+.alias {
+  display: none;
+}
+
 .matchup {
 	margin:0;
   width: 100%;
@@ -425,6 +429,23 @@ li {
   .sixteen-header {transform: translate(0,0);}
   .final-four-right {padding-bottom: 40px;}
   .bracket_details {max-width: 90%;}
+  .alias {
+    display: inline;
+  }
+  .team-name {
+    display: none;
+  }
+
+  .logo {
+    /*position: absolute;*/
+    top: 0;
+    left: 0;
+    width: 160;
+    height: 46px;
+    text-align: center;
+    padding: 2px 0 0 0;
+    float: none;
+  }
   
   .top {
     order: 1;

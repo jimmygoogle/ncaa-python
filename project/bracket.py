@@ -2,6 +2,7 @@ from flask import request, jsonify, current_app
 from project.ncaa import Ncaa
 from project.user import User
 from project.pool import Pool
+from project.teams import Teams
 from project.confirmation_email import send_confirmation_email
 from project.mysql_python import MysqlPython
 from collections import defaultdict
@@ -9,6 +10,10 @@ import ast
 import configparser
 import redis
 import json
+import requests
+import datetime
+import time
+from collections import defaultdict
 
 class Bracket(Ncaa):
     '''Bracket class to get/set bracket information for a user'''
@@ -180,23 +185,22 @@ class Bracket(Ncaa):
             pool_name = self.__pool.get_pool_name()
 
             if kwargs['action'] == 'add' and pool_name != 'test':
-                # TODO: fix this
-                # url = request.url_root
+                # # TODO: fix this
+                # # url = request.url_root
                 url = 'https://www.itsawesomebaby.com/'
                 token = self.__user.get_edit_token()
                 bracket_type_label = request.values['bracket_type_label']
 
-                results = send_confirmation_email.s(
-                    token = token,
-                    url = url,
-                    pool_name = pool_name,
-                    pool_status = self.__pool.check_pool_status(),
-                    email_address = request.values['email_address'],
-                    bracket_type_name = request.values['bracket_type_name'],
-                    bracket_type_label = bracket_type_label,
-                    username = request.values['username']              
-                ).apply_async(seconds=10)
-
+                # results = send_confirmation_email.s(
+                #     token = token,
+                #     url = url,
+                #     pool_name = pool_name,
+                #     pool_status = self.__pool.check_pool_status(),
+                #     email_address = request.values['email_address'],
+                #     bracket_type_name = request.values['bracket_type_name'],
+                #     bracket_type_label = bracket_type_label,
+                #     username = request.values['username']              
+                # ).apply_async(seconds=10)
                 edit_url = f"{url}bracket/{bracket_type_label}/{token}?action=e"
                 message = f"Your bracket has been submitted.<br/>Good luck!<br/><br/>You can edit your bracket <a href='{edit_url}'>here</a> until the tip off of the first game on Thursday."
             
@@ -314,25 +318,45 @@ class Bracket(Ncaa):
         self.__db.insert(proc = clear_proc, params = params)
 
         # convert the picks string to a dictionary
-        user_picks_dict = ast.literal_eval( request.values['user_picks'] )
-        upset_bonus_dict = ast.literal_eval( request.values['upset_bonus'] )
+        # user_picks_dict = ast.literal_eval( request.values['user_picks'] )
+        # upset_bonus_dict = ast.literal_eval( request.values['upset_bonus'] )
+        if 'user_picks' in kwargs:
+            user_picks_dict = kwargs['user_picks']
+        else:
+            user_picks_dict = ast.literal_eval( request.values['user_picks'] )
+        #upset_bonus_dict = ast.literal_eval( request.values['upset_bonus'] )
 
         # loop through the game data and insert it
         for game_id in user_picks_dict:
             team_id = user_picks_dict[game_id]
-            upset_bonus_data = upset_bonus_dict[game_id]
+            #upset_bonus_data = upset_bonus_dict[game_id]
             game_id = int(game_id)
 
             #self.debug(f"working with game {game_id} : did user pick upset {upset_bonus}")
 
             # insert user's game' picks
-            self.__db.insert(proc = insert_proc, params = [
+            params = [
                 user_id,
                 team_id,
                 game_id,
-                upset_bonus_data['flag'],
-                upset_bonus_data['opponent_team_id']
-            ])
+                0,
+                0
+            ]
+
+            # add bonus
+            # if is_admin == 0:
+            #     params.append(
+            #         #upset_bonus_data['flag'],
+            #         0
+            #     )
+            #     params.append(
+            #         0
+            #         #upset_bonus_data['opponent_team_id']
+            #     )
+                
+            self.debug(f"insert_proc is {insert_proc}")
+            self.debug(params)
+            self.__db.insert(proc = insert_proc, params = params)
 
             # set the game/team relationship
             if is_admin == 1 and int(game_id) < 63:
@@ -350,7 +374,7 @@ class Bracket(Ncaa):
 
     def score_all_brackets(self):
         '''Score all user brackets. This is called after each admin bracket update'''
-
+        self.debug('ScoreAllBrackets')
         self.__db.update(proc = 'ScoreAllBrackets', params = [])
         
         # calculate best possible scores now
@@ -372,7 +396,6 @@ class Bracket(Ncaa):
 
         # loop through each pool
         for pool in pools:
-
             pool_name = pool['poolName']
             
             if pool_name == 'admin' or pool['seedBonusScoring'] == 1:
@@ -451,8 +474,40 @@ class Bracket(Ncaa):
 
         redis_host = config.get('REDIS', 'REDIS_HOST')
         redis_port = config.get('REDIS', 'REDIS_PORT')
-        r = redis.Redis(host=redis_host, port=redis_port, db=0)
+        r = redis.Redis(
+            host=redis_host,
+            port=redis_port,
+            db=0,
+            decode_responses=True
+        )
 
         results = r.get('dates')
         return json.loads(results)
 
+    def score_brackets_automatically(self):
+        '''Call SportsRadar and get scores from completed games'''
+
+        # self.__year = str(datetime.datetime.now().year - 1)
+        # self.__api_key = '5d7efanvyh58qefnratg497c'
+        
+        # teams = Teams()
+        # tournament_id = teams.get_tournament_id()
+
+        # url = f"https://api.sportradar.us/ncaamb/trial/v7/en/tournaments/{tournament_id}/schedule.json?api_key={self.__api_key}"
+        # self.debug(url)
+        # response = requests.get(url).json()
+        # self.debug(response)
+
+        teams = Teams()
+        scored_picks = teams.get_team_data(setup = 0)
+
+        self.process_pick_data(
+            is_admin = 1,
+            user_picks = scored_picks,
+            action = 'edit',
+            edit_user_token = self.__user.get_admin_edit_token()
+        )
+
+        self.score_all_brackets()
+
+        return {"result": "success"}

@@ -1,3 +1,13 @@
+.question {
+  font-size: 16px;
+  color: orange;
+}
+
+.answer {
+  font-size: 14px;
+  padding: 10px;
+}
+
 .pricing {
   overflow-x: auto;
   width: 50%;
@@ -7,6 +17,7 @@
   margin: auto;
   border-collapse: collapse;
   border-spacing: 0;
+  margin-top: 1em;
 
 }
 
@@ -32,7 +43,6 @@
 .pricing {  
   color: #e2e2e2;
 }
-
 
 @media screen and (min-width: 801px) and (max-width: 1299px) {
   .pricing {

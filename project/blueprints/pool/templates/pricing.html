@@ -8,166 +8,58 @@
   <div class="container">
     <div class="pricing">
         <div class='question'>
-            <h1>
-                How are we different from other services like CBS Sports, ESPN or Run Your Pool?
-            </h1>
+          How are we different from other services like CBS Sports, ESPN or Run Your Pool?
         </div>
         <div class='answer'>
             We are a small company with a passion for the NCAA tournament. It's Awesome Baby was born back in 2010 as a side project. The plan was to make it easy for people to make their picks and submit them unlike other sites. You don't need to create an account, verify it, login, etc. There are spam or marketing emails.
             You simply make your picks and play. It's just that simple.
         </div>
         <div class='question'>
-            <h1>
-                Is there a public pool I can join?
-            </h1>
+          Is there a public pool I can join?
         </div>
         <div class='answer'>
-            Yes there is a free to play public pool <a href="#">here</a>.
+            Yes there is a free to play public pool <a href="/pool/cinderella">here</a>.
         </div>
         <div class='question'>
-            <h1>How much does it cost to run my own pool?</h1>
+          How much does it cost to run my own pool?
         </div>
         <div class='answer'>
             Below is a list of our pricing tiers in USD. <a href="mailto:{{contact_email}}">Contact us</a> if you would like to host your own pool.
             <table>
-            <tbody>
-            <tr class="header">
-                <th>Number of Entries</th>
-                <th>Price</th>
-            </tr>
-            <tr>
-                <td>Up to 25 entries</td>
-                <td>$25</td>
-            </tr>
-            <tr>
-                <td>26 - 50 entries</td>
-                <td>$35</td>
+              <tbody>
+                <tr class="header">
+                    <th>Number of Entries</th>
+                    <th>Price</th>
                 </tr>
                 <tr>
-                <td>51 - 100 entries</td>
-                <td>$55</td>
+                    <td>Up to 25 entries</td>
+                    <td>$25</td>
                 </tr>
                 <tr>
-                <td>101 - 200 entries</td>
-                <td>$85</td>
-                </tr>
-                <tr>
-                <td>201 - 500 entries</td>
-                <td>$135</td>
-                </tr>
-                <tr>
-                <td>Over 500</td>
-                <td><a href="mailto:{{contact_us}}">contact us for pricing</a></td>
-                </tr>
-            </tbody>
+                  <td>26 - 50 entries</td>
+                  <td>$35</td>
+                  </tr>
+                  <tr>
+                  <td>51 - 100 entries</td>
+                  <td>$55</td>
+                  </tr>
+                  <tr>
+                  <td>101 - 200 entries</td>
+                  <td>$85</td>
+                  </tr>
+                  <tr>
+                  <td>201 - 500 entries</td>
+                  <td>$135</td>
+                  </tr>
+                  <tr>
+                  <td>Over 500</td>
+                  <td><a href="mailto:{{contact_us}}">contact us for pricing</a></td>
+                  </tr>
+              </tbody>
             </table>
         </div>
-        <div class='sk-ww-medium-publication-feed' data-embed-id='122083'></div><script src='https://widgets.sociablekit.com/medium-publication-feed/widget.js' async defer></script>
     </div>
   </div>
 </section>
-
-<script>
-
-
-//Here's our query we constructed in the GraphiQL interface
-const query = `{
-  microblogCollection {
-    items {
-      sys {
-        firstPublishedAt
-      }
-      text
-      image {
-        url
-        title
-        width
-        height
-        description
-      }
-      panther
-      link
-      linkText
-    }
-  }
-}`
-
-// Here are our options to use with fetch
-const fetchOptions = {
-  spaceID: "3t74zkbowcp6",
-  accessToken: "rI8QiEee5C9zUOi84gIKA_2d_pc8oWYbaO6r-zAEMSU",
-  endpoint: "https://graphql.contentful.com/content/v1/spaces/spaceID",
-  method: "POST",
-  headers: {
-    Authorization: "Bearer accessToken",
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({ query })
-}
-
-
-const addContentToDom = (items) => {
-  items.forEach(item => {
-    // Create the article element to hold all post data elements
-    const newItemEl = document.createElement("article");
-
-    // The panther field is required in our content type
-    // We'll always have a panther!
-    const newPantherEl = document.createElement("img");
-    newPantherEl.src = `./panthers/${item.panther}.svg`;
-    newPantherEl.alt = `${item.panther} panther emote`;
-
-    // Append the panther element to the article element
-    newItemEl.appendChild(newPantherEl);
-
-    // Let's check if we have an image
-    if (item.image) {
-      // Create an image element
-      const newImgEl = document.createElement("img");
-      // Populate with data
-      newImgEl.src = `${item.image.url}?w=500`;
-      newImgEl.alt = item.image.description;
-
-      // Add the image element to the article element
-      newItemEl.appendChild(newImgEl);
-    }
-
-    // Let's check if we have some text
-    if (item.text) {
-      // Create an h2 element
-      const newTextEl = document.createElement("h2");
-      // Populate with data
-      newTextEl.innerText = item.text;
-
-      // Add the text element to the article element
-      newItemEl.appendChild(newTextEl);
-    }
-
-    // Let's check if we have a link
-    if (item.link) {
-      // Create an anchor element
-      const newLinkEl = document.createElement("a");
-      // Populate with data      
-      newLinkEl.href = item.link;
-      newLinkEl.innerText = item.linkText || "View more";
-
-      // Add the link element to the article element
-      newItemEl.appendChild(newLinkEl);
-    }
-
-    // Let's append the new article element to the DOM!
-    document.body.appendChild(newItemEl);
-  })
-}
-
-// Don’t forget to pass the data from the fetch response correctly
-// to your function!
-fetch(fetchOptions.endpoint, fetchOptions)
-  .then(response => response.json())
-  .then(data => console.log(data));
-  //.then(data => addContentToDom(data.data.microblogCollection.items));
-
-</script>
-
 
 {% endblock %}

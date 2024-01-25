@@ -1,26 +1,21 @@
 from flask import jsonify
-from project.ncaa import Ncaa
+from project.sportsradar import SportRadar
 from collections import OrderedDict
 import requests 
 import configparser
-import datetime
 import re
 import time
 import redis
 import json
 
-class Polls(Ncaa):
+class Polls(SportRadar):
     '''Get the top 25 teams from USA Today and AP'''
         
     def __init__(self):
-        config = configparser.ConfigParser()
-        config.read("site.cfg")
-        
-        self.__ap_url = config.get('POLLS', 'AP_URL')
-        self.__usa_today_url = config.get('POLLS', 'USA_TODAY_URL')
+        SportRadar.__init__(self)
 
-        # the polls run off of the year of the start of the season
-        self.__year = str(datetime.datetime.now().year - 1)
+        self.__ap_url = f"{self.sportsradar_url}/polls/AP/{self.year}/rankings.json?api_key={self.api_key}"
+        self.__usa_today_url = f"{self.sportsradar_url}/polls/US/{self.year}/rankings.json?api_key={self.api_key}"
         
     def get_usa_today_poll_data(self):
         '''Get USA Today Poll data'''
@@ -64,11 +59,8 @@ class Polls(Ncaa):
             else:
                 api_url = self.__ap_url 
 
-            # substitute the year in url
-            url = re.sub(r'YEAR', self.__year, api_url)
-    
             # fetch the data
-            ap_response = requests.get(url)
+            ap_response = requests.get(api_url)
             time.sleep(2)    
             
             # set movement rankings CSS class and insert poll data

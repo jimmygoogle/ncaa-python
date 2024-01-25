@@ -5,6 +5,7 @@ body {
   background: url('/static/images/background-1.jpg') no-repeat #000;
   min-height: 100%;
   margin: 0;
+  background-size: 110%;
 }
 
 .tournament-title {

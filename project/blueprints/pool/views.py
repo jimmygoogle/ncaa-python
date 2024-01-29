@@ -2,10 +2,12 @@ from flask import Blueprint, request, render_template, url_for, redirect, jsonif
 from project.pool import Pool
 from project.bracket import Bracket
 import datetime
+import configparser
 
 pool = Pool()
 bracket = Bracket()
 pool_blueprint = Blueprint('pool', __name__, template_folder='templates')
+year = datetime.datetime.now().year
 
 @pool_blueprint.route('/')
 def index():
@@ -15,7 +17,6 @@ def index():
     if pool_name is None:
         return redirect(url_for('pool.show_pool_form'))
     else:
-        year = datetime.datetime.now().year
         pool_status = pool.check_pool_status()
 
         # bracket is open for submissions so get bracket page
@@ -47,7 +48,8 @@ def index():
                 edit_type = edit_type,
                 bracket_type = bracket_type,
                 bracket_type_label = bracket_type_label,
-                dates = bracket.get_start_dates()
+                dates = bracket.get_start_dates(),
+                upset_bonus_data = '{}'
             )
         
         # the pool is closed so show the master bracket
@@ -99,5 +101,11 @@ def demo_mode():
 
 ## show pricing
 @pool_blueprint.route('/pricing')
-def xxxx():
-    return render_template('pricing.html')
+def pricing():
+    config = configparser.ConfigParser()
+    config.read("site.cfg")
+
+    return render_template('pricing.html',
+        year = year,
+        contact_email = config.get('EMAIL', 'CONTACT_US')
+    )

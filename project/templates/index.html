@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>{{year}} March Madness {% block title %}{% endblock %}</title>
+    <title>{{year}} March Madness {% block title %}{% endblock %} Bracket</title>
     <meta name="description" content="March Madness application written in python, mysql, mongodb and docker">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/standings.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/polls.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/bracket.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/pricing.css')}}">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 
     {% if is_open %}
@@ -30,7 +31,7 @@
     {% if year %}
     <header>
       <nav id='cssmenu'>
-        <div id='head-mobile'>{{pool_name}}</div>
+        <div id='head-mobile'>{{ pool_name|default("march madness", true) }}</div>
         <div class='button'></div>
         <ul>
           <li><a href="/">HOME</a></li>

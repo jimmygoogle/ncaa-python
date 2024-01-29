@@ -100,7 +100,14 @@ class User(Ncaa):
             Ex: email, username, etc
         '''
 
-        edit_type = request.values['edit_type']
+        self.debug(request.values)
+        if request.values:
+            edit_type  = request.values['edit_type']
+        else:
+
+        #
+            #if edit_type is None:
+            return 1
 
         # add/edit user data
         if edit_type == 'add':
@@ -120,15 +127,11 @@ class User(Ncaa):
         username = request.values['username']
         tie_breaker_points = request.values['tie_breaker_points']
         first_name = request.values['first_name']
-        transaction_order_id = request.values['transaction_order_id']
-        
+
         # handle error "Failed calling stored routine; bytearray index out of range error"
         # TODO: find a proper fix
         if first_name == '':
             first_name = ' '
-
-        if transaction_order_id == '':
-            transaction_order_id = ' '
 
         # setup user tokens
         display_token = self.setup_user_display_token(
@@ -151,8 +154,7 @@ class User(Ncaa):
             first_name,
             edit_token, 
             display_token,
-            bracket_type_name,
-            transaction_order_id
+            bracket_type_name
         ])
 
         return user_id
@@ -175,3 +177,16 @@ class User(Ncaa):
           ])
 
         return user_id
+
+    def is_username_availble(self, pool_name, username):
+        '''Check to see if the username is availble in the pool'''
+
+        result = self.__db.query(proc = 'BracketNameAvailable', params = [pool_name, username])
+
+        error = None
+        if result[0]['available'] > 0:
+            error = f"'{username}' is already taken.<br/>Please choose another bracket name."
+
+        return jsonify({
+            'error': error
+        })

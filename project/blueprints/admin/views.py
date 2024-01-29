@@ -1,7 +1,8 @@
-from flask import Blueprint, request, render_template, redirect, url_for, flash
+from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify
 from project.ncaa import Ncaa
 from project.admin import Admin
 from project.bracket import Bracket
+from project.teams import Teams
 
 admin = Admin()
 admin_blueprint = Blueprint('admin', __name__, template_folder='templates')
@@ -111,3 +112,10 @@ def reset_polls():
     flash('Poll data has been reset')
     return show_admin_page()
 
+@admin_blueprint.route('/admin/teams')
+def pull_teams():
+    '''Pull team data for initial bracket setup'''
+
+    teams = Teams()
+    result = teams.get_team_data()
+    return jsonify(result)

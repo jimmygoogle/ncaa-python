@@ -1,0 +1,70 @@
+.question {
+  font-size: 16px;
+  color: orange;
+}
+
+.answer {
+  font-size: 14px;
+  padding: 10px;
+}
+
+.pricing {
+  overflow-x: auto;
+  width: 50%;
+}
+
+.pricing table {
+  margin: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: 1em;
+
+}
+
+.header th {
+  border: none;
+  padding: 15px 0px 15px 10px;
+  text-align: left;
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
+}
+
+.pricing td {
+  text-align: left;
+  padding: 15px 0px 15px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, .35);
+  color: #e2e2e2;
+}
+
+.pricing a {
+  color: orange;
+}
+
+.pricing {  
+  color: #e2e2e2;
+}
+
+@media screen and (min-width: 801px) and (max-width: 1299px) {
+  .pricing {
+    width: 70%;
+    font-size: 1em;
+  }
+}
+
+@media screen and (max-width: 800px) {
+	 .pricing {
+	   width: 100%;
+	   font-size: 1em;
+	 }
+  .pricing table {
+    border: 0px;
+    width: 100%;
+  }
+  .pricing th {
+    font-size: 1.1em;
+    text-align: left;
+  }
+  .pricing td {
+    font-size: .9em;
+  }
+}

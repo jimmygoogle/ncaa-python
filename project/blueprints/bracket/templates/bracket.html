@@ -22,38 +22,39 @@
         <div class='round-details'>Round 1 
           <br />
           <span class='date'>{{dates[0]['round_one']}}</span>
+          <span class='alias'>{{team_data[0]['seedID']}} {{team_data[0]['alias']}}</span>
         </div>
         <ul class='matchup game1' data-games='65|97|113|121|125'>
-          <li class='team team-top' id='slot1' data-team-id="{{team_data[0]['teamID']}}"> {{team_data[0]['seedID']}} {{team_data[0]['teamName']}}</li>
-          <li class='team team-bottom' id='slot2' data-team-id="{{team_data[1]['teamID']}}"> {{team_data[1]['seedID']}} {{team_data[1]['teamName']}}</li>
+          <li class='team team-top' id='slot1' data-team-id="{{team_data[0]['teamID']}}"><span class='logo'><img alt='{{team_data[0]['logo_name']}}' src="/static/images/logos/{{team_data[0]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[0]['seedID']}} <span class='team-name'> {{team_data[0]['teamName']}}</span><span class='alias'> {{team_data[0]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot2' data-team-id="{{team_data[1]['teamID']}}"><span class='logo'><img alt='{{team_data[1]['logo_name']}}' src="/static/images/logos/{{team_data[1]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[1]['seedID']}} <span class='team-name'> {{team_data[1]['teamName']}}</span><span class='alias'> {{team_data[1]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game2' data-games='66|97|113|121|125'>
-          <li class='team team-top' id='slot3' data-team-id="{{team_data[2]['teamID']}}"> {{team_data[2]['seedID']}} {{team_data[2]['teamName']}}</li>
-          <li class='team team-bottom' id='slot4' data-team-id="{{team_data[3]['teamID']}}"> {{team_data[3]['seedID']}} {{team_data[3]['teamName']}}</li>
+          <li class='team team-top' id='slot3' data-team-id="{{team_data[2]['teamID']}}"><span class='logo'><img alt='{{team_data[2]['logo_name']}}' src="/static/images/logos/{{team_data[2]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[2]['seedID']}} <span class='team-name'> {{team_data[2]['teamName']}}</span><span class='alias'> {{team_data[2]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot4' data-team-id="{{team_data[3]['teamID']}}"><span class='logo'><img alt='{{team_data[3]['logo_name']}}' src="/static/images/logos/{{team_data[3]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[3]['seedID']}} <span class='team-name'> {{team_data[3]['teamName']}}</span><span class='alias'> {{team_data[3]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game3' data-games='67|98|113|121|125'>
-          <li class='team team-top' id='slot5' data-team-id="{{team_data[4]['teamID']}}"> {{team_data[4]['seedID']}} {{team_data[4]['teamName']}}</li>
-          <li class='team team-bottom' id='slot6' data-team-id="{{team_data[5]['teamID']}}"> {{team_data[5]['seedID']}} {{team_data[5]['teamName']}}</li>
+          <li class='team team-top' id='slot5' data-team-id="{{team_data[4]['teamID']}}"><span class='logo'><img alt='{{team_data[4]['logo_name']}}' src="/static/images/logos/{{team_data[4]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[4]['seedID']}} <span class='team-name'> {{team_data[4]['teamName']}}</span><span class='alias'> {{team_data[4]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot6' data-team-id="{{team_data[5]['teamID']}}"><span class='logo'><img alt='{{team_data[5]['logo_name']}}' src="/static/images/logos/{{team_data[5]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[5]['seedID']}} <span class='team-name'> {{team_data[5]['teamName']}}</span><span class='alias'> {{team_data[5]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game4' data-games='68|98|113|121|125'>
-          <li class='team team-top' id='slot7' data-team-id="{{team_data[6]['teamID']}}"> {{team_data[6]['seedID']}} {{team_data[6]['teamName']}}</li>
-          <li class='team team-bottom' id='slot8' data-team-id="{{team_data[7]['teamID']}}"> {{team_data[7]['seedID']}} {{team_data[7]['teamName']}}</li>
+          <li class='team team-top' id='slot7' data-team-id="{{team_data[6]['teamID']}}"><span class='logo'><img alt='{{team_data[6]['logo_name']}}' src="/static/images/logos/{{team_data[6]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[6]['seedID']}} <span class='team-name'> {{team_data[6]['teamName']}}</span><span class='alias'> {{team_data[6]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot8' data-team-id="{{team_data[7]['teamID']}}"><span class='logo'><img alt='{{team_data[7]['logo_name']}}' src="/static/images/logos/{{team_data[7]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[7]['seedID']}} <span class='team-name'> {{team_data[7]['teamName']}}</span><span class='alias'> {{team_data[7]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game5' data-games='69|99|114|121|125'>
-          <li class='team team-top' id='slot9' data-team-id="{{team_data[8]['teamID']}}"> {{team_data[8]['seedID']}} {{team_data[8]['teamName']}}</li>
-          <li class='team team-bottom' id='slot10' data-team-id="{{team_data[9]['teamID']}}"> {{team_data[9]['seedID']}} {{team_data[9]['teamName']}}</li>
+          <li class='team team-top' id='slot9' data-team-id="{{team_data[8]['teamID']}}"><span class='logo'><img alt='{{team_data[8]['logo_name']}}' src="/static/images/logos/{{team_data[8]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[8]['seedID']}} <span class='team-name'> {{team_data[8]['teamName']}}</span><span class='alias'> {{team_data[8]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot10' data-team-id="{{team_data[9]['teamID']}}"><span class='logo'><img alt='{{team_data[9]['logo_name']}}' src="/static/images/logos/{{team_data[9]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[9]['seedID']}} <span class='team-name'> {{team_data[9]['teamName']}}</span><span class='alias'> {{team_data[9]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game6' data-games='70|99|114|121|125'>
-          <li class='team team-top' id='slot11' data-team-id="{{team_data[10]['teamID']}}"> {{team_data[10]['seedID']}} {{team_data[10]['teamName']}}</li>
-          <li class='team team-bottom' id='slot12' data-team-id="{{team_data[11]['teamID']}}"> {{team_data[11]['seedID']}} {{team_data[11]['teamName']}}</li>
+          <li class='team team-top' id='slot11' data-team-id="{{team_data[10]['teamID']}}"><span class='logo'><img alt='{{team_data[10]['logo_name']}}' src="/static/images/logos/{{team_data[10]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[10]['seedID']}} <span class='team-name'> {{team_data[10]['teamName']}}</span><span class='alias'> {{team_data[10]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot12' data-team-id="{{team_data[11]['teamID']}}"><span class='logo'><img alt='{{team_data[11]['logo_name']}}' src="/static/images/logos/{{team_data[11]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[11]['seedID']}} <span class='team-name'> {{team_data[11]['teamName']}}</span><span class='alias'> {{team_data[11]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game7' data-games='71|100|114|121|125'>
-          <li class='team team-top' id='slot13' data-team-id="{{team_data[12]['teamID']}}"> {{team_data[12]['seedID']}} {{team_data[12]['teamName']}}</li>
-          <li class='team team-bottom' id='slot14' data-team-id="{{team_data[13]['teamID']}}"> {{team_data[13]['seedID']}} {{team_data[13]['teamName']}}</li>
+          <li class='team team-top' id='slot13' data-team-id="{{team_data[12]['teamID']}}"><span class='logo'><img alt='{{team_data[12]['logo_name']}}' src="/static/images/logos/{{team_data[12]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[12]['seedID']}} <span class='team-name'> {{team_data[12]['teamName']}}</span><span class='alias'> {{team_data[12]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot14' data-team-id="{{team_data[13]['teamID']}}"><span class='logo'><img alt='{{team_data[13]['logo_name']}}' src="/static/images/logos/{{team_data[13]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[13]['seedID']}} <span class='team-name'> {{team_data[13]['teamName']}}</span><span class='alias'> {{team_data[13]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game8' data-games='72|100|114|121|125'>
-          <li class='team team-top' id='slot15' data-team-id="{{team_data[14]['teamID']}}"> {{team_data[14]['seedID']}} {{team_data[14]['teamName']}}</li>
-          <li class='team team-bottom' id='slot16' data-team-id="{{team_data[15]['teamID']}}"> {{team_data[15]['seedID']}} {{team_data[15]['teamName']}}</li>
+          <li class='team team-top' id='slot15' data-team-id="{{team_data[14]['teamID']}}"><span class='logo'><img alt='{{team_data[14]['logo_name']}}' src="/static/images/logos/{{team_data[14]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[14]['seedID']}} <span class='team-name'> {{team_data[14]['teamName']}}</span><span class='alias'> {{team_data[14]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot16' data-team-id="{{team_data[15]['teamID']}}"><span class='logo'><img alt='{{team_data[15]['logo_name']}}' src="/static/images/logos/{{team_data[15]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[15]['seedID']}} <span class='team-name'> {{team_data[15]['teamName']}}</span><span class='alias'> {{team_data[15]['alias']}}</span></span></li>
         </ul>
       </div>
       <!-- END ROUND ONE -->
@@ -66,20 +67,20 @@
           <span class='date'>{{dates[1]['round_two']}}</span>
         </div>
         <ul class='matchup game33' data-games='97|114|121|125'>
-          <li class='team team-top {{user_picks[0]['pickCSS']}}' id='slot65' data-team-id="{{user_picks[0]['teamID']}}"> {{user_picks[0]['seedID']}} {{user_picks[0]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[1]['pickCSS']}}' id='slot66' data-team-id="{{user_picks[1]['teamID']}}"> {{user_picks[1]['seedID']}} {{user_picks[1]['teamName']}}</li>
+          <li class='team team-top {{user_picks[0]['pickCSS']}}' id='slot65' data-team-id="{{user_picks[0]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[0]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[0]['seedID']}} {{user_picks[0]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[1]['pickCSS']}}' id='slot66' data-team-id="{{user_picks[1]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[1]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[1]['seedID']}} {{user_picks[1]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game34' data-games='98|114|121|125'>
-          <li class='team team-top {{user_picks[2]['pickCSS']}}' id='slot67' data-team-id="{{user_picks[2]['teamID']}}"> {{user_picks[2]['seedID']}} {{user_picks[2]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[3]['pickCSS']}}' id='slot68' data-team-id="{{user_picks[3]['teamID']}}"> {{user_picks[3]['seedID']}} {{user_picks[3]['teamName']}}</li>
+          <li class='team team-top {{user_picks[2]['pickCSS']}}' id='slot67' data-team-id="{{user_picks[2]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[2]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[2]['seedID']}} {{user_picks[2]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[3]['pickCSS']}}' id='slot68' data-team-id="{{user_picks[3]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[3]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[3]['seedID']}} {{user_picks[3]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game35' data-games='99|114|121|125'>
-          <li class='team team-top {{user_picks[4]['pickCSS']}}' id='slot69' data-team-id="{{user_picks[4]['teamID']}}"> {{user_picks[4]['seedID']}} {{user_picks[4]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[5]['pickCSS']}}' id='slot70' data-team-id="{{user_picks[5]['teamID']}}"> {{user_picks[5]['seedID']}} {{user_picks[5]['teamName']}}</li>
+          <li class='team team-top {{user_picks[4]['pickCSS']}}' id='slot69' data-team-id="{{user_picks[4]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[4]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[4]['seedID']}} {{user_picks[4]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[5]['pickCSS']}}' id='slot70' data-team-id="{{user_picks[5]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[5]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[5]['seedID']}} {{user_picks[5]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game36' data-games='100|114|121|125'>
-          <li class='team team-top {{user_picks[6]['pickCSS']}}' id='slot71' data-team-id="{{user_picks[6]['teamID']}}"> {{user_picks[6]['seedID']}} {{user_picks[6]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[7]['pickCSS']}}' id='slot72' data-team-id="{{user_picks[7]['teamID']}}"> {{user_picks[7]['seedID']}} {{user_picks[7]['teamName']}}</li>
+          <li class='team team-top {{user_picks[6]['pickCSS']}}' id='slot71' data-team-id="{{user_picks[6]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[6]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[6]['seedID']}} {{user_picks[6]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[7]['pickCSS']}}' id='slot72' data-team-id="{{user_picks[7]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[7]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[7]['seedID']}} {{user_picks[7]['teamName']}}</span></li>
         </ul>
       </div>
       <!-- END ROUND TWO -->
@@ -93,12 +94,12 @@
           <span class='date'>{{dates[2]['round_three']}}</span>
         </div>
         <ul class='matchup game49' data-games='113|121|125'>
-          <li class='team team-top {{user_picks[32]['pickCSS']}}' id='slot97' data-team-id="{{user_picks[32]['teamID']}}"> {{user_picks[32]['seedID']}} {{user_picks[32]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[33]['pickCSS']}}' id='slot98' data-team-id="{{user_picks[33]['teamID']}}"> {{user_picks[33]['seedID']}} {{user_picks[33]['teamName']}}</li>
+          <li class='team team-top {{user_picks[32]['pickCSS']}}' id='slot97' data-team-id="{{user_picks[32]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[32]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[32]['seedID']}} {{user_picks[32]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[33]['pickCSS']}}' id='slot98' data-team-id="{{user_picks[33]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[33]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[33]['seedID']}} {{user_picks[33]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game50' data-games='114|121|125'>
-          <li class='team team-top {{user_picks[34]['pickCSS']}}' id='slot99' data-team-id="{{user_picks[34]['teamID']}}"> {{user_picks[34]['seedID']}} {{user_picks[34]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[35]['pickCSS']}}' id='slot100' data-team-id="{{user_picks[35]['teamID']}}"> {{user_picks[35]['seedID']}} {{user_picks[35]['teamName']}}</li>
+          <li class='team team-top {{user_picks[34]['pickCSS']}}' id='slot99' data-team-id="{{user_picks[34]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[34]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[34]['seedID']}} {{user_picks[34]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[35]['pickCSS']}}' id='slot100' data-team-id="{{user_picks[35]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[35]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[35]['seedID']}} {{user_picks[35]['teamName']}}</span></li>
         </ul>
       </div>
       <!-- END ROUND THREE -->
@@ -113,12 +114,12 @@
           <span class='date'>{{dates[3]['round_four']}}</span>
         </div>
         <ul class='matchup game57 championship elite-eight-top' data-games='121|125'>
-          <li class='team team-top {{user_picks[48]['pickCSS']}}' id='slot113' data-team-id="{{user_picks[48]['teamID']}}"> {{user_picks[48]['seedID']}} {{user_picks[48]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[49]['pickCSS']}}' id='slot114' data-team-id="{{user_picks[49]['teamID']}}"> {{user_picks[49]['seedID']}} {{user_picks[49]['teamName']}}</li>
+          <li class='team team-top {{user_picks[48]['pickCSS']}}' id='slot113' data-team-id="{{user_picks[48]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[48]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[48]['seedID']}} {{user_picks[48]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[49]['pickCSS']}}' id='slot114' data-team-id="{{user_picks[49]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[49]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[49]['seedID']}} {{user_picks[49]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game59 championship elite-eight-bottom' data-games='123|126'>
-          <li class='team team-top {{user_picks[52]['pickCSS']}}' id='slot117' data-team-id="{{user_picks[52]['teamID']}}"> {{user_picks[52]['seedID']}} {{user_picks[52]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[53]['pickCSS']}}' id='slot118' data-team-id="{{user_picks[53]['teamID']}}"> {{user_picks[53]['seedID']}} {{user_picks[53]['teamName']}}</li>
+          <li class='team team-top {{user_picks[52]['pickCSS']}}' id='slot117' data-team-id="{{user_picks[52]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[52]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[52]['seedID']}} {{user_picks[52]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[53]['pickCSS']}}' id='slot118' data-team-id="{{user_picks[53]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[53]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[53]['seedID']}} {{user_picks[53]['teamName']}}</span></li>
         </ul>
       </div>
     </div>
@@ -132,12 +133,12 @@
           <span class='date'>{{dates[2]['round_three']}}</span>
         </div> 
         <ul class='matchup game53' data-games='117|123|126'>
-          <li class='team team-top {{user_picks[40]['pickCSS']}}' id='slot105' data-team-id="{{user_picks[40]['teamID']}}"> {{user_picks[40]['seedID']}} {{user_picks[40]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[41]['pickCSS']}}' id='slot106' data-team-id="{{user_picks[41]['teamID']}}"> {{user_picks[41]['seedID']}} {{user_picks[41]['teamName']}}</li>
+          <li class='team team-top {{user_picks[40]['pickCSS']}}' id='slot105' data-team-id="{{user_picks[40]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[40]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[40]['seedID']}} {{user_picks[40]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[41]['pickCSS']}}' id='slot106' data-team-id="{{user_picks[41]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[41]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[41]['seedID']}} {{user_picks[41]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game54' data-games='118|123|126'>
-          <li class='team team-top {{user_picks[42]['pickCSS']}}' id='slot107' data-team-id="{{user_picks[42]['teamID']}}"> {{user_picks[42]['seedID']}} {{user_picks[42]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[43]['pickCSS']}}' id='slot108' data-team-id="{{user_picks[43]['teamID']}}"> {{user_picks[43]['seedID']}} {{user_picks[43]['teamName']}}</li>
+          <li class='team team-top {{user_picks[42]['pickCSS']}}' id='slot107' data-team-id="{{user_picks[42]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[42]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[42]['seedID']}} {{user_picks[42]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[43]['pickCSS']}}' id='slot108' data-team-id="{{user_picks[43]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[43]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[43]['seedID']}} {{user_picks[43]['teamName']}}</span></li>
         </ul>
       </div>
       <!-- END ROUND THREE -->
@@ -151,20 +152,20 @@
           <span class='date'>{{dates[1]['round_two']}}</span>
         </div>      
         <ul class='matchup game41' data-games='105|117|123|126'>
-          <li class='team team-top {{user_picks[16]['pickCSS']}}' id='slot81' data-team-id="{{user_picks[16]['teamID']}}"> {{user_picks[16]['seedID']}} {{user_picks[16]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[17]['pickCSS']}}' id='slot82' data-team-id="{{user_picks[17]['teamID']}}"> {{user_picks[17]['seedID']}} {{user_picks[17]['teamName']}}</li>
+          <li class='team team-top {{user_picks[16]['pickCSS']}}' id='slot81' data-team-id="{{user_picks[16]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[16]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[16]['seedID']}} {{user_picks[16]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[17]['pickCSS']}}' id='slot82' data-team-id="{{user_picks[17]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[17]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[17]['seedID']}} {{user_picks[17]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game42' data-games='106|117|123|126'>
-          <li class='team team-top {{user_picks[18]['pickCSS']}}' id='slot83' data-team-id="{{user_picks[18]['teamID']}}"> {{user_picks[18]['seedID']}} {{user_picks[18]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[19]['pickCSS']}}' id='slot84' data-team-id="{{user_picks[19]['teamID']}}"> {{user_picks[19]['seedID']}} {{user_picks[19]['teamName']}}</li>
+          <li class='team team-top {{user_picks[18]['pickCSS']}}' id='slot83' data-team-id="{{user_picks[18]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[18]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[18]['seedID']}} {{user_picks[18]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[19]['pickCSS']}}' id='slot84' data-team-id="{{user_picks[19]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[19]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[19]['seedID']}} {{user_picks[19]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game43' data-games='107|117|123|126'>
-          <li class='team team-top {{user_picks[20]['pickCSS']}}' id='slot85' data-team-id="{{user_picks[20]['teamID']}}"> {{user_picks[20]['seedID']}} {{user_picks[20]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[21]['pickCSS']}}' id='slot86' data-team-id="{{user_picks[21]['teamID']}}"> {{user_picks[21]['seedID']}} {{user_picks[21]['teamName']}}</li>
+          <li class='team team-top {{user_picks[20]['pickCSS']}}' id='slot85' data-team-id="{{user_picks[20]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[20]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[20]['seedID']}} {{user_picks[20]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[21]['pickCSS']}}' id='slot86' data-team-id="{{user_picks[21]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[21]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[21]['seedID']}} {{user_picks[21]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game44' data-games='108|117|123|126'>
-          <li class='team team-top {{user_picks[22]['pickCSS']}}' id='slot87' data-team-id="{{user_picks[22]['teamID']}}"> {{user_picks[22]['seedID']}} {{user_picks[22]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[23]['pickCSS']}}' id='slot88' data-team-id="{{user_picks[23]['teamID']}}"> {{user_picks[23]['seedID']}} {{user_picks[23]['teamName']}}</li>
+          <li class='team team-top {{user_picks[22]['pickCSS']}}' id='slot87' data-team-id="{{user_picks[22]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[22]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[22]['seedID']}} {{user_picks[22]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[23]['pickCSS']}}' id='slot88' data-team-id="{{user_picks[23]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[23]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[23]['seedID']}} {{user_picks[23]['teamName']}}</span></li>
         </ul>
       </div>
       <!-- END ROUND TWO -->
@@ -178,36 +179,36 @@
           <span class='date'>{{dates[0]['round_one']}}</span>
         </div>
         <ul class='matchup game17' data-games='81|105|117|123|126'>
-          <li class='team team-top ' id='slot33' data-team-id="{{team_data[32]['teamID']}}"> {{team_data[32]['seedID']}} {{team_data[32]['teamName']}}</li>
-          <li class='team team-bottom' id='slot34' data-team-id="{{team_data[33]['teamID']}}"> {{team_data[33]['seedID']}} {{team_data[33]['teamName']}}</li>
+          <li class='team team-top ' id='slot33' data-team-id="{{team_data[32]['teamID']}}"><span class='logo'><img alt='{{team_data[32]['logo_name']}}' src="/static/images/logos/{{team_data[32]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[32]['seedID']}} <span class='team-name'> {{team_data[32]['teamName']}}</span><span class='alias'> {{team_data[32]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot34' data-team-id="{{team_data[33]['teamID']}}"><span class='logo'><img alt='{{team_data[33]['logo_name']}}' src="/static/images/logos/{{team_data[33]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[33]['seedID']}} <span class='team-name'> {{team_data[33]['teamName']}}</span><span class='alias'> {{team_data[33]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game18' data-games='82|105|117|123|126'>
-          <li class='team team-top' id='slot35' data-team-id="{{team_data[34]['teamID']}}"> {{team_data[34]['seedID']}} {{team_data[34]['teamName']}}</li>
-          <li class='team team-bottom' id='slot36' data-team-id="{{team_data[35]['teamID']}}"> {{team_data[35]['seedID']}} {{team_data[35]['teamName']}}</li>
+          <li class='team team-top' id='slot35' data-team-id="{{team_data[34]['teamID']}}"><span class='logo'><img alt='{{team_data[34]['logo_name']}}' src="/static/images/logos/{{team_data[34]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[34]['seedID']}} <span class='team-name'> {{team_data[34]['teamName']}}</span><span class='alias'> {{team_data[34]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot36' data-team-id="{{team_data[35]['teamID']}}"><span class='logo'><img alt='{{team_data[35]['logo_name']}}' src="/static/images/logos/{{team_data[35]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[35]['seedID']}} <span class='team-name'> {{team_data[35]['teamName']}}</span><span class='alias'> {{team_data[35]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game19' data-games='83|106|117|123|126'>
-          <li class='team team-top' id='slot37' data-team-id="{{team_data[36]['teamID']}}"> {{team_data[36]['seedID']}} {{team_data[36]['teamName']}}</li>
-          <li class='team team-bottom' id='slot38' data-team-id="{{team_data[37]['teamID']}}"> {{team_data[37]['seedID']}} {{team_data[37]['teamName']}}</li>
+          <li class='team team-top' id='slot37' data-team-id="{{team_data[36]['teamID']}}"><span class='logo'><img alt='{{team_data[36]['logo_name']}}' src="/static/images/logos/{{team_data[36]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[36]['seedID']}} <span class='team-name'> {{team_data[36]['teamName']}}</span><span class='alias'> {{team_data[36]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot38' data-team-id="{{team_data[37]['teamID']}}"><span class='logo'><img alt='{{team_data[37]['logo_name']}}' src="/static/images/logos/{{team_data[37]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[37]['seedID']}} <span class='team-name'> {{team_data[37]['teamName']}}</span><span class='alias'> {{team_data[37]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game20' data-games='84|106|117|123|126'>
-          <li class='team team-top' id='slot39' data-team-id="{{team_data[38]['teamID']}}"> {{team_data[38]['seedID']}} {{team_data[38]['teamName']}}</li>
-          <li class='team team-bottom' id='slot40' data-team-id="{{team_data[39]['teamID']}}"> {{team_data[39]['seedID']}} {{team_data[39]['teamName']}}</li>
+          <li class='team team-top' id='slot39' data-team-id="{{team_data[38]['teamID']}}"><span class='logo'><img alt='{{team_data[38]['logo_name']}}' src="/static/images/logos/{{team_data[38]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[38]['seedID']}} <span class='team-name'> {{team_data[38]['teamName']}}</span><span class='alias'> {{team_data[38]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot40' data-team-id="{{team_data[39]['teamID']}}"><span class='logo'><img alt='{{team_data[39]['logo_name']}}' src="/static/images/logos/{{team_data[39]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[39]['seedID']}} <span class='team-name'> {{team_data[39]['teamName']}}</span><span class='alias'> {{team_data[39]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game21' data-games='85|107|118|123|126'>
-          <li class='team team-top' id='slot41' data-team-id="{{team_data[40]['teamID']}}"> {{team_data[40]['seedID']}} {{team_data[40]['teamName']}}</li>
-          <li class='team team-bottom' id='slot42' data-team-id="{{team_data[41]['teamID']}}"> {{team_data[41]['seedID']}} {{team_data[41]['teamName']}}</li>
+          <li class='team team-top' id='slot41' data-team-id="{{team_data[40]['teamID']}}"><span class='logo'><img alt='{{team_data[40]['logo_name']}}' src="/static/images/logos/{{team_data[40]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[40]['seedID']}} <span class='team-name'> {{team_data[40]['teamName']}}</span><span class='alias'> {{team_data[40]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot42' data-team-id="{{team_data[41]['teamID']}}"><span class='logo'><img alt='{{team_data[41]['logo_name']}}' src="/static/images/logos/{{team_data[41]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[41]['seedID']}} <span class='team-name'> {{team_data[41]['teamName']}}</span><span class='alias'> {{team_data[41]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game22' data-games='86|107|118|123|126'>
-          <li class='team team-top' id='slot43' data-team-id="{{team_data[42]['teamID']}}"> {{team_data[42]['seedID']}} {{team_data[42]['teamName']}}</li>
-          <li class='team team-bottom' id='slot44' data-team-id="{{team_data[43]['teamID']}}"> {{team_data[43]['seedID']}} {{team_data[43]['teamName']}}</li>
+          <li class='team team-top' id='slot43' data-team-id="{{team_data[42]['teamID']}}"><span class='logo'><img alt='{{team_data[42]['logo_name']}}' src="/static/images/logos/{{team_data[42]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[42]['seedID']}} <span class='team-name'> {{team_data[42]['teamName']}}</span><span class='alias'> {{team_data[42]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot44' data-team-id="{{team_data[43]['teamID']}}"><span class='logo'><img alt='{{team_data[43]['logo_name']}}' src="/static/images/logos/{{team_data[43]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[43]['seedID']}} <span class='team-name'> {{team_data[43]['teamName']}}</span><span class='alias'> {{team_data[43]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game23' data-games='87|108|118|123|126'>
-          <li class='team team-top' id='slot45' data-team-id="{{team_data[44]['teamID']}}"> {{team_data[44]['seedID']}} {{team_data[44]['teamName']}}</li>
-          <li class='team team-bottom' id='slot46' data-team-id="{{team_data[45]['teamID']}}"> {{team_data[45]['seedID']}} {{team_data[45]['teamName']}}</li>
+          <li class='team team-top' id='slot45' data-team-id="{{team_data[44]['teamID']}}"><span class='logo'><img alt='{{team_data[44]['logo_name']}}' src="/static/images/logos/{{team_data[44]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[44]['seedID']}} <span class='team-name'> {{team_data[44]['teamName']}}</span><span class='alias'> {{team_data[44]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot46' data-team-id="{{team_data[45]['teamID']}}"><span class='logo'><img alt='{{team_data[45]['logo_name']}}' src="/static/images/logos/{{team_data[45]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[45]['seedID']}} <span class='team-name'> {{team_data[45]['teamName']}}</span><span class='alias'> {{team_data[45]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game24' data-games='88|108|118|123|126'>
-          <li class='team team-top' id='slot47' data-team-id="{{team_data[46]['teamID']}}"> {{team_data[46]['seedID']}} {{team_data[46]['teamName']}}</li>
-          <li class='team team-bottom' id='slot48' data-team-id="{{team_data[47]['teamID']}}"> {{team_data[47]['seedID']}} {{team_data[47]['teamName']}}</li>
+          <li class='team team-top' id='slot47' data-team-id="{{team_data[46]['teamID']}}"><span class='logo'><img alt='{{team_data[46]['logo_name']}}' src="/static/images/logos/{{team_data[46]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[46]['seedID']}} <span class='team-name'> {{team_data[46]['teamName']}}</span><span class='alias'> {{team_data[46]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot48' data-team-id="{{team_data[47]['teamID']}}"><span class='logo'><img alt='{{team_data[47]['logo_name']}}' src="/static/images/logos/{{team_data[47]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[47]['seedID']}} <span class='team-name'> {{team_data[47]['teamName']}}</span><span class='alias'> {{team_data[47]['alias']}}</span></span></li>
         </ul>
       </div>
       <!-- END ROUND ONE -->
@@ -222,8 +223,8 @@
           <span class='date'>{{dates[4]['round_five']}}</span>
         </div>
         <ul class='matchup-less game61 championship final-four-left' data-games='125'>
-          <li class='team team-top {{user_picks[56]['pickCSS']}}' id='slot121' data-team-id="{{user_picks[56]['teamID']}}"> {{user_picks[56]['seedID']}} {{user_picks[56]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[57]['pickCSS']}}' id='slot122' data-team-id="{{user_picks[57]['teamID']}}"> {{user_picks[57]['seedID']}} {{user_picks[57]['teamName']}}</li>
+          <li class='team team-top {{user_picks[56]['pickCSS']}}' id='slot121' data-team-id="{{user_picks[56]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[56]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[56]['seedID']}} {{user_picks[56]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[57]['pickCSS']}}' id='slot122' data-team-id="{{user_picks[57]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[57]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[57]['seedID']}} {{user_picks[57]['teamName']}}</span></li>
         </ul>
       </div>
 
@@ -234,8 +235,8 @@
           <span class='date'>{{dates[5]['round_six']}}</span>
         </div>
         <ul class='matchup-less game63 championship' data-games='none'>
-          <li class='team team-top {{user_picks[60]['pickCSS']}}' id='slot125' data-team-id="{{user_picks[60]['teamID']}}"> {{user_picks[60]['seedID']}} {{user_picks[60]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[61]['pickCSS']}}' id='slot126' data-team-id="{{user_picks[61]['teamID']}}"> {{user_picks[61]['seedID']}} {{user_picks[61]['teamName']}}</li>
+          <li class='team team-top {{user_picks[60]['pickCSS']}}' id='slot125' data-team-id="{{user_picks[60]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[60]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[60]['seedID']}} {{user_picks[60]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[61]['pickCSS']}}' id='slot126' data-team-id="{{user_picks[61]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[61]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[61]['seedID']}} {{user_picks[61]['teamName']}}</span></li>
         </ul>
       </div>
      
@@ -246,8 +247,8 @@
           <span class='date'>{{dates[4]['round_five']}}</span>
         </div>
         <ul class='matchup-less game62 championship final-four-right' data-games='126'>
-          <li class='team team-top {{user_picks[58]['pickCSS']}}' id='slot123' data-team-id="{{user_picks[58]['teamID']}}"> {{user_picks[58]['seedID']}} {{user_picks[58]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[59]['pickCSS']}}' id='slot124' data-team-id="{{user_picks[59]['teamID']}}"> {{user_picks[59]['seedID']}} {{user_picks[59]['teamName']}}</li>
+          <li class='team team-top {{user_picks[58]['pickCSS']}}' id='slot123' data-team-id="{{user_picks[58]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[58]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[58]['seedID']}} {{user_picks[58]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[59]['pickCSS']}}' id='slot124' data-team-id="{{user_picks[59]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[59]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[59]['seedID']}} {{user_picks[59]['teamName']}}</span></li>
         </ul>
       </div>
       
@@ -270,36 +271,36 @@
           <span class='date'>{{dates[0]['round_one']}}</span>
         </div>
         <ul class='matchup game9' data-games='73|101|115|122|125'>
-          <li class='team team-top' id='slot17' data-team-id="{{team_data[16]['teamID']}}"> {{team_data[16]['seedID']}} {{team_data[16]['teamName']}}</li>
-          <li class='team team-bottom' id='slot18' data-team-id="{{team_data[17]['teamID']}}"> {{team_data[17]['seedID']}} {{team_data[17]['teamName']}}</li>
+          <li class='team team-top' id='slot17' data-team-id="{{team_data[16]['teamID']}}"><span class='logo'><img alt='{{team_data[16]['logo_name']}}' src="/static/images/logos/{{team_data[16]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[16]['seedID']}} <span class='team-name'> {{team_data[16]['teamName']}}</span><span class='alias'> {{team_data[16]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot18' data-team-id="{{team_data[17]['teamID']}}"><span class='logo'><img alt='{{team_data[17]['logo_name']}}' src="/static/images/logos/{{team_data[17]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[17]['seedID']}} <span class='team-name'> {{team_data[17]['teamName']}}</span><span class='alias'> {{team_data[17]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game10' data-games='74|101|115|122|125'>
-          <li class='team team-top' id='slot19' data-team-id="{{team_data[18]['teamID']}}"> {{team_data[18]['seedID']}} {{team_data[18]['teamName']}}</li>
-          <li class='team team-bottom' id='slot20' data-team-id="{{team_data[19]['teamID']}}"> {{team_data[19]['seedID']}} {{team_data[19]['teamName']}}</li>
+          <li class='team team-top' id='slot19' data-team-id="{{team_data[18]['teamID']}}"><span class='logo'><img alt='{{team_data[18]['logo_name']}}' src="/static/images/logos/{{team_data[18]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[18]['seedID']}} <span class='team-name'> {{team_data[18]['teamName']}}</span><span class='alias'> {{team_data[18]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot20' data-team-id="{{team_data[19]['teamID']}}"><span class='logo'><img alt='{{team_data[19]['logo_name']}}' src="/static/images/logos/{{team_data[19]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[19]['seedID']}} <span class='team-name'> {{team_data[19]['teamName']}}</span><span class='alias'> {{team_data[19]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game11' data-games='75|102|115|122|125'>
-          <li class='team team-top' id='slot21' data-team-id="{{team_data[20]['teamID']}}"> {{team_data[20]['seedID']}} {{team_data[20]['teamName']}}</li>
-          <li class='team team-bottom' id='slot22' data-team-id="{{team_data[21]['teamID']}}"> {{team_data[21]['seedID']}} {{team_data[21]['teamName']}}</li>
+          <li class='team team-top' id='slot21' data-team-id="{{team_data[20]['teamID']}}"><span class='logo'><img alt='{{team_data[20]['logo_name']}}' src="/static/images/logos/{{team_data[20]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[20]['seedID']}} <span class='team-name'> {{team_data[20]['teamName']}}</span><span class='alias'> {{team_data[20]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot22' data-team-id="{{team_data[21]['teamID']}}"><span class='logo'><img alt='{{team_data[21]['logo_name']}}' src="/static/images/logos/{{team_data[21]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[21]['seedID']}} <span class='team-name'> {{team_data[21]['teamName']}}</span><span class='alias'> {{team_data[21]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game12' data-games='76|102|115|122|125'>
-          <li class='team team-top' id='slot23' data-team-id="{{team_data[22]['teamID']}}"> {{team_data[22]['seedID']}} {{team_data[22]['teamName']}}</li>
-          <li class='team team-bottom' id='slot24' data-team-id="{{team_data[23]['teamID']}}"> {{team_data[23]['seedID']}} {{team_data[23]['teamName']}}</li>
+          <li class='team team-top' id='slot23' data-team-id="{{team_data[22]['teamID']}}"><span class='logo'><img alt='{{team_data[22]['logo_name']}}' src="/static/images/logos/{{team_data[22]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[22]['seedID']}} <span class='team-name'> {{team_data[22]['teamName']}}</span><span class='alias'> {{team_data[22]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot24' data-team-id="{{team_data[23]['teamID']}}"><span class='logo'><img alt='{{team_data[23]['logo_name']}}' src="/static/images/logos/{{team_data[23]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[23]['seedID']}} <span class='team-name'> {{team_data[23]['teamName']}}</span><span class='alias'> {{team_data[23]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game13' data-games='77|103|116|122|125'>
-          <li class='team team-top' id='slot25' data-team-id="{{team_data[24]['teamID']}}"> {{team_data[24]['seedID']}} {{team_data[24]['teamName']}}</li>
-          <li class='team team-bottom' id='slot26' data-team-id="{{team_data[25]['teamID']}}"> {{team_data[25]['seedID']}} {{team_data[25]['teamName']}}</li>
+          <li class='team team-top' id='slot25' data-team-id="{{team_data[24]['teamID']}}"><span class='logo'><img alt='{{team_data[24]['logo_name']}}' src="/static/images/logos/{{team_data[24]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[24]['seedID']}} <span class='team-name'> {{team_data[24]['teamName']}}</span><span class='alias'> {{team_data[24]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot26' data-team-id="{{team_data[25]['teamID']}}"><span class='logo'><img alt='{{team_data[25]['logo_name']}}' src="/static/images/logos/{{team_data[25]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[25]['seedID']}} <span class='team-name'> {{team_data[25]['teamName']}}</span><span class='alias'> {{team_data[25]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game14' data-games='78|103|116|122|125'>
-          <li class='team team-top' id='slot27' data-team-id="{{team_data[26]['teamID']}}"> {{team_data[26]['seedID']}} {{team_data[26]['teamName']}}</li>
-          <li class='team team-bottom' id='slot28' data-team-id="{{team_data[27]['teamID']}}"> {{team_data[27]['seedID']}} {{team_data[27]['teamName']}}</li>
+          <li class='team team-top' id='slot27' data-team-id="{{team_data[26]['teamID']}}"><span class='logo'><img alt='{{team_data[26]['logo_name']}}' src="/static/images/logos/{{team_data[26]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[26]['seedID']}} <span class='team-name'> {{team_data[26]['teamName']}}</span><span class='alias'> {{team_data[26]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot28' data-team-id="{{team_data[27]['teamID']}}"><span class='logo'><img alt='{{team_data[27]['logo_name']}}' src="/static/images/logos/{{team_data[27]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[27]['seedID']}} <span class='team-name'> {{team_data[27]['teamName']}}</span><span class='alias'> {{team_data[27]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game15' data-games='79|104|116|122|125'>
-          <li class='team team-top' id='slot29' data-team-id="{{team_data[28]['teamID']}}"> {{team_data[28]['seedID']}} {{team_data[28]['teamName']}}</li>
-          <li class='team team-bottom' id='slot30' data-team-id="{{team_data[29]['teamID']}}"> {{team_data[29]['seedID']}} {{team_data[29]['teamName']}}</li>
+          <li class='team team-top' id='slot29' data-team-id="{{team_data[28]['teamID']}}"><span class='logo'><img alt='{{team_data[28]['logo_name']}}' src="/static/images/logos/{{team_data[28]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[28]['seedID']}} <span class='team-name'> {{team_data[28]['teamName']}}</span><span class='alias'> {{team_data[28]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot30' data-team-id="{{team_data[29]['teamID']}}"><span class='logo'><img alt='{{team_data[29]['logo_name']}}' src="/static/images/logos/{{team_data[29]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[29]['seedID']}} <span class='team-name'> {{team_data[29]['teamName']}}</span><span class='alias'> {{team_data[29]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game16' data-games='80|104|116|122|125'>
-          <li class='team team-top' id='slot31' data-team-id="{{team_data[30]['teamID']}}"> {{team_data[30]['seedID']}} {{team_data[30]['teamName']}}</li>
-          <li class='team team-bottom' id='slot32' data-team-id="{{team_data[31]['teamID']}}"> {{team_data[31]['seedID']}} {{team_data[31]['teamName']}}</li>
+          <li class='team team-top' id='slot31' data-team-id="{{team_data[30]['teamID']}}"><span class='logo'><img alt='{{team_data[30]['logo_name']}}' src="/static/images/logos/{{team_data[30]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[30]['seedID']}} <span class='team-name'> {{team_data[30]['teamName']}}</span><span class='alias'> {{team_data[30]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot32' data-team-id="{{team_data[31]['teamID']}}"><span class='logo'><img alt='{{team_data[31]['logo_name']}}' src="/static/images/logos/{{team_data[31]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[31]['seedID']}} <span class='team-name'> {{team_data[31]['teamName']}}</span><span class='alias'> {{team_data[31]['alias']}}</span></span></li>
         </ul>
       </div>
       <!-- END ROUND ONE -->
@@ -313,20 +314,20 @@
           <span class='date'>{{dates[1]['round_two']}}</span>
         </div>
         <ul class='matchup game37' data-games='101|115|122|125'>
-          <li class='team team-top {{user_picks[8]['pickCSS']}}' id='slot73' data-team-id="{{user_picks[8]['teamID']}}"> {{user_picks[8]['seedID']}} {{user_picks[8]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[9]['pickCSS']}}' id='slot74' data-team-id="{{user_picks[9]['teamID']}}"> {{user_picks[9]['seedID']}} {{user_picks[9]['teamName']}}</li>
+          <li class='team team-top {{user_picks[8]['pickCSS']}}' id='slot73' data-team-id="{{user_picks[8]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[8]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[8]['seedID']}} {{user_picks[8]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[9]['pickCSS']}}' id='slot74' data-team-id="{{user_picks[9]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[9]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[9]['seedID']}} {{user_picks[9]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game38' data-games='102|116|122|125'>
-          <li class='team team-top {{user_picks[10]['pickCSS']}}' id='slot75' data-team-id="{{user_picks[10]['teamID']}}"> {{user_picks[10]['seedID']}} {{user_picks[10]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[11]['pickCSS']}}' id='slot76' data-team-id="{{user_picks[11]['teamID']}}"> {{user_picks[11]['seedID']}} {{user_picks[11]['teamName']}}</li>
+          <li class='team team-top {{user_picks[10]['pickCSS']}}' id='slot75' data-team-id="{{user_picks[10]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[10]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[10]['seedID']}} {{user_picks[10]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[11]['pickCSS']}}' id='slot76' data-team-id="{{user_picks[11]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[11]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[11]['seedID']}} {{user_picks[11]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game39' data-games='103|116|122|125'>
-          <li class='team team-top {{user_picks[12]['pickCSS']}}' id='slot77' data-team-id="{{user_picks[12]['teamID']}}"> {{user_picks[12]['seedID']}} {{user_picks[12]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[13]['pickCSS']}}' id='slot78' data-team-id="{{user_picks[13]['teamID']}}"> {{user_picks[13]['seedID']}} {{user_picks[13]['teamName']}}</li>
+          <li class='team team-top {{user_picks[12]['pickCSS']}}' id='slot77' data-team-id="{{user_picks[12]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[12]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[12]['seedID']}} {{user_picks[12]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[13]['pickCSS']}}' id='slot78' data-team-id="{{user_picks[13]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[13]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[13]['seedID']}} {{user_picks[13]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game40' data-games='104|116|122|125'>
-          <li class='team team-top {{user_picks[14]['pickCSS']}}' id='slot79' data-team-id="{{user_picks[14]['teamID']}}"> {{user_picks[14]['seedID']}} {{user_picks[14]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[15]['pickCSS']}}' id='slot80' data-team-id="{{user_picks[15]['teamID']}}"> {{user_picks[15]['seedID']}} {{user_picks[15]['teamName']}}</li>
+          <li class='team team-top {{user_picks[14]['pickCSS']}}' id='slot79' data-team-id="{{user_picks[14]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[14]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[14]['seedID']}} {{user_picks[14]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[15]['pickCSS']}}' id='slot80' data-team-id="{{user_picks[15]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[15]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[15]['seedID']}} {{user_picks[15]['teamName']}}</span></li>
         </ul>
       </div>
       <!-- END ROUND TWO -->
@@ -340,12 +341,12 @@
           <span class='date'>{{dates[2]['round_three']}}</span>
         </div>
         <ul class='matchup game51' data-games='115|122|125'>
-          <li class='team team-top {{user_picks[36]['pickCSS']}}' id='slot101' data-team-id="{{user_picks[36]['teamID']}}"> {{user_picks[36]['seedID']}} {{user_picks[36]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[37]['pickCSS']}}' id='slot102' data-team-id="{{user_picks[37]['teamID']}}"> {{user_picks[37]['seedID']}} {{user_picks[37]['teamName']}}</li>
+          <li class='team team-top {{user_picks[36]['pickCSS']}}' id='slot101' data-team-id="{{user_picks[36]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[36]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[36]['seedID']}} {{user_picks[36]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[37]['pickCSS']}}' id='slot102' data-team-id="{{user_picks[37]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[37]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[37]['seedID']}} {{user_picks[37]['teamName']}}</span></li>
         </ul>       
         <ul class='matchup game52' data-games='116|122|125'>
-          <li class='team team-top {{user_picks[38]['pickCSS']}}' id='slot103' data-team-id="{{user_picks[38]['teamID']}}"> {{user_picks[38]['seedID']}} {{user_picks[38]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[39]['pickCSS']}}' id='slot104' data-team-id="{{user_picks[39]['teamID']}}"> {{user_picks[39]['seedID']}} {{user_picks[39]['teamName']}}</li>
+          <li class='team team-top {{user_picks[38]['pickCSS']}}' id='slot103' data-team-id="{{user_picks[38]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[38]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[38]['seedID']}} {{user_picks[38]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[39]['pickCSS']}}' id='slot104' data-team-id="{{user_picks[39]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[39]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[39]['seedID']}} {{user_picks[39]['teamName']}}</span></li>
         </ul>
       </div>
       <!-- END ROUND THREE -->
@@ -360,12 +361,12 @@
           <span class='date'>{{dates[3]['round_four']}}</span>
         </div>
         <ul class='matchup game58 championship elite-eight-top' data-games='122|125'>
-          <li class='team team-top {{user_picks[50]['pickCSS']}}' id='slot115' data-team-id="{{user_picks[50]['teamID']}}"> {{user_picks[50]['seedID']}} {{user_picks[50]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[51]['pickCSS']}}' id='slot116' data-team-id="{{user_picks[51]['teamID']}}"> {{user_picks[51]['seedID']}} {{user_picks[51]['teamName']}}</li>
+          <li class='team team-top {{user_picks[50]['pickCSS']}}' id='slot115' data-team-id="{{user_picks[50]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[50]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[50]['seedID']}} {{user_picks[50]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[51]['pickCSS']}}' id='slot116' data-team-id="{{user_picks[51]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[51]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[51]['seedID']}} {{user_picks[51]['teamName']}}</span></li>
         </ul> 
         <ul class='matchup game60 championship elite-eight-bottom' data-games='124|126'>
-          <li class='team team-top {{user_picks[54]['pickCSS']}}' id='slot119' data-team-id="{{user_picks[54]['teamID']}}"> {{user_picks[54]['seedID']}} {{user_picks[54]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[55]['pickCSS']}}' id='slot120' data-team-id="{{user_picks[55]['teamID']}}"> {{user_picks[55]['seedID']}} {{user_picks[55]['teamName']}}</li>
+          <li class='team team-top {{user_picks[54]['pickCSS']}}' id='slot119' data-team-id="{{user_picks[54]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[54]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[54]['seedID']}} {{user_picks[54]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[55]['pickCSS']}}' id='slot120' data-team-id="{{user_picks[55]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[55]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[55]['seedID']}} {{user_picks[55]['teamName']}}</span></li>
         </ul>
       </div>
     </div>
@@ -379,12 +380,12 @@
           <span class='date'>{{dates[2]['round_three']}}</span>
         </div>
         <ul class='matchup game55' data-games='119|124|126'>
-          <li class='team team-top {{user_picks[44]['pickCSS']}}' id='slot109' data-team-id="{{user_picks[44]['teamID']}}"> {{user_picks[44]['seedID']}} {{user_picks[44]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[45]['pickCSS']}}' id='slot110' data-team-id="{{user_picks[45]['teamID']}}"> {{user_picks[45]['seedID']}} {{user_picks[45]['teamName']}}</li>
+          <li class='team team-top {{user_picks[44]['pickCSS']}}' id='slot109' data-team-id="{{user_picks[44]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[44]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[44]['seedID']}} {{user_picks[44]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[45]['pickCSS']}}' id='slot110' data-team-id="{{user_picks[45]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[45]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[45]['seedID']}} {{user_picks[45]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game56' data-games='120|124|126'>
-          <li class='team team-top {{user_picks[46]['pickCSS']}}' id='slot111' data-team-id="{{user_picks[46]['teamID']}}"> {{user_picks[46]['seedID']}} {{user_picks[46]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[47]['pickCSS']}}' id='slot112' data-team-id="{{user_picks[47]['teamID']}}"> {{user_picks[47]['seedID']}} {{user_picks[47]['teamName']}}</li>
+          <li class='team team-top {{user_picks[46]['pickCSS']}}' id='slot111' data-team-id="{{user_picks[46]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[46]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[46]['seedID']}} {{user_picks[46]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[47]['pickCSS']}}' id='slot112' data-team-id="{{user_picks[47]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[47]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[47]['seedID']}} {{user_picks[47]['teamName']}}</span></li>
         </ul>
         <!-- END ROUND THREE -->
         <!-- RIGHT BOTTOM 4 END -->
@@ -398,20 +399,20 @@
           <span class='date'>{{dates[1]['round_two']}}</span>
         </div>
         <ul class='matchup game45' data-games='109|119|124|126'>
-          <li class='team team-top {{user_picks[24]['pickCSS']}}' id='slot89' data-team-id="{{user_picks[24]['teamID']}}"> {{user_picks[24]['seedID']}} {{user_picks[24]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[25]['pickCSS']}}' id='slot90' data-team-id="{{user_picks[25]['teamID']}}"> {{user_picks[25]['seedID']}} {{user_picks[25]['teamName']}}</li>
+          <li class='team team-top {{user_picks[24]['pickCSS']}}' id='slot89' data-team-id="{{user_picks[24]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[24]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[24]['seedID']}} {{user_picks[24]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[25]['pickCSS']}}' id='slot90' data-team-id="{{user_picks[25]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[25]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[25]['seedID']}} {{user_picks[25]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game46' data-games='110|119|124|126'>
-          <li class='team team-top {{user_picks[26]['pickCSS']}}' id='slot91' data-team-id="{{user_picks[26]['teamID']}}"> {{user_picks[26]['seedID']}} {{user_picks[26]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[27]['pickCSS']}}' id='slot92' data-team-id="{{user_picks[27]['teamID']}}"> {{user_picks[27]['seedID']}} {{user_picks[27]['teamName']}}</li>
+          <li class='team team-top {{user_picks[26]['pickCSS']}}' id='slot91' data-team-id="{{user_picks[26]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[26]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[26]['seedID']}} {{user_picks[26]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[27]['pickCSS']}}' id='slot92' data-team-id="{{user_picks[27]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[27]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[27]['seedID']}} {{user_picks[27]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game47' data-games='111|119|124|126'>
-          <li class='team team-top {{user_picks[28]['pickCSS']}}' id='slot93' data-team-id="{{user_picks[28]['teamID']}}"> {{user_picks[28]['seedID']}} {{user_picks[28]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[29]['pickCSS']}}' id='slot94' data-team-id="{{user_picks[29]['teamID']}}"> {{user_picks[29]['seedID']}} {{user_picks[29]['teamName']}}</li>
+          <li class='team team-top {{user_picks[28]['pickCSS']}}' id='slot93' data-team-id="{{user_picks[28]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[28]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[28]['seedID']}} {{user_picks[28]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[29]['pickCSS']}}' id='slot94' data-team-id="{{user_picks[29]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[29]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[29]['seedID']}} {{user_picks[29]['teamName']}}</span></li>
         </ul>
         <ul class='matchup game48' data-games='112|119|124|126'>
-          <li class='team team-top {{user_picks[30]['pickCSS']}}' id='slot95' data-team-id="{{user_picks[30]['teamID']}}"> {{user_picks[30]['seedID']}} {{user_picks[30]['teamName']}}</li>
-          <li class='team team-bottom {{user_picks[31]['pickCSS']}}' id='slot96' data-team-id="{{user_picks[31]['teamID']}}"> {{user_picks[31]['seedID']}} {{user_picks[31]['teamName']}}</li>
+          <li class='team team-top {{user_picks[30]['pickCSS']}}' id='slot95' data-team-id="{{user_picks[30]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[30]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[30]['seedID']}} {{user_picks[30]['teamName']}}</span></li>
+          <li class='team team-bottom {{user_picks[31]['pickCSS']}}' id='slot96' data-team-id="{{user_picks[31]['teamID']}}"><span class='logo'><img src="/static/images/logos/{{user_picks[31]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'> {{user_picks[31]['seedID']}} {{user_picks[31]['teamName']}}</span></li>
         </ul>
         <!-- END ROUND TWO -->
         <!-- RIGHT BOTTOM 8 END -->
@@ -425,41 +426,45 @@
           <span class='date'>{{dates[0]['round_one']}}</span>
         </div>
         <ul class='matchup game25' data-games='89|109|119|124|126'>
-          <li class='team team-top' id='slot49' data-team-id="{{team_data[48]['teamID']}}"> {{team_data[48]['seedID']}} {{team_data[48]['teamName']}}</li>
-          <li class='team team-bottom' id='slot50' data-team-id="{{team_data[49]['teamID']}}"> {{team_data[49]['seedID']}} {{team_data[49]['teamName']}}</li>
+          <li class='team team-top' id='slot49' data-team-id="{{team_data[48]['teamID']}}"><span class='logo'><img alt='{{team_data[48]['logo_name']}}' src="/static/images/logos/{{team_data[48]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[48]['seedID']}} <span class='team-name'> {{team_data[48]['teamName']}}</span><span class='alias'> {{team_data[48]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot50' data-team-id="{{team_data[49]['teamID']}}"><span class='logo'><img alt='{{team_data[49]['logo_name']}}' src="/static/images/logos/{{team_data[49]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[49]['seedID']}} <span class='team-name'> {{team_data[49]['teamName']}}</span><span class='alias'> {{team_data[49]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game26' data-games='90|109|119|124|126'>
-          <li class='team team-top' id='slot51' data-team-id="{{team_data[50]['teamID']}}"> {{team_data[50]['seedID']}} {{team_data[50]['teamName']}}</li>
-          <li class='team team-bottom' id='slot52' data-team-id="{{team_data[51]['teamID']}}"> {{team_data[51]['seedID']}} {{team_data[51]['teamName']}}</li>
+          <li class='team team-top' id='slot51' data-team-id="{{team_data[50]['teamID']}}"><span class='logo'><img alt='{{team_data[50]['logo_name']}}' src="/static/images/logos/{{team_data[50]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[50]['seedID']}} <span class='team-name'> {{team_data[50]['teamName']}}</span><span class='alias'> {{team_data[50]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot52' data-team-id="{{team_data[51]['teamID']}}"><span class='logo'><img alt='{{team_data[51]['logo_name']}}' src="/static/images/logos/{{team_data[51]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[51]['seedID']}} <span class='team-name'> {{team_data[51]['teamName']}}</span><span class='alias'> {{team_data[51]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game27' data-games='91|110|119|124|126'>
-          <li class='team team-top' id='slot53' data-team-id="{{team_data[52]['teamID']}}"> {{team_data[52]['seedID']}} {{team_data[52]['teamName']}}</li>
-          <li class='team team-bottom' id='slot54' data-team-id="{{team_data[53]['teamID']}}"> {{team_data[53]['seedID']}} {{team_data[53]['teamName']}}</li>
+          <li class='team team-top' id='slot53' data-team-id="{{team_data[52]['teamID']}}"><span class='logo'><img alt='{{team_data[52]['logo_name']}}' src="/static/images/logos/{{team_data[52]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[52]['seedID']}} <span class='team-name'> {{team_data[52]['teamName']}}</span><span class='alias'> {{team_data[52]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot54' data-team-id="{{team_data[53]['teamID']}}"><span class='logo'><img alt='{{team_data[53]['logo_name']}}' src="/static/images/logos/{{team_data[53]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[53]['seedID']}} <span class='team-name'> {{team_data[53]['teamName']}}</span><span class='alias'> {{team_data[53]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game28' data-games='92|110|119|124|126'>
-          <li class='team team-top' id='slot55' data-team-id="{{team_data[54]['teamID']}}"> {{team_data[54]['seedID']}} {{team_data[54]['teamName']}}</li>
-          <li class='team team-bottom' id='slot56' data-team-id="{{team_data[55]['teamID']}}"> {{team_data[55]['seedID']}} {{team_data[55]['teamName']}}</li>
+          <li class='team team-top' id='slot55' data-team-id="{{team_data[54]['teamID']}}"><span class='logo'><img alt='{{team_data[54]['logo_name']}}' src="/static/images/logos/{{team_data[54]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[54]['seedID']}} <span class='team-name'> {{team_data[54]['teamName']}}</span><span class='alias'> {{team_data[54]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot56' data-team-id="{{team_data[55]['teamID']}}"><span class='logo'><img alt='{{team_data[55]['logo_name']}}' src="/static/images/logos/{{team_data[55]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[55]['seedID']}} <span class='team-name'> {{team_data[55]['teamName']}}</span><span class='alias'> {{team_data[55]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game29' data-games='93|111|120|124|126'>
-          <li class='team team-top' id='slot57' data-team-id="{{team_data[56]['teamID']}}"> {{team_data[56]['seedID']}} {{team_data[56]['teamName']}}</li>
-          <li class='team team-bottom' id='slot58' data-team-id="{{team_data[57]['teamID']}}"> {{team_data[57]['seedID']}} {{team_data[57]['teamName']}}</li>
+          <li class='team team-top' id='slot57' data-team-id="{{team_data[56]['teamID']}}"><span class='logo'><img alt='{{team_data[56]['logo_name']}}' src="/static/images/logos/{{team_data[56]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[56]['seedID']}} <span class='team-name'> {{team_data[56]['teamName']}}</span><span class='alias'> {{team_data[56]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot58' data-team-id="{{team_data[57]['teamID']}}"><span class='logo'><img alt='{{team_data[57]['logo_name']}}' src="/static/images/logos/{{team_data[57]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[57]['seedID']}} <span class='team-name'> {{team_data[57]['teamName']}}</span><span class='alias'> {{team_data[57]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game30' data-games='94|111|120|124|126'>
-          <li class='team team-top' id='slot59' data-team-id="{{team_data[58]['teamID']}}"> {{team_data[58]['seedID']}} {{team_data[58]['teamName']}}</li>
-          <li class='team team-bottom' id='slot60' data-team-id="{{team_data[59]['teamID']}}"> {{team_data[59]['seedID']}} {{team_data[59]['teamName']}}</li>
+          <li class='team team-top' id='slot59' data-team-id="{{team_data[58]['teamID']}}"><span class='logo'><img alt='{{team_data[58]['logo_name']}}' src="/static/images/logos/{{team_data[58]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[58]['seedID']}} <span class='team-name'> {{team_data[58]['teamName']}}</span><span class='alias'> {{team_data[58]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot60' data-team-id="{{team_data[59]['teamID']}}"><span class='logo'><img alt='{{team_data[59]['logo_name']}}' src="/static/images/logos/{{team_data[59]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[59]['seedID']}} <span class='team-name'> {{team_data[59]['teamName']}}</span><span class='alias'> {{team_data[59]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game31' data-games='95|112|120|124|126'>
-          <li class='team team-top' id='slot61' data-team-id="{{team_data[60]['teamID']}}"> {{team_data[60]['seedID']}} {{team_data[60]['teamName']}}</li>
-          <li class='team team-bottom' id='slot62' data-team-id="{{team_data[61]['teamID']}}"> {{team_data[61]['seedID']}} {{team_data[61]['teamName']}}</li>
+          <li class='team team-top' id='slot61' data-team-id="{{team_data[60]['teamID']}}"><span class='logo'><img alt='{{team_data[60]['logo_name']}}' src="/static/images/logos/{{team_data[60]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[60]['seedID']}} <span class='team-name'> {{team_data[60]['teamName']}}</span><span class='alias'> {{team_data[60]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot62' data-team-id="{{team_data[61]['teamID']}}"><span class='logo'><img alt='{{team_data[61]['logo_name']}}' src="/static/images/logos/{{team_data[61]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[61]['seedID']}} <span class='team-name'> {{team_data[61]['teamName']}}</span><span class='alias'> {{team_data[61]['alias']}}</span></span></li>
         </ul>
         <ul class='matchup game32' data-games='96|112|120|124|126'>
-          <li class='team team-top' id='slot63' data-team-id="{{team_data[62]['teamID']}}"> {{team_data[62]['seedID']}} {{team_data[62]['teamName']}}</li>
-          <li class='team team-bottom' id='slot64' data-team-id="{{team_data[63]['teamID']}}"> {{team_data[63]['seedID']}} {{team_data[63]['teamName']}}</li>
+          <li class='team team-top' id='slot63' data-team-id="{{team_data[62]['teamID']}}"><span class='logo'><img alt='{{team_data[62]['logo_name']}}' src="/static/images/logos/{{team_data[62]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[62]['seedID']}} <span class='team-name'> {{team_data[62]['teamName']}}</span><span class='alias'> {{team_data[62]['alias']}}</span></span></li>
+          <li class='team team-bottom' id='slot64' data-team-id="{{team_data[63]['teamID']}}"><span class='logo'><img alt='{{team_data[63]['logo_name']}}' src="/static/images/logos/{{team_data[63]['logo_name']}}.svg" onerror="this.style.display='none'" /></span> <span class='team-info'>{{team_data[63]['seedID']}} <span class='team-name'> {{team_data[63]['teamName']}}</span><span class='alias'> {{team_data[63]['alias']}}</span></span></li>
         </ul>
       </div>
     </div>    
     <!-- END ROUND ONE -->
     <!-- RIGHT BOTTOM 16 END -->
+
+    <script>
+      const preloadedUpsetData = {{upset_bonus_data|safe}};
+    </script>
 
   </div>
 </section>

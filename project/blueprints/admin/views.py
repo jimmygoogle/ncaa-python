@@ -114,8 +114,8 @@ def reset_polls():
 
 @admin_blueprint.route('/admin/teams')
 def pull_teams():
-    '''Pull team data'''
+    '''Pull team data for initial bracket setup'''
 
     teams = Teams()
-    result = teams.setup_teams()
+    result = teams.get_team_data()
     return jsonify(result)

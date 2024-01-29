@@ -326,6 +326,7 @@ function loadUserPicks() {
   }
 
   // load upset bonus data from bottom of page
+  let preloadedUpsetData = {};
   upsetBonus = preloadedUpsetData;
 
   $('#bracket').find('li').each(function() {      

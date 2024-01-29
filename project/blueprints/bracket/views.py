@@ -93,7 +93,12 @@ def user_bracket(user_token, bracket_type_label):
             show_user_bracket_form = 1   
         
         # get user data (bracket and info) for display purposes
-        data = bracket.get_user_bracket_for_display(action = action, user_token = user_token, is_admin = is_admin, bracket_type = bracket_type)
+        data = bracket.get_user_bracket_for_display(
+            action = action,
+            user_token = user_token,
+            is_admin = is_admin,
+            bracket_type = bracket_type
+        )
 
         # try and get the pool name again
         if pool_name is None:

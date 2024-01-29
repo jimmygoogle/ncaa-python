@@ -1,5 +1,5 @@
 #from flask import jsonify
-from project.ncaa import Ncaa
+from project.sportsradar import SportRadar
 from collections import defaultdict, OrderedDict
 from project.mysql_python import MysqlPython
 import requests 
@@ -12,15 +12,12 @@ import os
 import time
 import redis
 
-class Teams(Ncaa):
+class Teams(SportRadar):
     def __init__(self):
-        '''xxx'''
+        SportRadar.__init__(self)
 
         config = configparser.ConfigParser()
         config.read("site.cfg")
-
-        self.__year = str(datetime.datetime.now().year - 2)
-        self.__api_key = 'dx2dgwhwscf4fwm64zpa69xd'
 
         self.__redis_client = redis.Redis(
             host=config.get('REDIS', 'REDIS_HOST'),
@@ -60,8 +57,9 @@ class Teams(Ncaa):
         return tournament_id
 
     def setup_team(self, team, game_id, skip_team_data):
-        # stop here, we got a first four team placeholder in the main bracket
+        # we got a first four team placeholder in the main bracket so put in placeholder game
         if 'id' not in team:
+            self.debug("'id' not in team")
             self.debug(team['source'])
             result = self.__db.query(
                 proc = 'GetSportsRadarTeamData',
@@ -69,9 +67,6 @@ class Teams(Ncaa):
                     team['source']['home_team']
                 ]
             )
-
-            self.debug(f"looking up {team['source']['home_team']}")
-            self.debug(result)
 
             playin_home_team = result[0]['alias']
 
@@ -82,15 +77,12 @@ class Teams(Ncaa):
                 ]
             )
 
-            self.debug(f"looking up {team['source']['away_team']}")
-            self.debug(result)
-
             playin_away_team = result[0]['alias']
             seed_id = result[0]['seedID']
 
             self.debug(f"Setting up playin {playin_home_team} / {playin_away_team} :: {game_id} :: {seed_id}")
 
-            self.__db.insert(
+            playin_team_id = self.__db.insert(
                 proc='InsertTeamsData',
                 params=[
                     f"{playin_home_team} / {playin_away_team}",
@@ -100,8 +92,8 @@ class Teams(Ncaa):
                 ]
             )
 
-            key = f"playin){team['source']['home_team']}_{team['source']['away_team']}"
-            self.__redis_client.set(key, game_id)
+            key = f"playin_{team['source']['home_team']}_{team['source']['away_team']}"
+            self.__redis_client.set(key, playin_team_id)
             return
 
         self.debug(f"Setting up team {team['name']} ({team['id']}) for game {game_id}")
@@ -111,16 +103,16 @@ class Teams(Ncaa):
             params = [team['id']]
         )
 
-        self.debug(result)
         # use DB
         if result:
             self.debug(f"Found {team['name']} in DB")
             data = result[0]
-            sportsradar_team_data_id = data['sportsradar_team_data_id']
+            sportsradar_team_data_id = data['sportsradar_pk']
+            data['id'] = team['id']
         else:
             # we havent seen this team yet so go to sportsradar and get it
             self.debug(f"Getting {team['name']} from sportsradar")
-
+            return
             url = f"https://api.sportradar.us/ncaamb/trial/v7/en/teams/{team['id']}/profile.json?api_key={self.__api_key}"
             
             data = None
@@ -151,18 +143,25 @@ class Teams(Ncaa):
 
             self.debug(f"sportsradar_team_data_id is {sportsradar_team_data_id} :: {skip_team_data}")
 
-        if skip_team_data != 1:
-            team_id = self.__db.insert(
-                proc='InsertTeamsData',
-                params=[
-                    data['market'],
-                    team['seed'],
-                    game_id,
-                    sportsradar_team_data_id
-                ]
-            )
-
-            self.__redis_client.set(data['id'], team_id)
+        #if skip_team_data != 1:
+        team_id = self.__db.insert(
+            proc='InsertTeamsData',
+            params=[
+                data['market'],
+                team['seed'],
+                game_id,
+                sportsradar_team_data_id
+            ]
+        )
+        self.debug([
+                data['market'],
+                team['seed'],
+                game_id,
+                sportsradar_team_data_id
+            ]
+        )
+        self.debug(f"id is {team_id}")
+        self.__redis_client.set(data['id'], team_id)
 
     def get_team_data(self, setup = 1):
         '''Get team / game data from SportsRadar'''
@@ -179,7 +178,9 @@ class Teams(Ncaa):
         # data = response
         # self.debug(f"teams type is {type(data)}")
         # self.debug(os.getcwd())
-        f = open("/app/project/after-selection.json", "r")
+        
+        #f = open("/app/project/data-playin.json", "r")
+        f = open("/app/project/data.json", "r")
         data = f.read()
         data = json.loads(data)
 
@@ -190,9 +191,9 @@ class Teams(Ncaa):
             # intialize team / game relationship
             self.__db.insert(proc='InitializeTeamsGame', params=[])
 
-        # * Top Left Quadrant: Regional Rank = 1 - South Regional in Example Provided
-        # * Bottom Left Quadrant: Regional Rank = 4 - West Regional in Example Provided - add 8 to game
-        # * Top Right Quadrant: Regional Rank = 2 - East Regional In Example Provided - add 16 to game
+        # * Top Left Quadrant: Regional Rank     = 1  - South Regional in Example Provided
+        # * Bottom Left Quadrant: Regional Rank  = 4  - West Regional in Example Provided   - add 8 to game
+        # * Top Right Quadrant: Regional Rank    = 2  - East Regional In Example Provided   - add 16 to game
         # * Bottom Right Quadrant: Regional Rank = 3 - Midwest Regional in Example Provided - add 24 to game
 
         # used to set the game number of the quadrant based on the rank
@@ -203,51 +204,69 @@ class Teams(Ncaa):
                 2 : 0,
                 3 : 0
             },
+            # 32 games - 8 per region
             'First Round' : {
                 1 : 0,
                 4 : 8,
                 2 : 16,
                 3 : 24
             },
+            # 16 games - 4 per region
             'Second Round' : {
-                1 : 33,
-                4 : 37,
-                2 : 41,
+                1 : 32,
+                4 : 36,
+                2 : 40,
                 3 : 44
             },
+            # 8 games - 2 per region
             'Sweet 16' : {
-                1 : 49,
-                4 : 51,
-                2 : 53,
-                3 : 55
+                1 : 48,
+                4 : 50,
+                2 : 52,
+                3 : 54
             },
+            # 4 games - 1 per region
             'Elite Eight' : {
                 1 : 56,
-                4 : 58,
-                2 : 57,
+                4 : 57,
+                2 : 58,
                 3 : 59
             },
-            'Final Four' : {},
-            'National Championship': {}
+            # 2 games
+            'Final Four' : {
+                1 : 60,
+            },
+            # 1 game
+            'National Championship': {
+                1 : 62
+            }
         }
 
-        #score_data = {}
         score_data = defaultdict(dict)
-        ff_idx = 1
 
         for round in data['rounds']:
             round_name = round['name']
-
-            # # skip First Four ga
-            # if setup == 0 and round_name == 'First Four':
-            #     continue
+            self.debug(f"======= {round_name} ======== ")
 
             # skip other games as we are setting up only
             if setup == 1 and (round_name != 'First Round' and round_name != 'First Four'):
                 continue
             
+            # the final four and national championship data
+            # is not 'bracketed' so we will make the data look the same
+            if not round['bracketed']:
+                round['bracketed'] = [
+                    {
+                        'bracket': { 'rank': 1 },
+                        'games': round['games']
+                    }
+                ]
+
             for region in round['bracketed']:
                 rank = region['bracket']['rank']
+
+                if rank is None:
+                    rank = 1
 
                 for game in region['games']:
                     home_team = game['home']
@@ -256,8 +275,21 @@ class Teams(Ncaa):
                     # get game from title
                     # ex: South Regional - First Round - Game 1
                     title_data = game['title'].rstrip().split(' ')
-                    game_number  = int(title_data[-1])
+
+                    # get game number from title
+                    try:
+                        game_number = int(title_data[-1])
+                    except ValueError:
+                        game_number = 1
+
+                    self.debug(f"title is {game['title']} :: game is {game_number} :: rank is {rank}")
                     game_number += quadrant_game[round_name][rank]
+
+                    self.debug(f"game_number is now {game_number}")
+
+                    self.debug()
+
+                    scored_game_number_key = f"sgame_scored_{game_number}"
 
                     # "home": {
                     #     "name": "Arizona Wildcats",
@@ -272,42 +304,55 @@ class Teams(Ncaa):
                         if round_name == 'First Four':
                             skip_team_data = 1
                            #game_number = 64 + ff_idx
+                            game_number += 64
                             # concat alias
 
                         self.setup_team(home_team, game_number, skip_team_data)
                         self.setup_team(away_team, game_number, skip_team_data)
 
-                    # if setup == 1 and round_name == 'First Four':
-                    #     ff_idx += 1
-                    
-                    continue
+                    games_already_scored = None
+                    #if not setup:
+                    #    games_already_scored = self.__redis_client.get(scored_game_number_key)
 
-                    # figure out winner from completed game
-                    if game['status'] == 'complete':
-                        self.debug(f"trying to score {home_team} : {away_team}")
+                    # if the game was already scored then stop
+                    if games_already_scored:
+                        continue
+
+                    # figure out winner from completed games
+                    if not setup and (game['status'] == 'complete' or game['status'] == 'closed'):
+                        self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
                         if 'home_points' in game:
-                            home_team['score'] = game['home_points']
-
                             # TODO: if you wanted scores they could be found in this data
+                            #home_team['score'] = game['home_points']
                             #score_data[game_number]['home_score'] = home_team['score']
 
                             if game['home_points'] > game['away_points']:
+                                self.debug(f"{home_team['name']} won")
                                 score_data[game_number] = self.__redis_client.get(home_team['id'])
+                                team_guid = home_team['id']
                             else:
+                                self.debug(f"{away_team['name']} won")
                                 score_data[game_number] = self.__redis_client.get(away_team['id'])
+                                team_guid = away_team['id']
 
-                        # 
+                        # switch the name of the playin game matchup to the winner of the playin game
+                        self.debug()
                         if round_name == 'First Four':
-                            key = f"playin){home_team['id']}_{away_team['id']}"
-                            game_id = self.__redis_client.get(key)
-                            self.debug(f"updating bracket game {game_number} with winner of playin game {score_data[game_number]}")
+                            key = f"playin_{home_team['id']}_{away_team['id']}"
+                            playin_team_id = self.__redis_client.get(key)
+
+                            self.__db.update(
+                                proc='UpdateTeam',
+                                params=[
+                                    playin_team_id,
+                                    team_guid
+                                ]
+                            )
+
+                            self.debug(f"updating playin game team name with {team_guid}")
                             del score_data[game_number]
-        
-        if setup:
-            # add team / game relationship
-            self.__db.insert(proc='InitializeTeamsGame', params=[])
+
+                        # set game to scored so we dont reprocess each time
+                        self.__redis_client.set(scored_game_number_key, 1)
  
         return score_data
-
-    def get_scores(self):
-        pass

@@ -84,11 +84,13 @@ class Bracket(Ncaa):
         # handle missing picks from the the master bracket by using the empty bracket and filling in the missing picks
         if is_admin:
             for pick in user_picks:
+                self.debug(pick)
                 admin_picks[pick['gameIDCalc']] = {
                     'gameID': pick['gameID'],
                     'teamID': pick['teamID'],
                     'seedID': pick['seedID'],
                     'teamName': pick['teamName'],
+                    'logo_name': pick['logo_name'],
                     'pickCSS': '',
                 }
 
@@ -191,16 +193,16 @@ class Bracket(Ncaa):
                 token = self.__user.get_edit_token()
                 bracket_type_label = request.values['bracket_type_label']
 
-                # results = send_confirmation_email.s(
-                #     token = token,
-                #     url = url,
-                #     pool_name = pool_name,
-                #     pool_status = self.__pool.check_pool_status(),
-                #     email_address = request.values['email_address'],
-                #     bracket_type_name = request.values['bracket_type_name'],
-                #     bracket_type_label = bracket_type_label,
-                #     username = request.values['username']              
-                # ).apply_async(seconds=10)
+                results = send_confirmation_email.s(
+                    token = token,
+                    url = url,
+                    pool_name = pool_name,
+                    pool_status = self.__pool.check_pool_status(),
+                    email_address = request.values['email_address'],
+                    bracket_type_name = request.values['bracket_type_name'],
+                    bracket_type_label = bracket_type_label,
+                    username = request.values['username']
+                ).apply_async(seconds=10)
                 edit_url = f"{url}bracket/{bracket_type_label}/{token}?action=e"
                 message = f"Your bracket has been submitted.<br/>Good luck!<br/><br/>You can edit your bracket <a href='{edit_url}'>here</a> until the tip off of the first game on Thursday."
             
@@ -314,9 +316,6 @@ class Bracket(Ncaa):
             insert_proc = 'InsertMasterBracketData'
             params = []
 
-        # clear data
-        self.__db.insert(proc = clear_proc, params = params)
-
         # convert the picks string to a dictionary
         # user_picks_dict = ast.literal_eval( request.values['user_picks'] )
         # upset_bonus_dict = ast.literal_eval( request.values['upset_bonus'] )
@@ -325,6 +324,13 @@ class Bracket(Ncaa):
         else:
             user_picks_dict = ast.literal_eval( request.values['user_picks'] )
         #upset_bonus_dict = ast.literal_eval( request.values['upset_bonus'] )
+            
+        self.debug(user_picks_dict)
+        self.debug(clear_proc)
+        self.debug(insert_proc)
+        # clear data
+        if user_picks_dict:
+            self.__db.insert(proc = clear_proc, params = params)
 
         # loop through the game data and insert it
         for game_id in user_picks_dict:
@@ -353,9 +359,7 @@ class Bracket(Ncaa):
             #         0
             #         #upset_bonus_data['opponent_team_id']
             #     )
-                
-            self.debug(f"insert_proc is {insert_proc}")
-            self.debug(params)
+
             self.__db.insert(proc = insert_proc, params = params)
 
             # set the game/team relationship
@@ -488,7 +492,7 @@ class Bracket(Ncaa):
         '''Call SportsRadar and get scores from completed games'''
 
         # self.__year = str(datetime.datetime.now().year - 1)
-        # self.__api_key = '5d7efanvyh58qefnratg497c'
+        # self.__api_key = 'dx2dgwhwscf4fwm64zpa69xd'
         
         # teams = Teams()
         # tournament_id = teams.get_tournament_id()
@@ -509,5 +513,4 @@ class Bracket(Ncaa):
         )
 
         self.score_all_brackets()
-
         return {"result": "success"}

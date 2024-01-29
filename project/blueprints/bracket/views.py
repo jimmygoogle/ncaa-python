@@ -1,8 +1,9 @@
-from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect
+from flask import Blueprint, request, render_template, url_for, flash, make_response, redirect, jsonify
 from project.pool import Pool
 from project.bracket import Bracket
 from project.user import User
 import datetime
+import json
 
 bracket_blueprint = Blueprint('bracket', __name__, template_folder='templates')
 
@@ -112,6 +113,7 @@ def user_bracket(user_token, bracket_type_label):
             data_pick = data['user_picks'][-1]['pickCSS']
             data_team = str(data['user_picks'][-1]['seedID']) + ' ' + data['user_picks'][-1]['teamName']
 
+        bracket.debug(json.dumps(data['upset_bonus_data']));
         # render the bracket
         return render_template('bracket.html',
             pool_name = pool_name,
@@ -126,5 +128,13 @@ def user_bracket(user_token, bracket_type_label):
             is_open = pool_is_open,
             edit_type = edit_type,
             bracket_type = bracket_type,
-            dates = bracket.get_start_dates()
+            dates = bracket.get_start_dates(),
+            upset_bonus_data = json.dumps(data['upset_bonus_data']),
         )
+
+@bracket_blueprint.route('/bracket/score')
+def score_brckets():
+    '''Get scores from Sportsradar and score brackets'''
+
+    result = bracket.score_brackets_automatically()
+    return jsonify(result)

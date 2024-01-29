@@ -27,9 +27,11 @@ services:
   celery:
     restart: always
     build: .
-    command: celery worker -A project.celery_worker.celery -l info
+    command: celery -A project.celery_worker.celery worker --loglevel=INFO
     volumes:
       - .:/app
+    depends_on:
+      - redis
   redis:
     restart: always
     image: redis:alpine

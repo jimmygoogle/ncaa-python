@@ -3,6 +3,8 @@ from project.ncaa import Ncaa
 from project.admin import Admin
 from project.bracket import Bracket
 from project.teams import Teams
+import redis
+import configparser
 
 admin = Admin()
 admin_blueprint = Blueprint('admin', __name__, template_folder='templates')
@@ -119,3 +121,20 @@ def pull_teams():
     teams = Teams()
     result = teams.get_team_data()
     return jsonify(result)
+
+
+@admin_blueprint.route('/admin/flush')
+def flush_db():
+    '''Flush redis'''
+
+    config = configparser.ConfigParser()
+    config.read("site.cfg")
+
+    r = redis.Redis(
+        host=config.get('REDIS', 'REDIS_HOST'),
+        port=config.get('REDIS', 'REDIS_PORT'),
+        db=0
+    )
+
+    r.flushdb()
+    return jsonify({})

@@ -38,7 +38,8 @@ def send_confirmation_email(**kwargs):
             ses_client = boto3.client(
                 'ses',
                 aws_access_key_id = config.get('AWS', 'ACCESS_KEY'),
-                aws_secret_access_key = config.get('AWS', 'SECRET_KEY')
+                aws_secret_access_key = config.get('AWS', 'SECRET_KEY'),
+                region_name = 'us-east-1'
             )
 
             ses_client.send_email(

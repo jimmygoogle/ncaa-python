@@ -48,7 +48,8 @@ def index():
                 edit_type = edit_type,
                 bracket_type = bracket_type,
                 bracket_type_label = bracket_type_label,
-                dates = bracket.get_start_dates()
+                dates = bracket.get_start_dates(),
+                upset_bonus_data = '{}'
             )
         
         # the pool is closed so show the master bracket

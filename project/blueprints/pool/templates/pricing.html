@@ -1,0 +1,65 @@
+{% extends "index.html" %}
+
+{% block title %} - Pricing{% endblock %}
+
+{% block content %}
+
+<section id="bracket">
+  <div class="container">
+    <div class="pricing">
+        <div class='question'>
+          How are we different from other services like CBS Sports, ESPN or Run Your Pool?
+        </div>
+        <div class='answer'>
+            We are a small company with a passion for the NCAA tournament. It's Awesome Baby was born back in 2010 as a side project. The plan was to make it easy for people to make their picks and submit them unlike other sites. You don't need to create an account, verify it, login, etc. There are spam or marketing emails.
+            You simply make your picks and play. It's just that simple.
+        </div>
+        <div class='question'>
+          Is there a public pool I can join?
+        </div>
+        <div class='answer'>
+            Yes there is a free to play public pool <a href="/pool/cinderella">here</a>.
+        </div>
+        <div class='question'>
+          How much does it cost to run my own pool?
+        </div>
+        <div class='answer'>
+            Below is a list of our pricing tiers in USD. <a href="mailto:{{contact_email}}">Contact us</a> if you would like to host your own pool.
+            <table>
+              <tbody>
+                <tr class="header">
+                    <th>Number of Entries</th>
+                    <th>Price</th>
+                </tr>
+                <tr>
+                    <td>Up to 25 entries</td>
+                    <td>$25</td>
+                </tr>
+                <tr>
+                  <td>26 - 50 entries</td>
+                  <td>$35</td>
+                  </tr>
+                  <tr>
+                  <td>51 - 100 entries</td>
+                  <td>$55</td>
+                  </tr>
+                  <tr>
+                  <td>101 - 200 entries</td>
+                  <td>$85</td>
+                  </tr>
+                  <tr>
+                  <td>201 - 500 entries</td>
+                  <td>$135</td>
+                  </tr>
+                  <tr>
+                  <td>Over 500</td>
+                  <td><a href="mailto:{{contact_us}}">contact us for pricing</a></td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

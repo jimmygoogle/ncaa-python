@@ -100,7 +100,14 @@ class User(Ncaa):
             Ex: email, username, etc
         '''
 
-        edit_type = request.values['edit_type']
+        self.debug(request.values)
+        if request.values:
+            edit_type  = request.values['edit_type']
+        else:
+
+        #
+            #if edit_type is None:
+            return 1
 
         # add/edit user data
         if edit_type == 'add':
@@ -175,9 +182,6 @@ class User(Ncaa):
         '''Check to see if the username is availble in the pool'''
 
         result = self.__db.query(proc = 'BracketNameAvailable', params = [pool_name, username])
-
-        self.debug(f"checking {pool_name} to see if {username} is available")
-        self.debug(result)
 
         error = None
         if result[0]['available'] > 0:

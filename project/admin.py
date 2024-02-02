@@ -113,17 +113,17 @@ class Admin(Ncaa):
     def add_new_pool(self):
         '''Add new pool to DB'''
 
-        # if 'seed_bonus_scoring' in request.values:
-        #     seed_bonus_scoring = 1
-        # else:
-        #     seed_bonus_scoring = 0
+        if 'seed_bonus_scoring' in request.values:
+            seed_bonus_scoring = 1
+        else:
+            seed_bonus_scoring = 0
 
         pool_id = self.__db.insert(proc = 'AddNewPool', params = [
             request.values['pool_name'],
             ' ',
             0,
             ' ',
-            0
+            seed_bonus_scoring
         ])
         errors = self.__db.errors
 

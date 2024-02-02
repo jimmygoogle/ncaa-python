@@ -2,6 +2,9 @@ let userPicks = {};
 let upsetBonus = {};
 
 $(window).on('load', function() {
+    // load upset bonus data from dom on bottom of page (db)
+    upsetBonus = preloadedUpsetData;
+
     loadUserPicks();
     setupPlayerBracket();
  });
@@ -194,7 +197,6 @@ function makePicks(type) {
   
   // loop through all games and make picks based on user preference
   for (let index = 1; index <= 63; index++) {
-    
     teams = []
     $('.game' + index).find('li').each(function(){
       // get seed and team ... ex: 1 Virginia
@@ -325,14 +327,10 @@ function loadUserPicks() {
     return false;
   }
 
-  // load upset bonus data from bottom of page
-  let preloadedUpsetData = {};
-  upsetBonus = preloadedUpsetData;
-
   $('#bracket').find('li').each(function() {      
     const slotData = $(this).attr('id').match(/slot(\d+)/);
     const startSlot = (bracketType == 'sweetSixteenBracket') ? 113 : 65;
-  
+
     if(slotData[1] >= startSlot) {
       const teamId = $(this).attr('data-team-id');
       const gameId = slotData[1] - 64;
@@ -558,17 +556,19 @@ function setUserPick(obj) {
   // figure out if the pick is eligble for an upset bonus
   let upsetBonusFlag = 0;
 
-  console.log("userPickedSeed is "  + userPickedSeed);
-  console.log("otherGameSeed is "  + otherGameSeed);
+  // console.log("userPickedSeed is "  + userPickedSeed);
+  // console.log("otherGameSeed is "  + otherGameSeed);
 
   if (otherGameSeed && (userPickedSeed > otherGameSeed)) {
     upsetBonusFlag = 1;
   }
 
-  console.log("upsetBonusFlag is " + upsetBonusFlag);
+  // console.log(userPickedSeed);
+  // console.log(otherGameSeed);
+  // console.log("upsetBonusFlag is " + upsetBonusFlag);
 
   // set data so it can be submitted to DB
-  setUserFormData(gameData[1], teamId, upsetBonusFlag, otherTeamId);
+  setUserFormData(gameData[1], teamId, upsetBonusFlag);
 
   // slot data looks like 81|105|119|127
   if(gameSlots) {
@@ -592,22 +592,19 @@ function setUserPick(obj) {
     }
   }
   //console.log(userPicks);
-  console.log(upsetBonus);
+  // console.log(upsetBonus);
 }
 
-function setUserFormData(gameData, teamId, upsetBonusFlag, opponentTeamId) {
+function setUserFormData(gameData, teamId, upsetBonusFlag) {
   const gameId = parseInt(gameData.match(/\d+/));
   userPicks[gameId] = teamId;
-  upsetBonus[gameId] = {
-    flag: upsetBonusFlag,
-    opponent_team_id: parseInt(opponentTeamId)
-  };
+  upsetBonus[gameId] = upsetBonusFlag;
 }
 
 function clearPreviousPicks(gameNumber, userPickedTeam, slotString) {
   //get the 'other' team in the current game the user is picking
   const getOtherTeamInGame = _getOtherTeamInGame(gameNumber, userPickedTeam);
-  //console.log('other team in game is ' + getOtherTeamInGame);
+  // console.log('other team in game is ' + getOtherTeamInGame);
 
   if(getOtherTeamInGame){
     // only check (match) specified slots (ex 81|105|119|127)

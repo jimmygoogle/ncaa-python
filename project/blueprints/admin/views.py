@@ -119,7 +119,7 @@ def pull_teams():
     '''Pull team data for initial bracket setup'''
 
     teams = Teams()
-    result = teams.get_team_data()
+    (result, bonus_data) = teams.get_team_data()
     return jsonify(result)
 
 

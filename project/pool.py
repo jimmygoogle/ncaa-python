@@ -93,3 +93,11 @@ class Pool(Ncaa):
         result = self.__db.query(proc = 'PoolInfo', params = [pool_name])
         #self.debug(result)
         return result[0]
+
+    def get_pool_round_score(self):
+        '''Get scoring for pool'''
+        return {}
+
+        pool_name = self.get_pool_name()
+        result = self.__db.query(proc = 'GetPoolRoundScore', params = [pool_name])
+        return result[0]

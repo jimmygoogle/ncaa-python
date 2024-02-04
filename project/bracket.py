@@ -54,7 +54,7 @@ class Bracket(Ncaa):
 
     def get_user_picks(self, **kwargs):
         '''Get the picks for the user (token)'''
-        
+
         user_token = kwargs['user_token']
         is_admin = kwargs['is_admin']
 
@@ -75,7 +75,8 @@ class Bracket(Ncaa):
                     'seedID': '',
                     'teamName': '',
                     'teamID' : 0, 
-                    'gameID': 0
+                    'gameID': 0,
+                    'upset': 0,
                 })
 
         # get the picks from the DB
@@ -91,6 +92,7 @@ class Bracket(Ncaa):
                     'seedID': pick['seedID'],
                     'teamName': pick['teamName'],
                     'logo_name': pick['logo_name'],
+                    'upset': pick['upset'],
                     'pickCSS': '',
                 }
 
@@ -127,13 +129,11 @@ class Bracket(Ncaa):
         # set styling for incorrect picks and add upset bonus data
         incorrect_picks = {}
         upset_bonus_data = {}
+
         for pick in user_picks:
             team_id = pick['teamID']
 
-            # upset_bonus_data[ pick['gameID'] ] = {
-            #     'flag': pick['upsetBonus'],
-            #     'opponent_team_id': pick['opponentTeamID'],
-            # }
+            upset_bonus_data[ pick['gameID'] ] = pick['upset']
 
             if pick['pickCSS'] == 'incorrectPick':
                 incorrect_picks[team_id] = 1;
@@ -317,17 +317,13 @@ class Bracket(Ncaa):
             params = []
 
         # convert the picks string to a dictionary
-        # user_picks_dict = ast.literal_eval( request.values['user_picks'] )
-        # upset_bonus_dict = ast.literal_eval( request.values['upset_bonus'] )
         if 'user_picks' in kwargs:
             user_picks_dict = kwargs['user_picks']
+            upset_bonus_dict = kwargs['upset_bonus']
         else:
             user_picks_dict = ast.literal_eval( request.values['user_picks'] )
-        #upset_bonus_dict = ast.literal_eval( request.values['upset_bonus'] )
-            
-        self.debug(user_picks_dict)
-        self.debug(clear_proc)
-        self.debug(insert_proc)
+            upset_bonus_dict = ast.literal_eval( request.values['upset_bonus'] )
+
         # clear data
         if user_picks_dict:
             self.__db.insert(proc = clear_proc, params = params)
@@ -335,30 +331,18 @@ class Bracket(Ncaa):
         # loop through the game data and insert it
         for game_id in user_picks_dict:
             team_id = user_picks_dict[game_id]
-            #upset_bonus_data = upset_bonus_dict[game_id]
+            upset_bonus_data = upset_bonus_dict[game_id]
             game_id = int(game_id)
 
-            #self.debug(f"working with game {game_id} : did user pick upset {upset_bonus}")
+            # self.debug(f"working with game {game_id} : did user pick upset {upset_bonus_data}")
 
             # insert user's game' picks
             params = [
                 user_id,
                 team_id,
                 game_id,
-                0,
-                0
+                upset_bonus_data
             ]
-
-            # add bonus
-            # if is_admin == 0:
-            #     params.append(
-            #         #upset_bonus_data['flag'],
-            #         0
-            #     )
-            #     params.append(
-            #         0
-            #         #upset_bonus_data['opponent_team_id']
-            #     )
 
             self.__db.insert(proc = insert_proc, params = params)
 
@@ -491,23 +475,13 @@ class Bracket(Ncaa):
     def score_brackets_automatically(self):
         '''Call SportsRadar and get scores from completed games'''
 
-        # self.__year = str(datetime.datetime.now().year - 1)
-        # self.__api_key = 'dx2dgwhwscf4fwm64zpa69xd'
-        
-        # teams = Teams()
-        # tournament_id = teams.get_tournament_id()
-
-        # url = f"https://api.sportradar.us/ncaamb/trial/v7/en/tournaments/{tournament_id}/schedule.json?api_key={self.__api_key}"
-        # self.debug(url)
-        # response = requests.get(url).json()
-        # self.debug(response)
-
         teams = Teams()
-        scored_picks = teams.get_team_data(setup = 0)
+        (scored_picks, upset_bonus) = teams.get_team_data(setup = 0)
 
         self.process_pick_data(
             is_admin = 1,
             user_picks = scored_picks,
+            upset_bonus = upset_bonus,
             action = 'edit',
             edit_user_token = self.__user.get_admin_edit_token()
         )

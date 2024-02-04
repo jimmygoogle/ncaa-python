@@ -15,7 +15,9 @@ def index():
     pool_name = pool.get_pool_name()
 
     if pool_name is None:
-        return redirect(url_for('pool.show_pool_form'))
+        # for now redirect to a working pool
+        return redirect('/pool/butler')
+        # return redirect(url_for('pool.show_pool_form'))
     else:
         pool_status = pool.check_pool_status()
 
@@ -34,6 +36,9 @@ def index():
             # set the bracket edit type
             edit_type = 'add'
 
+            # scoring_info
+            scoring_info = pool.get_pool_round_score()
+
             # render the bracket
             return render_template('bracket.html',
                 pool_name = pool_name,
@@ -49,7 +54,8 @@ def index():
                 bracket_type = bracket_type,
                 bracket_type_label = bracket_type_label,
                 dates = bracket.get_start_dates(),
-                upset_bonus_data = '{}'
+                upset_bonus_data = '{}',
+                scoring_info = scoring_info,
             )
         
         # the pool is closed so show the master bracket
@@ -68,7 +74,8 @@ def index():
                 show_user_bracket_form = 0,
                 is_open = 0,
                 dates = bracket.get_start_dates(),
-                requires_payment = 0
+                requires_payment = 0,
+                scoring_info = scoring_info,
             )
 
 ## routes for pool setup/switching

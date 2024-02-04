@@ -59,8 +59,6 @@ class Teams(SportRadar):
     def setup_team(self, team, game_id, skip_team_data):
         # we got a first four team placeholder in the main bracket so put in placeholder game
         if 'id' not in team:
-            self.debug("'id' not in team")
-            self.debug(team['source'])
             result = self.__db.query(
                 proc = 'GetSportsRadarTeamData',
                 params = [
@@ -80,7 +78,7 @@ class Teams(SportRadar):
             playin_away_team = result[0]['alias']
             seed_id = result[0]['seedID']
 
-            self.debug(f"Setting up playin {playin_home_team} / {playin_away_team} :: {game_id} :: {seed_id}")
+            # self.debug(f"Setting up playin {playin_home_team} / {playin_away_team} :: {game_id} :: {seed_id}")
 
             playin_team_id = self.__db.insert(
                 proc='InsertTeamsData',
@@ -96,7 +94,7 @@ class Teams(SportRadar):
             self.__redis_client.set(key, playin_team_id)
             return
 
-        self.debug(f"Setting up team {team['name']} ({team['id']}) for game {game_id}")
+        # self.debug(f"Setting up team {team['name']} ({team['id']}) for game {game_id}")
 
         result = self.__db.query(
             proc = 'GetSportsRadarTeamData',
@@ -153,14 +151,7 @@ class Teams(SportRadar):
                 sportsradar_team_data_id
             ]
         )
-        self.debug([
-                data['market'],
-                team['seed'],
-                game_id,
-                sportsradar_team_data_id
-            ]
-        )
-        self.debug(f"id is {team_id}")
+
         self.__redis_client.set(data['id'], team_id)
 
     def get_team_data(self, setup = 1):
@@ -187,9 +178,6 @@ class Teams(SportRadar):
         # start setup by clearing old data
         if setup:
             self.__db.insert(proc='DeleteTeams', params=[])
-
-            # intialize team / game relationship
-            self.__db.insert(proc='InitializeTeamsGame', params=[])
 
         # * Top Left Quadrant: Regional Rank     = 1  - South Regional in Example Provided
         # * Bottom Left Quadrant: Regional Rank  = 4  - West Regional in Example Provided   - add 8 to game
@@ -243,10 +231,11 @@ class Teams(SportRadar):
         }
 
         score_data = defaultdict(dict)
+        upset_data = defaultdict(dict)
 
         for round in data['rounds']:
             round_name = round['name']
-            self.debug(f"======= {round_name} ======== ")
+            # self.debug(f"======= {round_name} ======== ")
 
             # skip other games as we are setting up only
             if setup == 1 and (round_name != 'First Round' and round_name != 'First Four'):
@@ -282,12 +271,11 @@ class Teams(SportRadar):
                     except ValueError:
                         game_number = 1
 
-                    self.debug(f"title is {game['title']} :: game is {game_number} :: rank is {rank}")
+                    # self.debug(f"title is {game['title']} :: game is {game_number} :: rank is {rank}")
                     game_number += quadrant_game[round_name][rank]
 
-                    self.debug(f"game_number is now {game_number}")
-
-                    self.debug()
+                    # self.debug(f"game_number is now {game_number}")
+                    # self.debug()
 
                     scored_game_number_key = f"sgame_scored_{game_number}"
 
@@ -320,23 +308,36 @@ class Teams(SportRadar):
 
                     # figure out winner from completed games
                     if not setup and (game['status'] == 'complete' or game['status'] == 'closed'):
-                        self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
+                        # self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
                         if 'home_points' in game:
                             # TODO: if you wanted scores they could be found in this data
                             #home_team['score'] = game['home_points']
                             #score_data[game_number]['home_score'] = home_team['score']
 
+                            upset_data[game_number] = 0
+
                             if game['home_points'] > game['away_points']:
                                 self.debug(f"{home_team['name']} won")
-                                score_data[game_number] = self.__redis_client.get(home_team['id'])
+                                team_id = self.__redis_client.get(home_team['id'])
+                                score_data[game_number] = team_id
                                 team_guid = home_team['id']
+
+                                if home_team['seed'] > away_team['seed']:
+                                    upset_data[game_number] = 1
+                                    # self.debug("====upset====")
+
                             else:
                                 self.debug(f"{away_team['name']} won")
-                                score_data[game_number] = self.__redis_client.get(away_team['id'])
+                                team_id = self.__redis_client.get(away_team['id'])
+                                score_data[game_number] = team_id
                                 team_guid = away_team['id']
 
+                                if away_team['seed'] > home_team['seed']:
+                                    # self.debug("====upset====")
+                                    upset_data[game_number] = 1
+
                         # switch the name of the playin game matchup to the winner of the playin game
-                        self.debug()
+                        # self.debug()
                         if round_name == 'First Four':
                             key = f"playin_{home_team['id']}_{away_team['id']}"
                             playin_team_id = self.__redis_client.get(key)
@@ -349,10 +350,14 @@ class Teams(SportRadar):
                                 ]
                             )
 
-                            self.debug(f"updating playin game team name with {team_guid}")
+                            # self.debug(f"updating playin game team name with {team_guid}")
                             del score_data[game_number]
 
                         # set game to scored so we dont reprocess each time
                         self.__redis_client.set(scored_game_number_key, 1)
  
-        return score_data
+        if setup:
+            # intialize team / game relationship
+            self.__db.insert(proc='InitializeTeamsGame', params=[])
+
+        return (score_data, upset_data)

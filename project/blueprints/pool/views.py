@@ -21,6 +21,9 @@ def index():
     else:
         pool_status = pool.check_pool_status()
 
+        # scoring_info
+        scoring_info = pool.get_pool_round_score()
+
         # bracket is open for submissions so get bracket page
         if pool_status['any']['is_open']:
             # set the bracket type
@@ -35,9 +38,6 @@ def index():
 
             # set the bracket edit type
             edit_type = 'add'
-
-            # scoring_info
-            scoring_info = pool.get_pool_round_score()
 
             # render the bracket
             return render_template('bracket.html',

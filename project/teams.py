@@ -308,18 +308,42 @@ class Teams(SportRadar):
 
                     # figure out winner from completed games
                     if not setup and (game['status'] == 'complete' or game['status'] == 'closed'):
-                        # self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
+                        self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
                         if 'home_points' in game:
-                            # TODO: if you wanted scores they could be found in this data
-                            #home_team['score'] = game['home_points']
-                            #score_data[game_number]['home_score'] = home_team['score']
-
                             upset_data[game_number] = 0
 
+                            home_team_id = int(self.__redis_client.get(home_team['id']))
+                            away_team_id = int(self.__redis_client.get(away_team['id']))
+
+                            procedure = 'UpdateTeamsGameScore'
+
+                            if game_number >= 33:
+                                procedure = 'AddTeamsGameScore'
+                            
+                            self.debug(f"{procedure} home :: {[game_number, home_team_id, game['home_points']]}")
+
+                            self.__db.update(
+                                proc = procedure,
+                                params = [
+                                    game_number,
+                                    home_team_id,
+                                    game['home_points']
+                                ]
+                            )
+
+                            self.debug(f"{procedure} away :: {[game_number, away_team_id, game['away_points']]}")
+                            self.__db.update(
+                                proc = procedure,
+                                params = [
+                                    game_number,
+                                    away_team_id,
+                                    game['away_points']
+                                ]
+                            )
+
                             if game['home_points'] > game['away_points']:
-                                self.debug(f"{home_team['name']} won")
-                                team_id = self.__redis_client.get(home_team['id'])
-                                score_data[game_number] = team_id
+                                # self.debug(f"{home_team['name']} won")
+                                score_data[game_number] = home_team_id
                                 team_guid = home_team['id']
 
                                 if home_team['seed'] > away_team['seed']:
@@ -327,9 +351,8 @@ class Teams(SportRadar):
                                     # self.debug("====upset====")
 
                             else:
-                                self.debug(f"{away_team['name']} won")
-                                team_id = self.__redis_client.get(away_team['id'])
-                                score_data[game_number] = team_id
+                                # self.debug(f"{away_team['name']} won")
+                                score_data[game_number] = away_team_id
                                 team_guid = away_team['id']
 
                                 if away_team['seed'] > home_team['seed']:
@@ -359,5 +382,6 @@ class Teams(SportRadar):
         if setup:
             # intialize team / game relationship
             self.__db.insert(proc='InitializeTeamsGame', params=[])
+            self.__db.insert(proc='InitializeTeamsGameScore', params=[])
 
         return (score_data, upset_data)

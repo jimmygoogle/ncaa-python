@@ -77,24 +77,29 @@ class Bracket(Ncaa):
                     'teamID' : 0, 
                     'gameID': 0,
                     'upset': 0,
+                    'logo_name': '',
+                    'score': '',
                 })
 
         # get the picks from the DB
         user_picks = self.__db.query(proc = proc, params = params)
-        
+
         # handle missing picks from the the master bracket by using the empty bracket and filling in the missing picks
         if is_admin:
+            index = 0
             for pick in user_picks:
-                self.debug(pick)
-                admin_picks[pick['gameIDCalc']] = {
+                admin_picks[index] = {
                     'gameID': pick['gameID'],
                     'teamID': pick['teamID'],
                     'seedID': pick['seedID'],
                     'teamName': pick['teamName'],
                     'logo_name': pick['logo_name'],
                     'upset': pick['upset'],
-                    'pickCSS': '',
+                    'pickCSS': pick['pickCSS'],
+                    'score': pick['score'],
+                    'alias': pick['alias'],
                 }
+                index += 1
 
             user_picks = admin_picks 
 
@@ -136,7 +141,7 @@ class Bracket(Ncaa):
             upset_bonus_data[ pick['gameID'] ] = pick['upset']
 
             if pick['pickCSS'] == 'incorrectPick':
-                incorrect_picks[team_id] = 1;
+                incorrect_picks[team_id] = 1
 
             if pick['pickCSS'] == '' and team_id in incorrect_picks:
                 pick['pickCSS'] = 'incorrectPick'
@@ -355,10 +360,14 @@ class Bracket(Ncaa):
                 game_data = self.__db.query(proc = 'GetTeamsGame', params = [game_id])
                 #self.debug(f"working on game {game_id} for team {team_id}")
 
+                #self.__db.insert(proc = 'AddTeamsGameScore', params = [game_id, team_id, 0])
+                #self.debug(f"AddTeamsGameScore:: {[game_id, team_id, 0]}")
+
                 if len(game_data) == 0:
-                    self.__db.insert(proc = 'AddTeamsGame', params = [game_id, team_id, team_id])
+                    self.__db.insert(proc = 'AddTeamsGame', params = [game_id, team_id, team_id]) 
                 else:
                     self.__db.update(proc = 'UpdateTeamsGame', params = [game_id, team_id])
+
 
     def score_all_brackets(self):
         '''Score all user brackets. This is called after each admin bracket update'''

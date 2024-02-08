@@ -4,7 +4,7 @@ nav{position:relative;width:100%;margin:0 auto; background-color:rgba(0, 0, 0, 0
 #cssmenu #head-mobile{display:none}
 #cssmenu > ul > li{float:left}
 #cssmenu > ul > li > a{padding:17px;font-size:12px;letter-spacing:1px;text-decoration:none;color:white;font-weight:700;}
-#cssmenu > ul > li:hover > a,#cssmenu ul li.active a{color:orange}
+#cssmenu > ul > li:hover > a,#cssmenu ul li.active a{color:skyblue}
 #cssmenu > ul > li.has-sub > a{padding-right:30px}
 #cssmenu > ul > li.has-sub > a:after{position:absolute;top:22px;right:11px;width:8px;height:2px;display:block;background:#0d1c51;content:''}
 #cssmenu > ul > li.has-sub > a:before{position:absolute;top:19px;right:14px;display:block;width:2px;height:8px;background:#0d1c51;content:'';-webkit-transition:all .25s ease;-ms-transition:all .25s ease;transition:all .25s ease}

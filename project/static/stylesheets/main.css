@@ -2,10 +2,11 @@
 
 body {
   font-family: 'Istok Web', sans-serif;
-  background: url('/static/images/background-1.jpg') no-repeat #000;
+  
   min-height: 100%;
   margin: 0;
   background-size: 110%;
+  background-color: #000;
 }
 
 .tournament-title {
@@ -42,7 +43,7 @@ body {
 .march-madness-header {
   font-family: 'Roboto', sans-serif; 
   text-transform: uppercase;
-  color: orange; 
+  color: skyblue; 
 }
 
 #bracket {
@@ -90,6 +91,6 @@ body {
 }
 
 .my_footer a{
-  color: orange;
+  color: skyblue;
 }
 

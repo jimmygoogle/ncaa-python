@@ -32,11 +32,11 @@
 
 .standings tr:hover td {
   cursor: pointer;
-  color: orange;
+  color: skyblue;
 }
 
 .standings a:hover {
-  color: orange;
+  color: skyblue;
 }
 
 @media screen and (min-width: 801px) and (max-width: 1299px) {

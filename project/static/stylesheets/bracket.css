@@ -34,7 +34,6 @@ li {
   -webkit-align-self:center;
   align-self:center;
   margin-top: -15px;
-  text-align: center;
   padding: 230px 0\9;
 }
 
@@ -47,7 +46,6 @@ li {
   -webkit-align-self:center;
   align-self:center;
   margin-top: -15px;
-  text-align: center;
   padding: 230px 0\9;
   display: inline-block;
   margin: 0;
@@ -118,12 +116,12 @@ li {
 }
 
 .score {
-  font-size: 11px;
   text-transform: uppercase;
-  float: right;color: #004E89;
+  float: right;
+  color: white;
   font-weight: bold;
-  font-family: 'Roboto Condensed', sans-serif;
-  position: absolute;right: 5px;
+  position: absolute;
+  right: 5px;
 }
 
 .team {
@@ -175,6 +173,16 @@ li {
 
 .correctPick {
   color: #ffe4b3  !important;
+}
+
+.game-winner {
+  color: #c7d4e0 !important;
+  border-right-color: red;
+}
+
+.game-loser {
+  color: lightslategray !important;
+  opacity: 0.75;
 }
 
 .champion1 li, .champion li, .round li {
@@ -278,7 +286,7 @@ li {
 	font-size: 10px; 
  letter-spacing: 2px;
  font-family: 'Istok Web', sans-serif;
- color:orange;
+ color:skyblue;
 }
 
 .userNameDisplay {
@@ -305,7 +313,7 @@ li {
 .game9, .game10, .game11, .game12, .game13, .game14, .game15, .game16,
 .game33, .game34, .game35, .game36, .game37, .game38, .game39, .game40,
 .game49, .game50, .game51, .game52 {
-  text-align: right;
+  text-align: left;
 }
 
 .winner {
@@ -366,7 +374,7 @@ li {
 }
 
 .pick-button:hover {
-  background: orange;
+  background: skyblue;
 }
 
 .picks-header {
@@ -375,7 +383,7 @@ li {
   font-weight : bold;
   letter-spacing: 1.5px;
   font-family: 'Istok Web', sans-serif;
-  color: orange;
+  color: skyblue;
   text-align: center;
   text-decoration: underline;
   cursor: pointer;
@@ -387,8 +395,7 @@ li {
 
 .logo img {
   vertical-align:middle;
-  height:20;
-  width:20;
+  height:22;
 }
 
 @media screen and (min-width: 640px) {
@@ -428,6 +435,7 @@ li {
   .sixteen-header {transform: translate(0,0);}
   .final-four-right {padding-bottom: 40px;}
   .bracket_details {max-width: 90%;}
+
   .alias {
     display: inline;
   }

@@ -14,11 +14,11 @@ def send_confirmation_email(**kwargs):
     '''Send the user a confirmation email with a link to edit their picks'''
 
     with current_app.app_context():
-        config = configparser.ConfigParser()
-        config.read("site.cfg")
-
         pool_name = kwargs['pool_name'].upper()
         year = datetime.datetime.now().year
+
+        config = configparser.ConfigParser()
+        config.read("site.cfg")
 
         content = get_email_confirmation_template(
             year = year,
@@ -32,7 +32,33 @@ def send_confirmation_email(**kwargs):
             url = kwargs['url']
         )
 
+        send_email(
+            config = config,
+            content = content,
+            email_address = kwargs['email_address'],
+            subject = '\U0001F3C0' + f" Welcome to the {str(year)} {pool_name} March Madness Pool",
+            from_email_address = config.get('EMAIL', 'MAIL_FROM')
+        )
+
+@celery.task()
+def send_contact_us_email(**kwargs):
+    '''Send contact request email to admin'''
+
+    with current_app.app_context():
+        config = configparser.ConfigParser()
+        config.read("site.cfg")
+
+        send_email(
+            config = config,
+            content = kwargs['message'],
+            email_address = config.get('EMAIL', 'INFO_EMAIL'),
+            subject = 'Contact request',
+            from_email_address = kwargs['email_address']
+        )
+
+def send_email(**kwargs):
         try:
+            config = kwargs['config']
             charset = 'UTF-8'
 
             ses_client = boto3.client(
@@ -52,15 +78,15 @@ def send_confirmation_email(**kwargs):
                     "Body": {
                         "Html": {
                             "Charset": charset,
-                            "Data": content,
+                            "Data": kwargs['content'],
                         }
                     },
                     "Subject": {
                         "Charset": charset,
-                        "Data": '\U0001F3C0' + f" Welcome to the {str(year)} {pool_name} March Madness Pool",
+                        "Data": kwargs['subject'],
                     },
                 },
-                Source=config.get('EMAIL', 'MAIL_FROM'),
+                Source=kwargs['from_email_address'],
             )
         except Exception as e:
             print(e)

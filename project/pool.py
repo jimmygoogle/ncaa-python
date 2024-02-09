@@ -1,5 +1,6 @@
-from flask import app, request, jsonify, g
+from flask import app, request, jsonify, g, flash
 from project.ncaa import Ncaa
+from project.confirmation_email import send_contact_us_email
 from project.mysql_python import MysqlPython
 from project import session
 import ast
@@ -101,3 +102,9 @@ class Pool(Ncaa):
         pool_name = self.get_pool_name()
         result = self.__db.query(proc = 'GetPoolRoundScore', params = [pool_name])
         return result[0]
+
+    def send_contact_email(self, **kwargs):
+        '''Send email to admin'''
+
+        flash('Your request has been submitted. You will receive a response shortly.')
+        send_contact_us_email.s(**kwargs).apply_async(seconds=10)

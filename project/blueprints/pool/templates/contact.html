@@ -1,0 +1,36 @@
+{% extends "index.html" %}
+
+{% block title %} - Contact{% endblock %}
+
+{% block content %}
+
+<div class="contact-container">
+  <div class="message">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li><strong>{{ message }}</strong></li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <form id="contact" action="/contact" method="post" onsubmit="return validateForm()">
+    <h3>Please reach out with any questions you might have.</h3><br/> 
+    <div id='error' class='error'></div>
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Name">
+
+    <label for="email_address">Email Address</label>
+    <input type="text" id="email_address" name="email_address" placeholder="Email Address">
+
+    <label for="message">Message</label>
+    <textarea id="message" name="message" placeholder="Message" style="height:100px"></textarea>
+
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+{% endblock %}

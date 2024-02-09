@@ -21,17 +21,23 @@
 
 }
 
-.header th {
+.pricing-header {
   border: none;
   padding: 15px 0px 15px 10px;
+  height: 50px;
   text-align: left;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: skyblue;
   color: white;
+  
+}
+
+.pricing th {
+  padding: 20px;
 }
 
 .pricing td {
   text-align: left;
-  padding: 15px 0px 15px 10px;
+  padding: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, .35);
   color: #e2e2e2;
 }

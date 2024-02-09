@@ -48,12 +48,16 @@ def send_contact_us_email(**kwargs):
         config = configparser.ConfigParser()
         config.read("site.cfg")
 
+        content = kwargs['request']['name'] + os.linesep + \
+                kwargs['request']['email_address'] + os.linesep + \
+                kwargs['request']['message']
+
         send_email(
             config = config,
-            content = kwargs['message'],
+            content = content,
             email_address = config.get('EMAIL', 'INFO_EMAIL'),
             subject = 'Contact request',
-            from_email_address = kwargs['email_address']
+            from_email_address = config.get('EMAIL', 'INFO_EMAIL')
         )
 
 def send_email(**kwargs):

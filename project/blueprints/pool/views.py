@@ -124,8 +124,7 @@ def contact():
     if request.method == 'POST':
         # send contact request
         pool.send_contact_email(
-            email_address = request.form['email_address'],
-            message = request.form['message'] + "\n" + request.form['name']
+            request = request.form
         )
         return render_template('contact.html', year = year)
     else:

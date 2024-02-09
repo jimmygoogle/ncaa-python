@@ -1,12 +1,15 @@
 let userPicks = {};
 let upsetBonus = {};
+let preloadedUpsetData;
 
 $(window).on('load', function() {
-    // load upset bonus data from dom on bottom of page (db)
+  // load upset bonus data from dom on bottom of page (db)
+  if (preloadedUpsetData) {
     upsetBonus = preloadedUpsetData;
+  }
 
-    loadUserPicks();
-    setupPlayerBracket();
+  loadUserPicks();
+  setupPlayerBracket();
  });
 
 function setupPlayerBracket() {
@@ -40,12 +43,6 @@ function setupPlayerBracket() {
   // make random picks
   $('#random').click(function(event){
     makePicks('random');
-  });
-
-  // submit form to set/check user pool name
-  $('#poolNameForm').submit(function(event) {
-    event.preventDefault();
-    checkUserPool();
   });
 
   // validate and submit user bracket form
@@ -349,27 +346,6 @@ function loadUserPicks() {
   console.log(upsetBonus);
 }
 
-function checkUserPool() {
-  $.ajax({
-  type: "POST",
-  url:  "/pool",
-  data: {
-    'dataPosted': 1,
-    'poolName': $("input#userPoolName").val().toLowerCase()
-  },
-  success: function(result) {
-    //pool finder failed
-    if(result == 0) {
-      $("#userPoolMessage").empty().show().addClass('user_pool_message_background').append('*Please check your pool name.');
-    }
-    //we found a pool name
-    else {
-      window.location = '/';
-    }
-  }
-  });
-}
-
 function validateUserInput() {
   let status = true;
   const $userBracketInfoForm = $('#userBracketInfoForm');
@@ -433,11 +409,10 @@ function validateUserInput() {
     // # TOOO this shouldnt return a 200
     // tell user if the user name is already used
     if(status) {
-
       if((editTypeValue !== 'edit') || (editTypeValue !== 'admin')) {
         $.ajax({
           async: false,
-          type: 'GET',
+          type: 'POST',
           url: location.protocol + '//' + location.host + '/bracket/user',
           data: {
             username

@@ -12,7 +12,7 @@ pool = Pool()
 user = User()
 
 ## determine if the bracket name is in use in the pool
-@bracket_blueprint.route('/bracket/user', methods=['GET'])
+@bracket_blueprint.route('/bracket/user', methods=['POST'])
 def is_available():
     pool_name = pool.get_pool_name()
     username = request.values['username']
@@ -118,7 +118,6 @@ def user_bracket(user_token, bracket_type_label):
             data_pick = data['user_picks'][-1]['pickCSS']
             data_team = str(data['user_picks'][-1]['seedID']) + ' ' + data['user_picks'][-1]['teamName']
 
-        bracket.debug(json.dumps(data['upset_bonus_data']));
         # render the bracket
         return render_template('bracket.html',
             pool_name = pool_name,

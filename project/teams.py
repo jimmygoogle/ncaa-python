@@ -29,12 +29,8 @@ class Teams(SportRadar):
         self.__db = MysqlPython()
 
     def get_tournament_id(self):
-        # x = NCAAMB.NCAAMB('ep927w7b9ceadfnhxpadfyun')
-        # self.debug(type(x))
-        # response = x.get_tournament_list(100, 100)
-        # self.debug(response)
-
-        return 'cc2e6918-879a-4a91-a921-a071c71ef6a1'
+        # hard code for now (2023)
+        return '3f50b4cf-b319-4df2-90c0-8fc549742710'
 
         tournament_id = self.__redis_client.get('tournament_id')
 
@@ -308,7 +304,7 @@ class Teams(SportRadar):
 
                     # figure out winner from completed games
                     if not setup and (game['status'] == 'complete' or game['status'] == 'closed'):
-                        self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
+                        # self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
                         if 'home_points' in game:
                             upset_data[game_number] = 0
 
@@ -319,8 +315,6 @@ class Teams(SportRadar):
 
                             if game_number >= 33:
                                 procedure = 'AddTeamsGameScore'
-                            
-                            self.debug(f"{procedure} home :: {[game_number, home_team_id, game['home_points']]}")
 
                             self.__db.update(
                                 proc = procedure,
@@ -331,7 +325,6 @@ class Teams(SportRadar):
                                 ]
                             )
 
-                            self.debug(f"{procedure} away :: {[game_number, away_team_id, game['away_points']]}")
                             self.__db.update(
                                 proc = procedure,
                                 params = [

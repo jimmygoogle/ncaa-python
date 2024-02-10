@@ -3,14 +3,16 @@
 {% block title %} - Welcome{% endblock %}
 
 {% block content %}
-<div class="pool_details">
-  <div id="userPoolMessage"></div>
-  <form class="form-container" id="poolNameForm">
-    <input name="userPoolName" id="userPoolName" placeholder="POOL NAME" type="text">
-    <input value="Submit" type="submit">
-  </form>
-</div>
+<div class="pool-form">
+  <div class="pool_details">
+    <div id="userPoolMessage"></div>
+    <form class="form-container" id="poolNameForm" onsubmit="return checkUserPool()">
+      <input name="userPoolName" id="userPoolName" placeholder="POOL NAME" type="text">
+      <input value="Submit" type="submit">
+    </form>
+  </div>
 
-{% include "footer.html" %}
+  {% include "footer.html" %}
+</div>
 
 {% endblock %}

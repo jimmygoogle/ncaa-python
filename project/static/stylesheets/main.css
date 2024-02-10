@@ -2,10 +2,8 @@
 
 body {
   font-family: 'Istok Web', sans-serif;
-  
   min-height: 100%;
   margin: 0;
-  background-size: 110%;
   background-color: #000;
 }
 
@@ -90,7 +88,16 @@ body {
   text-align: center;
 }
 
-.my_footer a{
+.my_footer a {
   color: skyblue;
+}
+
+.pool-form {
+  background-size: 110%;
+  height: 100vh;
+  background-image: url("/static/images/background-1.jpg");;
+}
+.pool-form .my_footer {
+  font-size: 16px;
 }
 

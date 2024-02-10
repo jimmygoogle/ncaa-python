@@ -14,7 +14,8 @@
           data: {
             pool_name: $('#pool_name').val(),
             round_scores: $('#round_scores').val() || ' ',
-            seed_bonus_scoring: $('#seed_bonus_scoring').is(':checked') ? 1 : 0
+            seed_bonus_scoring: $('#seed_bonus_scoring').is(':checked') ? 1 : 0,
+            email_address: $('#email_address').val() || '',
           },
           success: function (result) {
             alert(result['status']);
@@ -25,7 +26,7 @@
     }); 
   </script>
 
-  <div class='pool_details'>
+  <div class='pool_details admin'>
       <form id='add_pool'>
         <table>
         <tr colspan=3>
@@ -36,6 +37,9 @@
         </tr>
         <tr colspan=3>
           <td><label>Seed bonus scoring: </label><input type='checkbox' id='seed_bonus_scoring' value='1'></td>
+        </tr>
+        <tr colspan=3>
+          <td><input type='text' id='email_address' placeholder='Email Address' value=''></td>
         </tr>
         </table>
         <input id='js-submit-add_pool' value='Submit' type='submit'>

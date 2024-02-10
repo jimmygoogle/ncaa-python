@@ -123,7 +123,8 @@ class Admin(Ncaa):
             ' ',
             0,
             ' ',
-            seed_bonus_scoring
+            seed_bonus_scoring,
+            request.values['email_address']
         ])
         errors = self.__db.errors
 
@@ -140,12 +141,6 @@ class Admin(Ncaa):
 
             # add customized round scores
             for index, round_id in enumerate([1, 2, 3, 4, 5, 6]):
-                self.debug('AddNewPoolRoundScore')
-                self.debug([
-                    pool_id,
-                    round_id,
-                    round_score[index]
-                ])
                 self.__db.insert(proc = 'AddNewPoolRoundScore', params = [
                     pool_id,
                     round_id,

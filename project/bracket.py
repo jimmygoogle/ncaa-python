@@ -138,7 +138,7 @@ class Bracket(Ncaa):
         for pick in user_picks:
             team_id = pick['teamID']
 
-            upset_bonus_data[ pick['gameID'] ] = pick['upset']
+            upset_bonus_data[ pick['gameID'] ] = int(pick['upset'])
 
             if pick['pickCSS'] == 'incorrectPick':
                 incorrect_picks[team_id] = 1

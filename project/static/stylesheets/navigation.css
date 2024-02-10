@@ -1,4 +1,4 @@
-nav{position:relative;width:100%;margin:0 auto; background-color:rgba(0, 0, 0, 0.5);}
+nav{position:relative;width:100%;margin:0 auto; background-color:rgba(112, 128, 144, 0.35);}
 #cssmenu,#cssmenu ul,#cssmenu ul li,#cssmenu ul li a,#cssmenu #head-mobile{border:0;list-style:none;line-height:1;display:block;position:relative;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 #cssmenu:after,#cssmenu > ul:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}
 #cssmenu #head-mobile{display:none}

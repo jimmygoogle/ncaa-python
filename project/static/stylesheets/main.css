@@ -95,8 +95,9 @@ body {
 .pool-form {
   background-size: 110%;
   height: 100vh;
-  background-image: url("/static/images/background-1.jpg");;
+  background-image: url("/static/images/background-1.jpg");
 }
+
 .pool-form .my_footer {
   font-size: 16px;
 }

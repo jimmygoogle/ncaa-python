@@ -93,8 +93,8 @@ body {
 }
 
 .pool-form {
-  background-size: 110%;
-  height: 100vh;
+  background-size: 125%;
+  height: 110vh;
   background-image: url("/static/images/background-1.jpg");
 }
 

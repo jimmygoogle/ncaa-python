@@ -18,15 +18,6 @@
   cursor: pointer;
 }
 
-.tournament-title {
-  position:relative; 
-  overflow: hidden; 
-  color: white;
-  max-width: 1300px;
-  margin: 0 auto;
-  display: block;
-}
-
 .contact-container {
   position:relative; 
   overflow: hidden; 

@@ -140,5 +140,11 @@ def user_bracket(user_token, bracket_type_label):
 def score_brckets():
     '''Get scores from Sportsradar and score brackets'''
 
+    # make sure we have a good token
+    if 'Token' not in request.headers:
+        return redirect('/')
+    elif user.get_admin_edit_token() != request.headers['Token']:
+        return redirect('/')
+
     result = bracket.score_brackets_automatically()
     return jsonify(result)

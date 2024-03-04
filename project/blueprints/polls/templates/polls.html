@@ -20,7 +20,7 @@
                {% for data in ap_rankings['rankings'] %}
                <tr>
                  <td>{{ data['rank'] }}</td>
-                 <td>{{ data['market'] }} {% if data['fp_votes'] %}<span class='resize_mobile'>({{ data['fp_votes'] }})</span>{% endif %}</td>
+                 <td><span class='logo'><img src="/static/images/logos/{{data['logo_name']}}.svg" onerror="this.style.display='none'" /></span> {{ data['market'] }} {% if data['fp_votes'] %}<span class='resize_mobile'>({{ data['fp_votes'] }})</span>{% endif %}</td>
                  <td>{{ data['wins'] }}-{{ data['losses'] }}</td>
                  <td>{{ data['points'] }}</td>
                  <td><span class='ranking'>{{ data['prev_rank'] }}</span><span class="{{ data['movement'] }}">{% if data['movement'] == "up" %}&#8593;{% elif data['movement'] == "down" %}&#8595;{% else %}&nbsp;{% endif %}</span></td>
@@ -48,7 +48,7 @@
                {% for data in usa_today_rankings['rankings'] %}
                  <tr>
                    <td>{{ data['rank'] }}</td>
-                   <td>{{ data['market'] }} {% if data['fp_votes'] %}<span class='resize_mobile'>({{ data['fp_votes'] }})</span>{% endif %}</td>
+                   <td><span class='logo'><img src="/static/images/logos/{{ data['logo_name'] }}.svg" onerror="this.style.display='none'" /></span> {{ data['market'] }} {% if data['fp_votes'] %}<span class='resize_mobile'>({{ data['fp_votes'] }})</span>{% endif %}</td>
                    <td>{{ data['wins'] }}-{{ data['losses'] }}</td>
                    <td>{{ data['points'] }}</td>
                    <td><span class='ranking'>{{ data['prev_rank'] }}</span><span class="{{ data['movement'] }}">{% if data['movement'] == "up" %}&#8593;{% elif data['movement'] == "down" %}&#8595;{% else %}&nbsp;{% endif %}</span></td>

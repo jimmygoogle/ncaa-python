@@ -70,7 +70,7 @@ class Polls(SportRadar):
             return results
 
     def set_ranking_movements(self, rankings):
-        '''Set the CSS class based on the ranking of the current week versus the previous week'''
+        '''Set the CSS class based on the ranking of the current week versus the previous week and add logos'''
 
         for data in rankings['rankings']:
             movement = 'none'
@@ -83,5 +83,6 @@ class Polls(SportRadar):
                     movement = 'up'
 
             data['movement'] = movement
-            
+            data['logo_name'] = data['market'] + ' ' + data['name']
+
         return rankings

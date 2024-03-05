@@ -409,7 +409,7 @@ function validateUserInput() {
     // # TOOO this shouldnt return a 200
     // tell user if the user name is already used
     if(status) {
-      if((editTypeValue !== 'edit') || (editTypeValue !== 'admin')) {
+      if((editTypeValue !== 'edit') && (editTypeValue !== 'admin')) {
         $.ajax({
           async: false,
           type: 'POST',

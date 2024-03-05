@@ -16,7 +16,7 @@ def index():
 
     if pool_name is None:
         # for now redirect to a working pool
-        return redirect('/pool/test')
+        return redirect('/pool/cinderella')
         # return redirect(url_for('pool.show_pool_form'))
     else:
         pool_status = pool.check_pool_status()

@@ -342,8 +342,8 @@ function loadUserPicks() {
   if(winnerTeamId > 0) {
     userPicks[63] = winnerTeamId;
   }
-  console.log(userPicks);
-  console.log(upsetBonus);
+  // console.log(userPicks);
+  // console.log(upsetBonus);
 }
 
 function validateUserInput() {
@@ -597,10 +597,10 @@ function clearPreviousPicks(gameNumber, userPickedTeam, slotString) {
         &&
         (slotMatch.test(slotNumber) )
       ){
-        const pick = $(this).text();
+        const pick = $.trim($(this).text());
 
         //get rid of all future picks that match
-        if(pick.match(getOtherTeamInGame) ){
+        if(getOtherTeamInGame.match(pick)){
           $(this).empty();
           $(this).attr('data-team-id', '');
         }

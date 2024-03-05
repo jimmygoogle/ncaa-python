@@ -178,7 +178,7 @@ class User(Ncaa):
 
         return user_id
 
-    def is_username_availble(self, pool_name, username):
+    def is_username_available(self, pool_name, username):
         '''Check to see if the username is availble in the pool'''
 
         result = self.__db.query(proc = 'BracketNameAvailable', params = [pool_name, username])

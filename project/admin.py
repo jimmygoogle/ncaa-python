@@ -71,11 +71,10 @@ class Admin(Ncaa):
         self.debug('reset_and_pull_poll_data')
         # delete the top 25 poll data
         polls = Polls()
-        #polls.reset_polls_collection()
-        
+
         # get the new AP poll data
-        polls.get_ap_poll_data()
-        polls.get_usa_today_poll_data()
+        polls.get_ap_poll_data(force = 1)
+        polls.get_usa_today_poll_data(force = 1)
         
         return 1
    

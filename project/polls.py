@@ -17,15 +17,17 @@ class Polls(SportRadar):
         self.__ap_url = f"{self.sportsradar_url}/polls/AP/{self.year}/rankings.json?api_key={self.api_key}"
         self.__usa_today_url = f"{self.sportsradar_url}/polls/US/{self.year}/rankings.json?api_key={self.api_key}"
         
-    def get_usa_today_poll_data(self):
+    def get_usa_today_poll_data(self, force = 0):
         '''Get USA Today Poll data'''
         
-        return self.get_api_data(type = 'US')
+        return self.get_api_data(type = 'US',
+                                 force = force)
    
-    def get_ap_poll_data(self):
+    def get_ap_poll_data(self, force = 0):
         '''Get AP Poll data'''
         
-        return self.get_api_data(type = 'AP')
+        return self.get_api_data(type = 'AP',
+                                 force = force)
 
     def get_api_data(self, **kwargs):
         '''Call Sports Radar API and get Top 25 poll data'''
@@ -45,7 +47,7 @@ class Polls(SportRadar):
             results = json.loads(results)
 
         # return the data
-        if results and len(results) > 0:
+        if not kwargs['force'] and results and len(results) > 0:
             #self.debug(f"got {type} from redis")
             return results
         

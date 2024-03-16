@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/bracket.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/pricing.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/contact.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/modal.css')}}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -33,6 +34,7 @@
     <script src="{{url_for('static', filename='javascripts/pool.js')}}"> type="text/javascript"></script>
     <script src="{{url_for('static', filename='javascripts/gui.js')}}"> type="text/javascript"></script>
     <script src="{{url_for('static', filename='javascripts/contact.js')}}"> type="text/javascript"></script>
+    <script src="{{url_for('static', filename='javascripts/modal.js')}}"> type="text/javascript"></script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-30J3WKHEDC"></script>
@@ -78,5 +80,22 @@
       {% block content %}{% endblock %}
     </div>
 
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">It's Awesome Baby!</div>
+        <div class="modal-info">
+            March Madness is almost here. Do you want to run your pool with no hassle? We can help!
+        </div>
+        <div class="modal-info">
+            There is no need for cumbersome account creation, verification, or logins.
+        </div>
+        <div class="modal-info">
+            You can effortlessly set up your pool and your players can make picks and dive straight into the game. It's just that simple.
+        </div>
+        <div class="modal-info">
+          <a class='modal-contact' href="/contact">Contact us</a> now to learn about running your own pool or tryout the site with last year's bracket.
+        </div>
+      </div>
+    </div>
   </body>
 </html>

@@ -157,7 +157,6 @@ class Bracket(Ncaa):
                 proc = 'GetUserByEditToken'
 
             user_info = self.__db.query(proc = proc, params = [user_token, pool_name])
-            self.debug(f"token is {user_token} for {pool_name} {user_info}")
             self.__user.set_username(user_info[0]['userName'])
             
             # set bracket display name

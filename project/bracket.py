@@ -140,11 +140,11 @@ class Bracket(Ncaa):
 
             upset_bonus_data[ pick['gameID'] ] = int(pick['upset'])
 
-            if pick['pickCSS'] == 'incorrectPick':
+            if pick['pickCSS'] == 'game-loser':
                 incorrect_picks[team_id] = 1
 
             if pick['pickCSS'] == '' and team_id in incorrect_picks:
-                pick['pickCSS'] = 'incorrectPick'
+                pick['pickCSS'] = 'game-loser'
 
         # get the base teams (top 64)
         team_data = self.get_base_teams()

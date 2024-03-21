@@ -29,7 +29,7 @@ class Teams(SportRadar):
         self.__db = MysqlPython()
 
     def get_tournament_id(self):
-        # hard code for now (2023)
+        # hard code for now (2024)
         return '3f50b4cf-b319-4df2-90c0-8fc549742710'
 
         tournament_id = self.__redis_client.get('tournament_id')
@@ -106,8 +106,7 @@ class Teams(SportRadar):
         else:
             # we havent seen this team yet so go to sportsradar and get it
             self.debug(f"Getting {team['name']} from sportsradar")
-            return
-            url = f"https://api.sportradar.us/ncaamb/trial/v7/en/teams/{team['id']}/profile.json?api_key={self.__api_key}"
+            url = f"{self.sportsradar_url}/teams/{team['id']}/profile.json?api_key={self.api_key}"
             
             data = None
             response = requests.get(url)
@@ -154,22 +153,20 @@ class Teams(SportRadar):
         '''Get team / game data from SportsRadar'''
 
         tournament_id = self.get_tournament_id()
-        #tournament_id = '86f1f414-88e9-4ad1-be69-740f4db52183'
 
-        # url = f"https://api.sportradar.us/ncaamb/trial/v7/en/tournaments/{tournament_id}/schedule.json?api_key={self.__api_key}"
-        # self.debug(url)
-        # data = requests.get(url).json()
+        url = f"{self.sportsradar_url}/tournaments/{tournament_id}/schedule.json?api_key={self.api_key}"
+        data = requests.get(url).json()
 
-        #self.debug(data)
         #return
         # data = response
         # self.debug(f"teams type is {type(data)}")
         # self.debug(os.getcwd())
         
-        #f = open("/app/project/data-playin.json", "r")
-        f = open("/app/project/data.json", "r")
-        data = f.read()
-        data = json.loads(data)
+        # #f = open("/app/project/data-playin.json", "r")
+        # # f = open("/app/project/data.json", "r")
+        # f = open("/app/project/after-selection.json", "r")
+        # data = f.read()
+        # data = json.loads(data)
 
         # start setup by clearing old data
         if setup:

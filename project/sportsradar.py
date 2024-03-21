@@ -15,7 +15,7 @@ class SportRadar(Ncaa):
 
         base_url = 'https://api.sportradar.us/ncaamb'
         type = 'trial'
-        version = 'v7'
+        version = 'v8'
         locale = 'en'
 
         self.sportsradar_url = f"{base_url}/{type}/{version}/{locale}"

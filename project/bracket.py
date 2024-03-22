@@ -50,7 +50,12 @@ class Bracket(Ncaa):
     def get_master_bracket_data(self):
         '''Get master bracket data for display'''
 
-        return self.get_user_bracket_for_display(is_admin = 1, user_token = None, action = 'view', bracket_type = 'normalBracket')
+        return self.get_user_bracket_for_display(
+            is_admin = 1,
+            user_token = None,
+            action = 'view',
+            bracket_type = 'normalBracket'
+        )
 
     def get_user_picks(self, **kwargs):
         '''Get the picks for the user (token)'''
@@ -86,9 +91,8 @@ class Bracket(Ncaa):
 
         # handle missing picks from the the master bracket by using the empty bracket and filling in the missing picks
         if is_admin:
-            index = 0
             for pick in user_picks:
-                admin_picks[index] = {
+                admin_picks[ pick['gameIDCalc'] ] = {
                     'gameID': pick['gameID'],
                     'teamID': pick['teamID'],
                     'seedID': pick['seedID'],
@@ -99,7 +103,6 @@ class Bracket(Ncaa):
                     'score': pick['score'],
                     'alias': pick['alias'],
                 }
-                index += 1
 
             user_picks = admin_picks 
 
@@ -338,7 +341,7 @@ class Bracket(Ncaa):
             upset_bonus_data = upset_bonus_dict[game_id]
             game_id = int(game_id)
 
-            # self.debug(f"working with game {game_id} : did user pick upset {upset_bonus_data}")
+            # self.debug(f"working with game {game_id} :: {team_id} : did user pick upset {upset_bonus_data}")
 
             # insert user's game' picks
             params = [

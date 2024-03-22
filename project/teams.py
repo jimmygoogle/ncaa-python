@@ -297,7 +297,7 @@ class Teams(SportRadar):
 
                     # figure out winner from completed games
                     if not setup and (game['status'] == 'complete' or game['status'] == 'closed'):
-                        #self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
+                        self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
 
                         if 'home_points' in game:
                             upset_data[game_number] = 0
@@ -306,27 +306,27 @@ class Teams(SportRadar):
                             away_team_id = int(self.__redis_client.get(away_team['id']))
 
                             #procedure = 'UpdateTeamsGameScore'
-
+                            if round_name != 'First Four':
                             #if game_number >= 33:
-                            procedure = 'AddTeamsGameScore'
+                                procedure = 'AddTeamsGameScore'
 
-                            self.__db.update(
-                                proc = procedure,
-                                params = [
-                                    game_number,
-                                    home_team_id,
-                                    game['home_points']
-                                ]
-                            )
+                                self.__db.update(
+                                    proc = procedure,
+                                    params = [
+                                        game_number,
+                                        home_team_id,
+                                        game['home_points']
+                                    ]
+                                )
 
-                            self.__db.update(
-                                proc = procedure,
-                                params = [
-                                    game_number,
-                                    away_team_id,
-                                    game['away_points']
-                                ]
-                            )
+                                self.__db.update(
+                                    proc = procedure,
+                                    params = [
+                                        game_number,
+                                        away_team_id,
+                                        game['away_points']
+                                    ]
+                                )
 
                             if game['home_points'] > game['away_points']:
                                 # self.debug(f"{home_team['name']} won")

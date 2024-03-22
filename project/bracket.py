@@ -151,6 +151,8 @@ class Bracket(Ncaa):
 
         # get the base teams (top 64)
         team_data = self.get_base_teams()
+        self.debug(len(team_data))
+        self.debug(f"team_data is {team_data[-1]}")
 
         # if we have a real user then get some additional info
         if user_token is not None:
@@ -361,9 +363,6 @@ class Bracket(Ncaa):
 
                 game_data = self.__db.query(proc = 'GetTeamsGame', params = [game_id])
                 #self.debug(f"working on game {game_id} for team {team_id}")
-
-                #self.__db.insert(proc = 'AddTeamsGameScore', params = [game_id, team_id, 0])
-                #self.debug(f"AddTeamsGameScore:: {[game_id, team_id, 0]}")
 
                 if len(game_data) == 0:
                     self.__db.insert(proc = 'AddTeamsGame', params = [game_id, team_id, team_id]) 

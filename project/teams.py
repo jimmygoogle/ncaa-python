@@ -156,17 +156,13 @@ class Teams(SportRadar):
 
         url = f"{self.sportsradar_url}/tournaments/{tournament_id}/schedule.json?api_key={self.api_key}"
         data = requests.get(url).json()
+        # self.debug(data)
 
-        #return
-        # data = response
-        # self.debug(f"teams type is {type(data)}")
-        # self.debug(os.getcwd())
-        
-        # #f = open("/app/project/data-playin.json", "r")
-        # # f = open("/app/project/data.json", "r")
-        # f = open("/app/project/after-selection.json", "r")
-        # data = f.read()
-        # data = json.loads(data)
+        # load from file
+        #f = open("/app/project/data/day-1-complete.json", "r")
+        #f = open("/app/project/data/after-few-games-round-1.json", "r")
+        #data = f.read()
+        #data = json.loads(data)
 
         # start setup by clearing old data
         if setup:
@@ -267,8 +263,8 @@ class Teams(SportRadar):
                     # self.debug(f"title is {game['title']} :: game is {game_number} :: rank is {rank}")
                     game_number += quadrant_game[round_name][rank]
 
-                    # self.debug(f"game_number is now {game_number}")
-                    # self.debug()
+                    if round_name == 'First Four':
+                        game_number += 64
 
                     scored_game_number_key = f"sgame_scored_{game_number}"
 
@@ -301,17 +297,18 @@ class Teams(SportRadar):
 
                     # figure out winner from completed games
                     if not setup and (game['status'] == 'complete' or game['status'] == 'closed'):
-                        # self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
+                        #self.debug(f"trying to score ({game_number}) {home_team['name']} vs {away_team['name']}")
+
                         if 'home_points' in game:
                             upset_data[game_number] = 0
 
                             home_team_id = int(self.__redis_client.get(home_team['id']))
                             away_team_id = int(self.__redis_client.get(away_team['id']))
 
-                            procedure = 'UpdateTeamsGameScore'
+                            #procedure = 'UpdateTeamsGameScore'
 
-                            if game_number >= 33:
-                                procedure = 'AddTeamsGameScore'
+                            #if game_number >= 33:
+                            procedure = 'AddTeamsGameScore'
 
                             self.__db.update(
                                 proc = procedure,

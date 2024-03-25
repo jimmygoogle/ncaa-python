@@ -415,7 +415,8 @@ function validateUserInput() {
           type: 'POST',
           url: location.protocol + '//' + location.host + '/bracket/user',
           data: {
-            username
+            username,
+            bracket_type: bracketTypeName
           },
           success: function(result) {
             error_message = result['error'];

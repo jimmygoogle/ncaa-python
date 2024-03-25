@@ -16,8 +16,9 @@ user = User()
 def is_available():
     pool_name = pool.get_pool_name()
     username = request.values['username']
+    bracket_type = request.values['bracket_type']
 
-    return user.is_username_available(pool_name, username)
+    return user.is_username_available(pool_name, username, bracket_type)
     
 ## show brackets for display or editing
 @bracket_blueprint.route('/bracket/<bracket_type_label>/<user_token>', methods=['GET', 'POST', 'PUT'])

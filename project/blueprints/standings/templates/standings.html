@@ -10,6 +10,7 @@
       <table>
       <tbody>
         <tr class="header">
+          <th>Rank</th>
           <th>Bracket <span class="resize_mobile">Name</span></th>
           <th>Champion</th>
           <th>Score</th>
@@ -20,6 +21,7 @@
         </tr>
         {% for user in data %}
         <tr bracket='/bracket/{{user.bracketTypeLabel}}/{{user.userDisplayToken}}'>
+          <td class="standings_rank">{{ loop.index }}</td>
           <td class="standings_name">{{ user.userName }} {% if user.realName != ' '%}<span class="resize_mobile">({{ user.realName }})</span>{% endif %}</td>
           <td class="standings_champ"> {{ user.teamName }} <span class="resize_mobile">({{ user.userTieBreakerPoints }})</span></td>
           <td class="standings_score">{{ user.userScore }}</td>
@@ -28,6 +30,7 @@
             <td class="standings_score">{{ user.bestPossibleScore }}</td>
           {% endif %}
         </tr>
+
         {% endfor %}
       </tbody>
       </table>

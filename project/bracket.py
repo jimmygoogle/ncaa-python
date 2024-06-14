@@ -23,10 +23,58 @@ class Bracket(Ncaa):
         self.__pool = Pool()
         self.__user = User()
 
+        config = configparser.ConfigParser()
+        config.read("site.cfg")
+
+        self.__redis_client = redis.Redis(
+            host=config.get('REDIS', 'REDIS_HOST'),
+            port=config.get('REDIS', 'REDIS_PORT'),
+            db=0,
+            decode_responses=True
+        )
+
     def get_base_teams(self):
         '''Get base teams data for display'''
         
-        return self.__db.query(proc = 'GetBaseTeams', params = [])
+        base_team_data = self.__redis_client.get('base_team_data')
+
+        # load base team data from cache if we can
+        if base_team_data is not None:
+            pass
+            #return json.loads(base_team_data)
+
+        score_data_key = 'xx'
+        stored_score_data = self.__redis_client.get(score_data_key)
+
+        if stored_score_data is None:
+            stored_score_data = {}
+        else:
+            stored_score_data = json.loads(stored_score_data)
+
+        self.debug(" ==== ")
+        self.debug(stored_score_data)
+
+        # get base teams from DB
+        team_data = self.__db.query(proc = 'GetBaseTeams', params = [])
+
+        if len(stored_score_data) > 0:
+            for team in team_data:
+                game_id = str(team['gameID'])
+                team_id = str(team['teamID'])
+
+                # add in scores and styling
+                if game_id in stored_score_data:
+                    pass
+                    self.debug(f"game_id is {game_id}")
+                    self.debug(f"team_id is {team_id}")
+                    self.debug(stored_score_data[game_id])
+                    team['score'] = stored_score_data[game_id][team_id]['score']
+                    team['pickCSS'] = stored_score_data[game_id][team_id]['css']
+
+        # store team data in redis
+        self.__redis_client.set('base_team_data', json.dumps(team_data))
+
+        return team_data
 
     def get_empty_picks(self):
         '''
@@ -89,6 +137,15 @@ class Bracket(Ncaa):
         # get the picks from the DB
         user_picks = self.__db.query(proc = proc, params = params)
 
+        # get cached score data
+        score_data_key = 'xx'
+        stored_score_data = self.__redis_client.get(score_data_key)
+
+        if stored_score_data is None:
+            stored_score_data = {}
+        else:
+            stored_score_data = json.loads(stored_score_data)
+
         # handle missing picks from the the master bracket by using the empty bracket and filling in the missing picks
         if is_admin:
             for pick in user_picks:
@@ -99,10 +156,18 @@ class Bracket(Ncaa):
                     'teamName': pick['teamName'],
                     'logo_name': pick['logo_name'],
                     'upset': pick['upset'],
-                    'pickCSS': pick['pickCSS'],
-                    'score': pick['score'],
                     'alias': pick['alias'],
+                    'pickCSS': '',
+                    'score': '',
                 }
+
+                user_picked_game_id = str(self.set_next_game(pick['gameID']))
+                team_id = str(pick['teamID'])
+
+                # add scores and styling
+                if user_picked_game_id in stored_score_data:
+                    admin_picks[ pick['gameIDCalc'] ]['pickCSS'] = stored_score_data[user_picked_game_id][team_id]['css']
+                    admin_picks[ pick['gameIDCalc'] ]['score'] = stored_score_data[user_picked_game_id][team_id]['score']
 
             user_picks = admin_picks 
 
@@ -151,8 +216,6 @@ class Bracket(Ncaa):
 
         # get the base teams (top 64)
         team_data = self.get_base_teams()
-        self.debug(len(team_data))
-        self.debug(f"team_data is {team_data[-1]}")
 
         # if we have a real user then get some additional info
         if user_token is not None:
@@ -170,6 +233,8 @@ class Bracket(Ncaa):
             user_info = {}
             bracket_display_name = ''
  
+        # team_data master 
+        # user_picks userpicks
         return {
             'team_data': team_data, 
             'user_picks': user_picks, 
@@ -343,7 +408,7 @@ class Bracket(Ncaa):
             upset_bonus_data = upset_bonus_dict[game_id]
             game_id = int(game_id)
 
-            # self.debug(f"working with game {game_id} :: {team_id} : did user pick upset {upset_bonus_data}")
+            self.debug(f"working with game {game_id} :: {team_id} : did user pick upset {upset_bonus_data}")
 
             # insert user's game' picks
             params = [
@@ -374,7 +439,7 @@ class Bracket(Ncaa):
         '''Score all user brackets. This is called after each admin bracket update'''
         self.debug('ScoreAllBrackets')
         self.__db.update(proc = 'ScoreAllBrackets', params = [])
-        
+
         # calculate best possible scores now
         self.precalculate_best_possible_scores()
 
@@ -497,4 +562,11 @@ class Bracket(Ncaa):
         )
 
         self.score_all_brackets()
+        self.delete_base_team_data()
+        
         return {"result": "success"}
+
+    def delete_base_team_data(self):
+        '''Clear Redis of cached team data'''
+
+        self.__redis_client.delete('base_team_data')

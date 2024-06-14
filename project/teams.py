@@ -154,19 +154,30 @@ class Teams(SportRadar):
 
         tournament_id = self.get_tournament_id()
 
-        url = f"{self.sportsradar_url}/tournaments/{tournament_id}/schedule.json?api_key={self.api_key}"
-        data = requests.get(url).json()
+        # url = f"{self.sportsradar_url}/tournaments/{tournament_id}/schedule.json?api_key={self.api_key}"
+        # data = requests.get(url).json()
         # self.debug(data)
 
         # load from file
-        #f = open("/app/project/data/day-1-complete.json", "r")
+        #f = open("/app/project/data/after-selection.json", "r")
+        #f = open("/app/project/data/after-first-four-playin-game-1.json", "r")
         #f = open("/app/project/data/after-few-games-round-1.json", "r")
-        #data = f.read()
-        #data = json.loads(data)
+        #f = open("/app/project/data/day-1-complete.json", "r")
+        #f = open("/app/project/data/after-day-2.json", "r")
+        #f = open("/app/project/data/sweet-16.json", "r")
+        #f = open("/app/project/data/elite-8.json", "r")
+        #f = open("/app/project/data/final-4-half-set.json", "r")
+        #f = open("/app/project/data/final-4.json", "r")
+        f = open("/app/project/data/championship-data.json", "r")
+        
+        data = f.read()
+        data = json.loads(data)
 
         # start setup by clearing old data
         if setup:
             self.__db.insert(proc='DeleteTeams', params=[])
+            self.__redis_client.delete('base_team_data')
+            self.__redis_client.delete('xx')
 
         # * Top Left Quadrant: Regional Rank     = 1  - South Regional in Example Provided
         # * Bottom Left Quadrant: Regional Rank  = 4  - West Regional in Example Provided   - add 8 to game
@@ -222,6 +233,14 @@ class Teams(SportRadar):
         score_data = defaultdict(dict)
         upset_data = defaultdict(dict)
 
+        score_data_key = 'xx'
+        stored_score_data = self.__redis_client.get(score_data_key)
+
+        if stored_score_data is None:
+            stored_score_data = {}
+        else:
+            stored_score_data = json.loads(stored_score_data)
+
         for round in data['rounds']:
             round_name = round['name']
             # self.debug(f"======= {round_name} ======== ")
@@ -266,7 +285,7 @@ class Teams(SportRadar):
                     if round_name == 'First Four':
                         game_number += 64
 
-                    scored_game_number_key = f"sgame_scored_{game_number}"
+                    scored_game_number_key = f"game_scored_{game_number}"
 
                     # "home": {
                     #     "name": "Arizona Wildcats",
@@ -280,9 +299,7 @@ class Teams(SportRadar):
                         skip_team_data = 0
                         if round_name == 'First Four':
                             skip_team_data = 1
-                           #game_number = 64 + ff_idx
                             game_number += 64
-                            # concat alias
 
                         self.setup_team(home_team, game_number, skip_team_data)
                         self.setup_team(away_team, game_number, skip_team_data)
@@ -305,53 +322,71 @@ class Teams(SportRadar):
                             home_team_id = int(self.__redis_client.get(home_team['id']))
                             away_team_id = int(self.__redis_client.get(away_team['id']))
 
-                            #procedure = 'UpdateTeamsGameScore'
-                            if round_name != 'First Four':
-                            #if game_number >= 33:
-                                procedure = 'AddTeamsGameScore'
+                            self.debug(f"home_team_id is {home_team_id} for {game_number}")
+                            self.debug(f"away_team_id is {away_team_id} for {game_number}")
 
-                                self.__db.update(
-                                    proc = procedure,
-                                    params = [
-                                        game_number,
-                                        home_team_id,
-                                        game['home_points']
-                                    ]
-                                )
+                            #if 1==1:
+                            #if round_name != 'First Four':
+                            stored_score_data[game_number] = defaultdict(dict)
+                            stored_score_data[game_number][home_team_id] = defaultdict(dict)
+                            stored_score_data[game_number][away_team_id] = defaultdict(dict)
 
-                                self.__db.update(
-                                    proc = procedure,
-                                    params = [
-                                        game_number,
-                                        away_team_id,
-                                        game['away_points']
-                                    ]
-                                )
+                            # add scores
+                            stored_score_data[game_number][home_team_id]['score'] = game['home_points']
+                            stored_score_data[game_number][away_team_id]['score'] = game['away_points']
+
+                                # procedure = 'AddTeamsGameScore'
+
+                                # self.__db.update(
+                                #     proc = procedure,
+                                #     params = [
+                                #         game_number,
+                                #         home_team_id,
+                                #         game['home_points']
+                                #     ]
+                                # )
+
+                                # self.__db.update(
+                                #     proc = procedure,
+                                #     params = [
+                                #         game_number,
+                                #         away_team_id,
+                                #         game['away_points']
+                                #     ]
+                                # )
 
                             if game['home_points'] > game['away_points']:
-                                # self.debug(f"{home_team['name']} won")
+                                self.debug(f"{home_team['name']} won")
                                 score_data[game_number] = home_team_id
                                 team_guid = home_team['id']
+
+                                # add styling for game outcomes
+                                stored_score_data[game_number][home_team_id]['css'] = 'game-winner'
+                                stored_score_data[game_number][away_team_id]['css'] = 'game-loser'
 
                                 if home_team['seed'] > away_team['seed']:
                                     upset_data[game_number] = 1
                                     # self.debug("====upset====")
 
                             else:
-                                # self.debug(f"{away_team['name']} won")
+                                self.debug(f"{away_team['name']} won")
                                 score_data[game_number] = away_team_id
                                 team_guid = away_team['id']
+
+                                # add styling for game outcomes
+                                stored_score_data[game_number][home_team_id]['css'] = 'game-loser'
+                                stored_score_data[game_number][away_team_id]['css'] = 'game-winner'
 
                                 if away_team['seed'] > home_team['seed']:
                                     # self.debug("====upset====")
                                     upset_data[game_number] = 1
 
                         # switch the name of the playin game matchup to the winner of the playin game
-                        # self.debug()
                         if round_name == 'First Four':
                             key = f"playin_{home_team['id']}_{away_team['id']}"
                             playin_team_id = self.__redis_client.get(key)
 
+                            self.debug(f"updating playin team {playin_team_id} with {team_guid}")
                             self.__db.update(
                                 proc='UpdateTeam',
                                 params=[
@@ -360,12 +395,17 @@ class Teams(SportRadar):
                                 ]
                             )
 
+                            self.__redis_client.set(team_guid, playin_team_id)
+
                             # self.debug(f"updating playin game team name with {team_guid}")
                             del score_data[game_number]
 
                         # set game to scored so we dont reprocess each time
-                        self.__redis_client.set(scored_game_number_key, 1)
+                        #self.__redis_client.set(scored_game_number_key, 1)
  
+        # store score data
+        self.__redis_client.set(score_data_key, json.dumps(stored_score_data))
+
         if setup:
             # intialize team / game relationship
             self.__db.insert(proc='InitializeTeamsGame', params=[])

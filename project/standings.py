@@ -24,16 +24,19 @@ class Standings(Ncaa):
             decode_responses=True
         )
 
+        self.users_per_page = int(config.get('DEFAULT', 'USERS_PER_PAGE'))
+
     def get_standings_data(self, **kwargs):
-        key = 'yy'
-        standings_data = self.__redis_client.get(key)
+        standings_data = self.get_standings_from_cache(**kwargs)
+        
+        if standings_data is not None and len(standings_data) > 0:
+            return standings_data
 
-        if standings_data is not None:
-            self.debug(type(json.loads(standings_data)))
-            standings_data = json.loads(standings_data)
-            return standings_data[0:10]
+        kwargs['bracket_type'] += 'Bracket'
+        kwargs['pool_name'] = self.__pool.get_pool_name()
+        kwargs['pool_status'] = self.__pool.check_pool_status(kwargs['bracket_type'])
 
-        # fetch the user standings
+        # lets fetch the user standings from the DB
         standings_data = self.__db.query(
             proc = 'Standings',
             params = [
@@ -43,7 +46,27 @@ class Standings(Ncaa):
             ]
         )
 
+        # set cache
+        key = 'yy'
         self.__redis_client.set(key, json.dumps(standings_data))
+
+        return self.get_standings_from_cache(**kwargs)
+
+    def get_standings_from_cache(self, **kwargs):
+        key = 'yy'
+        standings_data = self.__redis_client.get(key)
+
+        if standings_data is None:
+            return []
+        
+        standings_data = json.loads(standings_data)
+
+        if 'page' in kwargs:
+            offset_start = (kwargs['page'] - 1) * kwargs['per_page']
+            offset_stop = kwargs['page'] * kwargs['per_page']
+        else:
+            offset_start = 0
+            offset_stop = kwargs['per_page']
 
         return standings_data
 
@@ -62,14 +85,8 @@ class Standings(Ncaa):
     def get_standings(self, **kwargs):
         '''Get standings data for the pool'''
 
-        bracket_type = kwargs['bracket_type'] + 'Bracket'
-
         # check redis for standings data for `pool_name`
-        standings_data = self.get_standings_data(
-            bracket_type = bracket_type,
-            pool_name = self.__pool.get_pool_name(),
-            pool_status = self.__pool.check_pool_status(bracket_type) ,
-        )
+        standings_data = self.get_standings_data(**kwargs)
 
         # get number of games played to see if there are games left
         # this will help determine if we show the best possible score column in the standings

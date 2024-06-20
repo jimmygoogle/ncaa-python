@@ -95,7 +95,11 @@ def show_pool_form(pool_name=None):
         if pool_name is not None and pool_name != '':
             ## validate, set session and redirect to main page
             result = pool.validate_pool_name(pool_name)
-            return redirect(url_for('pool.index'))
+
+            if result == 1:
+                return redirect(url_for('pool.index'))
+            else:
+                return redirect('/pool/cinderella')
         else:
             return render_template('pool.html', 
                 is_open = 1

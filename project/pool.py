@@ -23,7 +23,7 @@ class Pool(Ncaa):
         result = self.__db.query(proc = 'PoolInfo', params = [pool_name])
         #self.debug(result)
 
-        status = 0;
+        status = 0
         # we found our pool so set a cookie
         if len(result):
             status = 1
@@ -81,7 +81,7 @@ class Pool(Ncaa):
             'sweetSixteenBracket': {'is_open': result[0]['sweetSixteenPoolOpen'], 'closing_date_time': result[0]['sweetSixteenCloseDateTime'] },
             'any': {'is_open': one_pool_is_open }
         }
-        
+
         if bracket_type is None:
             return status
         else:

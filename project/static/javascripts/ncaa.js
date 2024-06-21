@@ -80,7 +80,7 @@ function makePicks(type) {
   let games = [];
   
   // added some weighting for seeds by round
-  // https://www.betfirm.com/seeds-national-championship-odds/
+  // https:// www.betfirm.com/seeds-national-championship-odds/
   const weights = {
     1 : {
       1 : 0.993,
@@ -365,7 +365,7 @@ function validateUserInput() {
     // the expected number of user picks changes based on the bracket type
     const expectedNumberOfGames = (bracketTypeName == 'sweetSixteenBracket') ? 15 : 63;
 
-    //make sure all games are filled in when we are filling out a bracket
+    // make sure all games are filled in when we are filling out a bracket
     if(status && Object.keys(userPicks).length !== expectedNumberOfGames && (editTypeValue == 'add')) {
       error_message = 'Please pick all of the games.';
       status = false;
@@ -497,11 +497,11 @@ function submitBracket(data) {
 
 function setUserPick(obj) {
   // set team user picked ex: 5 Utah
-  //console.log(obj.html());
+  // console.log(obj.html());
   const userPickedTeam = obj.text().trim();
   const pickedTeamData = userPickedTeam.split(' ');
   const userPickedSeed = parseInt(pickedTeamData[0]);
-  //console.log('setUserPick');
+  // console.log('setUserPick');
 
   // get game number and all possible game slots that the user pick could play in
   // ex: class = "matchup game1 65|97|113|121|125" (we need the 2nd and 3rd element)
@@ -510,7 +510,7 @@ function setUserPick(obj) {
   const gameSlots = obj.parent().attr('data-games');
   const teamId = obj.attr('data-team-id');
 
-  //we want to not allow the user to edit any games previous played if we are in the sweet 16
+  // we want to not allow the user to edit any games previous played if we are in the sweet 16
   const game = gameData[1].match(/game(\d+)/);
 
   // get other team id
@@ -566,7 +566,7 @@ function setUserPick(obj) {
       $slot.empty().append(obj.html());
     }
   }
-  //console.log(userPicks);
+  // console.log(userPicks);
   // console.log(upsetBonus);
 }
 
@@ -577,16 +577,19 @@ function setUserFormData(gameData, teamId, upsetBonusFlag) {
 }
 
 function clearPreviousPicks(gameNumber, userPickedTeam, slotString) {
-  //get the 'other' team in the current game the user is picking
-  const getOtherTeamInGame = _getOtherTeamInGame(gameNumber, userPickedTeam);
+  // get the 'other' team in the current game the user is picking
+  const otherTeamData = _getOtherTeamInGame(gameNumber, userPickedTeam);
+  const getOtherTeamInGame = otherTeamData['teamName'];
+  const teamId = otherTeamData['teamId'];
   // console.log('other team in game is ' + getOtherTeamInGame);
 
   if(getOtherTeamInGame){
     // only check (match) specified slots (ex 81|105|119|127)
     const slotMatch = eval('/' + slotString + '/');
 
-    //check the rest of the bracket now for the existence of the 'other team' and remove it
-    //this is needed for when the user changes their pick(s)
+    // check the rest of the bracket now for the existence of the 'other team' and remove it
+    // this is needed for when the user changes their pick(s)
+    let pick;
     $('#bracket').find('li').each(function() {
       // we only need to check games from round #2 on
       // it starts at 'slot65' (string to be parsed)
@@ -598,15 +601,27 @@ function clearPreviousPicks(gameNumber, userPickedTeam, slotString) {
         &&
         (slotMatch.test(slotNumber) )
       ){
-        const pick = $.trim($(this).text());
+        pick = $.trim($(this).text());
 
-        //get rid of all future picks that match
+        // get rid of all future picks that match
         if(getOtherTeamInGame.match(pick)){
+          console.log("slotNumber is " + slotNumber);
           $(this).empty();
+
+          const teamId = $(this).attr('data-team-id');
+          const gameId = slotNumber - 64;
+          // console.log("we are going to delete game " + gameId);
+
+          delete userPicks[gameId];
           $(this).attr('data-team-id', '');
         }
       }
     });
+
+    // clean out champion if the user picked someone to beat the champion
+    if (pick && teamId == userPicks[63] ) {
+      delete userPicks[63];
+    }
 
     // return seed
     const team_data = getOtherTeamInGame.split(' ');
@@ -617,13 +632,16 @@ function clearPreviousPicks(gameNumber, userPickedTeam, slotString) {
 function _getOtherTeamInGame(gameNumber, userPickedTeam) {
   let teamsInGame = [];
 
-  //get both teams in game
+  // get both teams in game
   $( '.' + gameNumber).find('li').each(function() {
-    //clean string and put into array
-    teamsInGame.push( $.trim( $(this).text() ) );
+    // clean string and put into array
+    teamsInGame.push({
+      teamName: $.trim( $(this).text() ),
+      teamId: $(this).attr('data-team-id')
+    });
   });
 
-  let arrayIndex = $.inArray(userPickedTeam, teamsInGame);
+  let arrayIndex = teamsInGame.findIndex(x => x.teamName  === userPickedTeam);
 
   if(arrayIndex == 0) {
     arrayIndex++;

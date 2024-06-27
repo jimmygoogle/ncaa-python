@@ -46,9 +46,17 @@ class Standings(Ncaa):
             ]
         )
 
+        # set redis cache expiration to 1 day when the pool is closed
+        # this is fine because the cache is cleared every time a game is scored
+        # otherwise set the cache time to something small so we dont kill the DB
+        expiration = 86400
+        if kwargs['pool_status'] == 1:
+            expiration = 30
+
         # set cache
         key = 'yy'
-        self.__redis_client.set(key, json.dumps(standings_data))
+
+        self.__redis_client.set(key, json.dumps(standings_data), ex=expiration)
 
         return self.get_standings_from_cache(**kwargs)
 
@@ -90,7 +98,8 @@ class Standings(Ncaa):
 
         # get number of games played to see if there are games left
         # this will help determine if we show the best possible score column in the standings
-        games_left = self.games_left()
+        #games_left = self.games_left()
+        games_left = 0
 
         # we are using the seed bonus scoring just ignore the best possible score
         # TODO: do we need this now?

@@ -119,8 +119,8 @@ def pull_teams():
     '''Pull team data for initial bracket setup'''
 
     teams = Teams()
-    (result, bonus_data) = teams.get_team_data()
-    return jsonify(result)
+    result = teams.get_team_data()
+    return jsonify(result['score_data'])
 
 
 @admin_blueprint.route('/admin/flush')

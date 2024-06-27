@@ -166,7 +166,7 @@ class User(Ncaa):
         email_address = request.values['email_address']
         username = request.values['username']
         first_name = request.values['first_name']
-        tie_breaker_points = request.values['tie_breaker_points']
+        tie_breaker_points = request.values['tie_breaker_points'] or kwargs['tie_breaker_points']
 
         user_id = self.__db.update(proc = 'UpdateUser', params = [
             edit_token,

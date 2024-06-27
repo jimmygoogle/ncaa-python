@@ -282,6 +282,11 @@ class Teams(SportRadar):
                     # self.debug(f"title is {game['title']} :: game is {game_number} :: rank is {rank}")
                     game_number += quadrant_game[round_name][rank]
 
+                    store_tiebreaker_points = 0
+                    tie_breaker_points = 0
+                    if round_name == 'National Championship':
+                        store_tiebreaker_points = 1
+
                     if round_name == 'First Four':
                         game_number += 64
 
@@ -355,6 +360,10 @@ class Teams(SportRadar):
                                 #     ]
                                 # )
 
+                            #
+                            if store_tiebreaker_points:
+                                tie_breaker_points = game['home_points'] + game['away_points']
+
                             if game['home_points'] > game['away_points']:
                                 self.debug(f"{home_team['name']} won")
                                 score_data[game_number] = home_team_id
@@ -411,4 +420,8 @@ class Teams(SportRadar):
             self.__db.insert(proc='InitializeTeamsGame', params=[])
             self.__db.insert(proc='InitializeTeamsGameScore', params=[])
 
-        return (score_data, upset_data)
+        return {
+            "score_data": score_data,
+            "upset_data": upset_data,
+            "tie_breaker_points": tie_breaker_points
+        }

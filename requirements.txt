@@ -17,6 +17,7 @@ click-plugins==1.1.1
 click-repl==0.2.0
 cryptography==42.0.4
 Flask==3.0.1
+flask-paginate==2024.4.12
 Flask-Session==0.6.0
 idna==2.8
 itsdangerous==2.1.2

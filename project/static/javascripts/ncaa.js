@@ -604,7 +604,7 @@ function clearPreviousPicks(gameNumber, userPickedTeam, slotString) {
         pick = $.trim($(this).text());
 
         // get rid of all future picks that match
-        if(getOtherTeamInGame.match(pick)){
+        if(pick !== '' && getOtherTeamInGame.match(pick)){
           console.log("slotNumber is " + slotNumber);
           $(this).empty();
 

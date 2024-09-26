@@ -10,6 +10,58 @@
 
 }
 
+.pagination {
+  margin: 10px 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.pagination-page-info {
+  padding: .6em;
+  padding-top: 5px;
+  padding-bottom: 0;
+  padding-left: 0;
+  width: 40em;
+  margin: .5em;
+  margin-left: 0;
+  font-size: 12px;
+}
+.pagination-page-info b {
+  color: rgb(255, 255, 255);
+  background: #6aa6ed;
+  padding-left: 2px;
+  padding: .1em .25em;
+  font-size: 150%;
+}
+
+ul.pagination {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  padding-bottom: 2em;
+}
+
+ul.pagination li {
+  display: inline;
+}
+
+ul.pagination li a {
+  color: rgb(255, 255, 255);
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin: 0 4px;
+  border: 1px solid #ddd;
+}
+
+ul.pagination li a.active {
+  background-color: #4CAF50;
+  color: white;
+  /*border-radius: 5px;*/
+}
+
+ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+
 .standings a { 
   text-decoration:none; 
   color: #e2e2e2;
@@ -37,22 +89,6 @@
 
 .standings a:hover {
   color: skyblue;
-}
-
-.pagination-page-info {
-  padding: .6em;
-  padding-left: 0;
-  width: 40em;
-  margin: .5em;
-  margin-left: 0;
-  font-size: 12px;
-}
-.pagination-page-info b {
-  color: black;
-  background: #6aa6ed;
-  padding-left: 2px;
-  padding: .1em .25em;
-  font-size: 150%;
 }
 
 @media screen and (min-width: 801px) and (max-width: 1299px) {

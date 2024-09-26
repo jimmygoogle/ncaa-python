@@ -159,7 +159,7 @@ class Teams(SportRadar):
         # self.debug(data)
 
         # load from file
-        #f = open("/app/project/data/after-selection.json", "r")
+        f = open("/app/project/data/after-selection.json", "r")
         #f = open("/app/project/data/after-first-four-playin-game-1.json", "r")
         #f = open("/app/project/data/after-few-games-round-1.json", "r")
         #f = open("/app/project/data/day-1-complete.json", "r")
@@ -168,7 +168,7 @@ class Teams(SportRadar):
         #f = open("/app/project/data/elite-8.json", "r")
         #f = open("/app/project/data/final-4-half-set.json", "r")
         #f = open("/app/project/data/final-4.json", "r")
-        f = open("/app/project/data/championship-data.json", "r")
+        #f = open("/app/project/data/championship-data.json", "r")
         
         data = f.read()
         data = json.loads(data)

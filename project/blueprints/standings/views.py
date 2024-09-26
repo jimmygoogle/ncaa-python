@@ -42,6 +42,7 @@ def show_standings(pool_type):
     #     search = True
  
     pagination = Pagination(
+        css_framework='bootstrap3',
         per_page=per_page,
         page=page,
         total=len(data),

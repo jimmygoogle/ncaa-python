@@ -19,7 +19,7 @@ cryptography==42.0.4
 Flask==3.0.1
 flask-paginate==2024.4.12
 Flask-Session==0.6.0
-idna==2.8
+idna==3.7
 itsdangerous==2.1.2
 Jinja2==3.1.4
 jmespath==1.0.1
